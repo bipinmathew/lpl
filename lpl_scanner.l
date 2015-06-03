@@ -1,5 +1,5 @@
 %{
-    #include "lpl.h"
+    #include "lpl.parser.hpp"
 %}
 
 %%
