@@ -6,7 +6,7 @@
 %option noyywrap
 
 %%
-[0-9]+ {yylval = atoi(yytext);return NUMBER;}
-"+" {return ADD;}
+[0-9]+ {return NUMBER;}
+"+" {return PLUS;}
 %%
 

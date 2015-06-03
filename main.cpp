@@ -22,7 +22,7 @@ void parse(const string& commandLine) {
     bool validParse = true;
     do {
         lexCode = yylex(scanner);
-        Parse(shellParser, lexCode, NULL, &validParse);
+        Parse(shellParser, lexCode, yyget_text(scanner), &validParse);
     }
     while (lexCode > 0 && validParse);
  
