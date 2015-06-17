@@ -6,6 +6,7 @@
 %option noyywrap
 
 %%
+[0-9]*\.[0-9]+ {return FLOAT;}
 [0-9]+ {return NUMBER;}
 "+" {return PLUS;}
 [ \t]* {}
