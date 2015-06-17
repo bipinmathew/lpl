@@ -4,6 +4,7 @@
   #include <stdlib.h>
   #include <assert.h>
   #include <iostream>
+  #include "node.h"
 }
 
 %syntax_error
@@ -12,7 +13,18 @@
 }
 
 %token_type {const char*}
+%type expr {Node*}
 %extra_argument {bool* valid}
 
-start ::= expr .
-expr ::= NUMBER(B) PLUS NUMBER(C) .   { int ans=0; ans =atoi(B)+atoi(C); printf("Doing an addition %d+%d=%d\n",atoi(B),atoi(C),ans); }
+start ::= expr(A) . 
+      {
+        printf("result: %d\n",A->eval());
+      }
+expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 
+    {
+        C = new Node("+",new TerminalNode(atoi(A)),new TerminalNode(atoi(B)));
+    }
+expr(C) ::= expr(A) PLUS NUMBER(B) .
+    {
+        C = new Node("+",A,new TerminalNode(atoi(B)));
+    }

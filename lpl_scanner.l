@@ -8,5 +8,6 @@
 %%
 [0-9]+ {return NUMBER;}
 "+" {return PLUS;}
+[ \t]* {}
 %%
 
