@@ -1,39 +1,29 @@
 #include "node.h"
 #include <stdio.h>
 
-template <class T>
-TerminalNode<T>* Node::eval(){
-     if(op=="+"){
-         evalLeft();
-         evalRight();
-     }
-     else{
-         printf("Crap!");
-     }
-     return 0;
+
+Node::Node(Node *l,Node *r){
+  setLeft(l);
+  setRight(r);
 }
 
-Node::Node(const std::string& input, Node *l,Node *r){
-    op = input;
-    setLeft(l);
-    setRight(r);
+Node::Node(){
+  Node(NULL,NULL);
 }
 
 void Node::setLeft(Node* left){
-    l = left;
+  l = left;
 }
 
 void Node::setRight(Node* right){
-    r = right;
+  r = right;
 }
 
-template <class T>
-TerminalNode<T>* Node::evalLeft(){
-    return l->eval();
+OpNode::OpNode(const std::string& input, Node* left, Node* right) : Node(left,right){
+  setOp(input);
 }
 
-template <class T>
-TerminalNode<T>* Node::evalRight(){
-    return r->eval();
+void OpNode::setOp(const std::string& input){
+  op = input;
 }
 
