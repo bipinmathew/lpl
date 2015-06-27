@@ -14,9 +14,13 @@
 
 %token_type {const char*}
 %type expr {Node*}
+%type start {Node*}
 %extra_argument {bool* valid}
 
-start ::= expr . 
+start ::= expr(B) . 
+    {
+        B->eval();
+    }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 
     {

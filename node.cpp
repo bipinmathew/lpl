@@ -1,15 +1,17 @@
 #include "node.h"
 #include <stdio.h>
 
-// int Node::eval(){
-//     if(op=="+"){
-//         return( evalLeft()+evalRight());
-//     }
-//     else{
-//         printf("Crap!");
-//     }
-//     return 0;
-// }
+template <class T>
+TerminalNode<T>* Node::eval(){
+     if(op=="+"){
+         evalLeft();
+         evalRight();
+     }
+     else{
+         printf("Crap!");
+     }
+     return 0;
+}
 
 Node::Node(const std::string& input, Node *l,Node *r){
     op = input;
@@ -25,12 +27,13 @@ void Node::setRight(Node* right){
     r = right;
 }
 
+template <class T>
+TerminalNode<T>* Node::evalLeft(){
+    return l->eval();
+}
 
-// int Node::evalLeft(){
-//    return l->eval();
-//}
-
-//int Node::evalRight(){
-//    return r->eval();
-//}
+template <class T>
+TerminalNode<T>* Node::evalRight(){
+    return r->eval();
+}
 
