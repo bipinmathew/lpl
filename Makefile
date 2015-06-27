@@ -19,4 +19,5 @@ scanner.o: lpl_scanner.l
 clean:
 	rm -rf lpl_parser.c* lpl_parser.h* lpl_parser.out lpl_parser.o
 	rm -rf lpl_scanner.cpp lpl_scanner.h lpl_scanner.o
+	rm -rf node.o
 	rm -rf main main.o
