@@ -19,7 +19,8 @@
 
 start ::= expr(B) . 
     {
-        //B->next();
+        Visitor *v = new Visitor();
+        B->accept(*v);
     }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 

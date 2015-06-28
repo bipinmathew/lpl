@@ -3,20 +3,28 @@
 #include <string>
 #include <iostream>
 
+class Visitor;
+
 class Node {
   public:
     void setLeft(Node* left);
     void setRight(Node* right);
+    Node* getLeft();
+    Node* getRight();
     Node(Node *l,Node *r);
     Node();
+    virtual void accept (Visitor v);
   private:
     Node *l, *r;
 };
+
+
 
 class OpNode : public Node{
   public:
     OpNode(const std::string& input, Node* left, Node*right);
     void setOp(const std::string& input);
+    virtual void accept(Visitor v);
   private:
     std::string op;
 };
@@ -26,10 +34,7 @@ class TerminalNode : public Node {
   public:
       void setValue(T value);
       TerminalNode(T value);
-      TerminalNode<T>& operator+(const TerminalNode<T>& rhs){
-        this.v+=rhs.v;
-        return this;
-      }
+      virtual void accept(Visitor v);
   private:
       T v;
 };
@@ -46,5 +51,14 @@ template <class T>
 void TerminalNode<T>::setValue(T value) {
   v=value;
 }
+
+
+class Visitor {
+  public:
+    virtual void visit(Node* n);
+    virtual void visit(OpNode* n);
+    template <class T>
+    void visit(TerminalNode<T>* n);
+};
 
 #endif
