@@ -38,31 +38,31 @@ start ::= expr(B) .
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 
     {
-        C = new OpNode("+",new TerminalNode <int> (atoi(A)),new TerminalNode<int>(atoi(B)));
+        C = new OpNode("+",new intNode(atoi(A)),new intNode(atoi(B)));
     }
 
 expr(C)  ::= FLOAT(A) PLUS FLOAT(B) . 
     {
-        C = new OpNode("+",new TerminalNode <double> (atof(A)),new TerminalNode<double>(atof(B)));
+        C = new OpNode("+",new doubleNode(atof(A)),new doubleNode(atof(B)));
     }
 
 expr(C)  ::= FLOAT(A) PLUS NUMBER(B) . 
     {
-        C = new OpNode("+",new TerminalNode <double> (atof(A)),new TerminalNode<int>(atof(B)));
+        C = new OpNode("+",new doubleNode(atof(A)),new intNode(atof(B)));
     }
 
 
 expr(C)  ::= NUMBER(A) PLUS FLOAT(B) . 
     {
-        C = new OpNode("+",new TerminalNode <int> (atof(A)),new TerminalNode<double>(atof(B)));
+        C = new OpNode("+",new intNode(atof(A)),new doubleNode(atof(B)));
     }
 
 expr(C) ::= expr(A) PLUS NUMBER(B) .
     {
-        C = new OpNode("+",A,new TerminalNode<int>(atoi(B)));
+        C = new OpNode("+",A,new intNode(atoi(B)));
     }
 
 expr(C) ::= expr(A) PLUS FLOAT(B) .
     {
-        C = new OpNode("+",A,new TerminalNode<double>(atof(B)));
+        C = new OpNode("+",A,new doubleNode(atof(B)));
     }

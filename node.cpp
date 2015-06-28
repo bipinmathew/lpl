@@ -11,14 +11,25 @@ void EvalVisitor::visit(Node *n){
 }
 
 void EvalVisitor::visit(OpNode* n){
+  Node *v1, *v2;
+  if(n->getOp() == "+"){
+    v1=S.top();
+    S.pop();
+    v2=S.top();
+    S.pop();
+    (*v1)+(*v2);
+    printf("Got a plus\n");
+  }
   printf("visit op node\n");
 }
 
-void EvalVisitor::visit(TerminalNode<double>* n){
+void EvalVisitor::visit(doubleNode* n){
+  S.push(n);
   printf("visit double terminal node\n");
 }
 
-void EvalVisitor::visit(TerminalNode<int>* n){
+void EvalVisitor::visit(intNode* n){
+  S.push(n);
   printf("visit int terminal node\n");
 }
 
@@ -64,14 +75,21 @@ void OpNode::accept(Visitor* v){
   v->visit(this);
 }
 
-template <>
-void TerminalNode<double>::accept(Visitor* v){
+void doubleNode::accept(Visitor* v){
   v->visit(this);
 }
 
-
-template <>
-void TerminalNode<int>::accept(Visitor* v){
+void intNode::accept(Visitor* v){
   v->visit(this);
 }
+//template <>
+//void doubleNode::accept(Visitor* v){
+//  v->visit(this);
+//}
+
+
+//template <>
+//void intNode::accept(Visitor* v){
+//  v->visit(this);
+//}
 
