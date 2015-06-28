@@ -13,7 +13,7 @@ class Node {
     Node* getRight();
     Node(Node *l,Node *r);
     Node();
-    virtual void accept (Visitor v);
+    virtual void accept (Visitor* v);
   private:
     Node *l, *r;
 };
@@ -24,7 +24,7 @@ class OpNode : public Node{
   public:
     OpNode(const std::string& input, Node* left, Node*right);
     void setOp(const std::string& input);
-    virtual void accept(Visitor v);
+    virtual void accept(Visitor* v);
   private:
     std::string op;
 };
@@ -34,7 +34,7 @@ class TerminalNode : public Node {
   public:
       void setValue(T value);
       TerminalNode(T value);
-      virtual void accept(Visitor v);
+      virtual void accept(Visitor* v);
   private:
       T v;
 };
@@ -55,10 +55,22 @@ void TerminalNode<T>::setValue(T value) {
 
 class Visitor {
   public:
+    virtual void visit(Node* n) = 0;
+    virtual void visit(OpNode* n) = 0;
+    virtual void visit(TerminalNode<double>* n) = 0;
+    virtual void visit(TerminalNode<int>* n) = 0;
+};
+
+class EvalVisitor : public Visitor {
+  public:
     virtual void visit(Node* n);
     virtual void visit(OpNode* n);
     template <class T>
     void visit(TerminalNode<T>* n);
+    virtual void visit(TerminalNode<double>* n);
+    virtual void visit(TerminalNode<int>* n);
 };
+
+
 
 #endif

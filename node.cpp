@@ -6,15 +6,20 @@ void Visitor::visit(Node *n){
   printf("visit generic node\n");
 }
 
-
-template <class T>
-void Visitor::visit(TerminalNode<T>* n){
-  printf("visit terminal node\n");
+void EvalVisitor::visit(Node *n){
+  printf("visit eval generic node\n");
 }
 
-
-void Visitor::visit(OpNode *n){
+void EvalVisitor::visit(OpNode* n){
   printf("visit op node\n");
+}
+
+void EvalVisitor::visit(TerminalNode<double>* n){
+  printf("visit double terminal node\n");
+}
+
+void EvalVisitor::visit(TerminalNode<int>* n){
+  printf("visit int terminal node\n");
 }
 
 Node::Node(Node *l,Node *r){
@@ -26,8 +31,8 @@ Node::Node(){
   Node(NULL,NULL);
 }
 
-void Node::accept(Visitor v){
-  v.visit(this);
+void Node::accept(Visitor* v){
+  v->visit(this);
 }
 
 
@@ -55,18 +60,19 @@ void OpNode::setOp(const std::string& input){
   op = input;
 }
 
-void OpNode::accept(Visitor v){
-  v.visit(this);
+void OpNode::accept(Visitor* v){
+  printf("Accepting OpNode...\n");
+  v->visit(this);
 }
 
 template <>
-void TerminalNode<double>::accept(Visitor v){
-  v.visit(this);
+void TerminalNode<double>::accept(Visitor* v){
+  v->visit(this);
 }
 
 
 template <>
-void TerminalNode<int>::accept(Visitor v){
-  v.visit(this);
+void TerminalNode<int>::accept(Visitor* v){
+  v->visit(this);
 }
 
