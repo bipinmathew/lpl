@@ -20,7 +20,20 @@
 start ::= expr(B) . 
     {
         EvalVisitor *v = new EvalVisitor();
-        B->accept(v);
+        std::stack<Node*> S = v->S;
+        Node* t;
+        S.push(B);
+        while(!S.empty()){
+          t=S.top();
+          if(t->getLeft()!=NULL){
+            t->getLeft()->accept(v);
+          } 
+          if(t->getRight()!=NULL){
+            t->getRight()->accept(v);
+          }
+          t->accept(v); 
+          S.pop();
+        }
     }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 

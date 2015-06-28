@@ -61,7 +61,6 @@ void OpNode::setOp(const std::string& input){
 }
 
 void OpNode::accept(Visitor* v){
-  printf("Accepting OpNode...\n");
   v->visit(this);
 }
 

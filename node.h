@@ -2,6 +2,7 @@
 #define NODE_H
 #include <string>
 #include <iostream>
+#include <stack>
 
 class Visitor;
 
@@ -69,6 +70,8 @@ class EvalVisitor : public Visitor {
     void visit(TerminalNode<T>* n);
     virtual void visit(TerminalNode<double>* n);
     virtual void visit(TerminalNode<int>* n);
+    std::stack<Node*> S;
+  private:
 };
 
 
