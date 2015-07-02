@@ -1,25 +1,23 @@
-#include <cstdlib>
-#include <iostream>
-#include <string>
+#include <stdio.h>
+#include <stdlib.h>
 #include "lpl_parser.h"
 #include "lpl_scanner.h"
-using namespace std;
  
 void* ParseAlloc(void* (*allocProc)(size_t));
-void Parse(void* parser, int token, const char* tokenInfo, bool* valid);
+void Parse(void* parser, int token, const char* tokenInfo, int* valid);
 void ParseFree(void* parser, void(*freeProc)(void*));
  
-void parse(const string& commandLine) {
+void parse(const char* commandLine) {
     // Set up the scanner
     yyscan_t scanner;
     yylex_init(&scanner);
-    YY_BUFFER_STATE bufferState = yy_scan_string(commandLine.c_str(), scanner);
+    YY_BUFFER_STATE bufferState = yy_scan_string(commandLine, scanner);
  
     // Set up the parser
     void* shellParser = ParseAlloc(malloc);
  
     int lexCode;
-    bool validParse = true;
+    int validParse = 1;
     do {
         lexCode = yylex(scanner);
         Parse(shellParser, lexCode, yyget_text(scanner), &validParse);
@@ -27,11 +25,11 @@ void parse(const string& commandLine) {
     while (lexCode > 0 && validParse);
  
     if (-1 == lexCode) {
-        cerr << "The scanner encountered an error.\n";
+        fprintf(stderr,"The scanner encountered an error.\n");
     }
 
     if (!validParse) {
-        cerr << "The parser encountered an error.\n";
+        fprintf(stderr,"The parser encountered an error.\n");
     }
  
     // Cleanup the scanner and parser
@@ -41,9 +39,11 @@ void parse(const string& commandLine) {
 }
  
 int main() {
-    string commandLine;
-    while (getline(cin, commandLine)) {
+    char commandLine[1024];
+    printf("> ");
+    while (scanf("%s",commandLine)) {
         parse(commandLine);
+        printf("> ");
     }
     return 0;
 }

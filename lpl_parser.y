@@ -3,66 +3,55 @@
   #include <stdio.h>
   #include <stdlib.h>
   #include <assert.h>
-  #include <iostream>
   #include "node.h"
 }
 
 %syntax_error
 {
-  *valid = false;
+  *valid = 0;
 }
 
 %token_type {const char*}
-%type expr {Node*}
-%type start {Node*}
-%extra_argument {bool* valid}
+%type expr {node*}
+%type start {node*}
+%extra_argument {int* valid}
 
-start ::= expr(B) . 
+start ::= expr . 
     {
-        EvalVisitor *v = new EvalVisitor();
-        std::stack<Node*> S = v->S;
-        Node* t;
-        S.push(B);
-        while(!S.empty()){
-          t=S.top();
-          if(t->getLeft()!=NULL){
-            t->getLeft()->accept(v);
-          } 
-          if(t->getRight()!=NULL){
-            t->getRight()->accept(v);
-          }
-          t->accept(v); 
-          S.pop();
-        }
+      printf("Eval here...\n");
     }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 
     {
-        C = new OpNode("+",new intNode(atoi(A)),new intNode(atoi(B)));
+        printf("Adding numbers...\n");
+        C = newNode("+",TPLUS,newNode(A,TINT,NULL,NULL),newNode(B,TINT,NULL,NULL));
     }
 
 expr(C)  ::= FLOAT(A) PLUS FLOAT(B) . 
     {
-        C = new OpNode("+",new doubleNode(atof(A)),new doubleNode(atof(B)));
+        printf("Adding floats...\n");
+        C = newNode("+",TPLUS,newNode(A,TDOUBLE,NULL,NULL),newNode(B,TDOUBLE,NULL,NULL));
     }
 
 expr(C)  ::= FLOAT(A) PLUS NUMBER(B) . 
     {
-        C = new OpNode("+",new doubleNode(atof(A)),new intNode(atof(B)));
+        printf("Adding floats and numbers...\n");
+        C = newNode("+",TPLUS,newNode(A,TDOUBLE,NULL,NULL),newNode(B,TINT,NULL,NULL));
     }
 
 
 expr(C)  ::= NUMBER(A) PLUS FLOAT(B) . 
     {
-        C = new OpNode("+",new intNode(atof(A)),new doubleNode(atof(B)));
+        C = newNode("+",TPLUS,newNode(A,TINT,NULL,NULL),newNode(B,TDOUBLE,NULL,NULL));
     }
 
 expr(C) ::= expr(A) PLUS NUMBER(B) .
     {
-        C = new OpNode("+",A,new intNode(atoi(B)));
+        printf("Adding expression plus number...\n");
+        C = newNode("+",TPLUS,A,newNode(B,TINT,NULL,NULL));
     }
 
 expr(C) ::= expr(A) PLUS FLOAT(B) .
     {
-        C = new OpNode("+",A,new doubleNode(atof(B)));
+        C = newNode("+",TPLUS,A,newNode(B,TDOUBLE,NULL,NULL));
     }
