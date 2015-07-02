@@ -1,23 +1,27 @@
 #ifndef NODE_H
 #define NODE_H
 
-#define TINT 0
-#define TDOUBLE 1
-#define TCHAR 2
-#define TPLUS 3
 
-typedef union d {
+typedef enum { tint, tdouble, tchar, top } types;
+
+typedef enum { plus } ops;
+
+typedef union {
   int i;
   double d;
   char c;
+  ops op;
 } uvalue;
 
-typedef struct node {
-  int type;
+
+typedef struct Node{
+  types type;
   uvalue value;
-  struct node *l,*r;
+  struct Node* l;
+  struct Node* r;
 } node;
 
-node* newNode(const char *str,int type,const node* l, const node* r);
+node* newNode(const char *str,types type, node* l, node* r);
+node* evalNode(node* root);
 
 #endif

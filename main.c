@@ -40,10 +40,9 @@ void parse(const char* commandLine) {
  
 int main() {
     char commandLine[1024];
-    printf("> ");
-    while (scanf("%s",commandLine)) {
-        parse(commandLine);
-        printf("> ");
-    }
+    // while (scanf("%s",commandLine)) {
+        // parse(commandLine);
+        parse("1+1.0");
+    // }
     return 0;
 }

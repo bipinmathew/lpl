@@ -24,34 +24,35 @@ start ::= expr .
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 
     {
         printf("Adding numbers...\n");
-        C = newNode("+",TPLUS,newNode(A,TINT,NULL,NULL),newNode(B,TINT,NULL,NULL));
+        C = newNode("+",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
     }
 
 expr(C)  ::= FLOAT(A) PLUS FLOAT(B) . 
     {
         printf("Adding floats...\n");
-        C = newNode("+",TPLUS,newNode(A,TDOUBLE,NULL,NULL),newNode(B,TDOUBLE,NULL,NULL));
+        C = newNode("+",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
     }
 
 expr(C)  ::= FLOAT(A) PLUS NUMBER(B) . 
     {
         printf("Adding floats and numbers...\n");
-        C = newNode("+",TPLUS,newNode(A,TDOUBLE,NULL,NULL),newNode(B,TINT,NULL,NULL));
+        C = newNode("+",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
     }
 
 
 expr(C)  ::= NUMBER(A) PLUS FLOAT(B) . 
     {
-        C = newNode("+",TPLUS,newNode(A,TINT,NULL,NULL),newNode(B,TDOUBLE,NULL,NULL));
+        printf("Adding number plus float...\n");
+        C = newNode("+",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
     }
 
 expr(C) ::= expr(A) PLUS NUMBER(B) .
     {
-        printf("Adding expression plus number...\n");
-        C = newNode("+",TPLUS,A,newNode(B,TINT,NULL,NULL));
+        printf("Adding floats and numbers...\n");
+        C = newNode("+",top,A,newNode(B,tint,NULL,NULL));
     }
 
 expr(C) ::= expr(A) PLUS FLOAT(B) .
     {
-        C = newNode("+",TPLUS,A,newNode(B,TDOUBLE,NULL,NULL));
+        C = newNode("+",top,A,newNode(B,tdouble,NULL,NULL));
     }

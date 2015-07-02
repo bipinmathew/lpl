@@ -1,5 +1,5 @@
 main: main.o parser.o scanner.o node.o
-	g++ lpl_parser.o lpl_scanner.o node.o main.o -o main
+	gcc lpl_parser.o lpl_scanner.o node.o main.o -o main
 
 main.o: main.c parser.o scanner.o 
 	gcc -c main.c -o main.o 
