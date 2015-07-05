@@ -16,39 +16,34 @@
 %type start {node*}
 %extra_argument {int* valid}
 
-start ::= expr . 
+start ::= expr(A) . 
     {
-      printf("Eval here...\n");
+      evalNode(A);
     }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 
     {
-        printf("Adding numbers...\n");
         C = newNode("+",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
     }
 
 expr(C)  ::= FLOAT(A) PLUS FLOAT(B) . 
     {
-        printf("Adding floats...\n");
         C = newNode("+",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
     }
 
 expr(C)  ::= FLOAT(A) PLUS NUMBER(B) . 
     {
-        printf("Adding floats and numbers...\n");
         C = newNode("+",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
     }
 
 
 expr(C)  ::= NUMBER(A) PLUS FLOAT(B) . 
     {
-        printf("Adding number plus float...\n");
         C = newNode("+",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
     }
 
 expr(C) ::= expr(A) PLUS NUMBER(B) .
     {
-        printf("Adding floats and numbers...\n");
         C = newNode("+",top,A,newNode(B,tint,NULL,NULL));
     }
 

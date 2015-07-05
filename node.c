@@ -1,6 +1,7 @@
 #include "node.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 node* newNode(const char *str,types type, node* l, node* r){
   node *n;
@@ -23,6 +24,7 @@ node* newNode(const char *str,types type, node* l, node* r){
       n->value.i = atoi(str);
     break;
     case tdouble:
+      n->value.d = atof(str);
       printf("creating double node.\n");
     break;
     default:
@@ -34,6 +36,71 @@ node* newNode(const char *str,types type, node* l, node* r){
   return n;
 };
 
-node* evalNode(node* root){
+node* _plus(const node* l, const node* r){
+  node *out;
+  out = (node*) malloc(sizeof(node));
+  switch(l->type){
+    case tint:
+      switch(r->type){
+        case tint:
+          out->type = tint;
+          out->value.i = l->value.i+r->value.i; 
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.i+r->value.d; 
+        break;
+        default:
+          printf("Syntax error.");
+        break;
+
+      }
+    break;
+    case tdouble:
+      switch(r->type){
+        case tint:
+          out->type = tdouble;
+          out->value.d = l->value.d+r->value.i;
+          
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.d+r->value.d;
+        break;
+        default:
+          printf("Syntax error.");
+        break;
+
+      }
+    break;
+  }
+  return(out);
+}
+
+node* evalNode(node* n){
+  node *out;
+  switch(n->type){
+    case top:
+      switch(n->value.op){
+        case plus:
+          out = _plus(evalNode(n->l),evalNode(n->r));
+        break;
+        default:
+          printf("Error evaluating expression.");
+      }
+    break;
+    case tint:
+      out = n;
+      // memcpy(out,n,sizeof(node));
+    break;
+    case tdouble:
+      out = n;
+      // memcpy(out,n,sizeof(node));
+    break;
+    default:
+      printf("Bad!");
+  }
+
+  return out;
   
 };
