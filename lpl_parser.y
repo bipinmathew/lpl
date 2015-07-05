@@ -18,7 +18,8 @@
 
 start ::= expr(A) . 
     {
-      evalNode(A);
+      print(evalNode(A));
+      printf("\n");
     }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 

@@ -36,6 +36,30 @@ node* newNode(const char *str,types type, node* l, node* r){
   return n;
 };
 
+void print(node* n){
+  switch(n->type){
+    case top:
+      switch(n->value.op){
+        case plus:
+          print(n->l);
+          printf("+");
+          print(n->r);
+        break;
+        default:
+          printf("Error evaluating expression.");
+      }
+    break;
+    case tint:
+        printf("%d",n->value.i);
+    break;
+    case tdouble:
+        printf("%f",n->value.d);
+    break;
+    default:
+      printf("Bad!");
+  }
+}
+
 node* _plus(const node* l, const node* r){
   node *out;
   out = (node*) malloc(sizeof(node));

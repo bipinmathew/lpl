@@ -42,7 +42,10 @@ int main() {
     char commandLine[1024];
     // while (scanf("%s",commandLine)) {
         // parse(commandLine);
-        parse("1+1.0");
+        parse("1+2");
+        parse("3+4.0");
+        parse("5.0+6");
+        parse("6.0+7.0");
     // }
     return 0;
 }
