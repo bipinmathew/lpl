@@ -16,10 +16,13 @@
 %type start {node*}
 %extra_argument {int* valid}
 
-start ::= expr(A) . 
+start(A) ::= expr(B) . 
     {
-      print(evalNode(A));
+      
+      print(A=evalNode(B));
       printf("\n");
+      freeNode(B);
+      freeNode(A);
     }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 

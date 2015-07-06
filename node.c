@@ -36,6 +36,14 @@ node* newNode(const char *str,types type, node* l, node* r){
   return n;
 };
 
+int freeNode(node *n){
+  if(n->l != NULL)
+    freeNode(n->l);
+  if(n->r != NULL)
+    freeNode(n->r);
+  free(n); 
+}
+
 void print(node* n){
   switch(n->type){
     case top:
