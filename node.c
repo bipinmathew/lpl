@@ -29,9 +29,11 @@ node* newNode(const char *str,types type, node* l, node* r){
       }
       else if(0==strcmp("-",str)){
         n->value.op = minus;
-        printf("  created plus node.\n");
+        printf("  created minus node.\n");
       }
       else if(0==strcmp("*",str)){
+        n->value.op = mult;
+        printf("  created mult node.\n");
       }
     break;
     case tint:
@@ -55,19 +57,24 @@ int freeNode(node *n){
   free(n);
 }
 
-void print(node* n){
+void printNode(node* n){
   switch(n->type){
     case top:
       switch(n->value.op){
         case plus:
-          print(n->l);
+          printNode(n->l);
           printf("+");
-          print(n->r);
+          printNode(n->r);
         break;
         case minus:
-          print(n->l);
+          printNode(n->l);
           printf("-");
-          print(n->r);
+          printNode(n->r);
+        break;
+        case mult:
+          printNode(n->l);
+          printf("*");
+          printNode(n->r);
         break;
         default:
           printf("Error evaluating expression.");
@@ -167,6 +174,47 @@ node* _minus(const node* l, const node* r){
   return(out);
 }
 
+
+node* _mult(const node* l, const node* r){
+  node *out;
+  initNode(&out);
+  switch(l->type){
+    case tint:
+      switch(r->type){
+        case tint:
+          out->type = tint;
+          out->value.i = l->value.i*r->value.i;
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.i*r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+    case tdouble:
+      switch(r->type){
+        case tint:
+          out->type = tdouble;
+          out->value.d = l->value.d*r->value.i;
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.d*r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+  }
+  return(out);
+}
+
 node* evalNode(const node* n){
   node *out,*l,*r;
   switch(n->type){
@@ -179,8 +227,14 @@ node* evalNode(const node* n){
           freeNode(r);
         break;
         case minus:
-          printf("Evaluating plus.\n");
+          printf("Evaluating minus.\n");
           out = _minus(l=evalNode(n->l),r=evalNode(n->r));
+          freeNode(l);
+          freeNode(r);
+        break;
+        case mult:
+          printf("Evaluating mult.\n");
+          out = _mult(l=evalNode(n->l),r=evalNode(n->r));
           freeNode(l);
           freeNode(r);
         break;
