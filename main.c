@@ -8,12 +8,14 @@ void* ParseAlloc(void* (*allocProc)(size_t));
 void Parse(void* parser, int token, const char* tokenInfo, node* result);
 void ParseFree(void* parser, void(*freeProc)(void*));
 
-void parse(const char* commandLine, node *result) {
+node* parse(const char* commandLine) {
     /*  Set up the scanner */
     yyscan_t scanner;
     YY_BUFFER_STATE bufferState;
     void* shellParser;
     int lexCode;
+    node *result;
+    initNode(&result);
 
     yylex_init(&scanner);
 
@@ -36,37 +38,48 @@ void parse(const char* commandLine, node *result) {
     yy_delete_buffer(bufferState, scanner);
     yylex_destroy(scanner);
     ParseFree(shellParser, free);
+    return result;
+}
+
+int check(const char *str,double value){
+  node *result;
+  int retval;
+
+  result=parse(str);
+
+  switch(result->type){
+    case tint:
+      retval=value!=result->value.i;
+    break;
+    case tdouble:
+      retval=value!=result->value.d;
+    break;
+    default:
+      retval=1;
+    break;
+
+  }
+  freeNode(result);
+  if(retval){
+    printf("Test failed on expression: %s \n",str);
+  }
+  return retval;
 }
 
 int main() {
     char commandLine[1024];
-    node *result;
-    initNode(&result);
 /*  while (scanf("%s",commandLine)) { */
 /*  parse(commandLine); */
-        parse("1+2",result);
-        print(result);
-        parse("1+2+3",result);
-        print(result);
-        parse("3+4.0",result);
-        print(result);
-        parse("5.0+6",result);
-        print(result);
-        /* parse("6.0+7.0+a",result);
-        print(result); */
+  check("1+2",3);
+  check("1+2+3",6);
+  check("3+4.0",7);
+  check("5.0+6",11);
 
-        parse("1-2",result);
-        print(result);
-        parse("1-2-3",result);
-        print(result);
-        parse("3-4.0",result);
-        print(result);
-        parse("5.0-6",result);
-        print(result);
-        /* parse("6.0-7.0-a",result); 
-        print(result); */
+  check("1-2",-1);
+  check("1-2-3",-4);
+  check("3-4.0",-1);
+  check("5.0-6",-1);
 
-        freeNode(result);
 
 /*  } */
     return 0;
