@@ -132,7 +132,40 @@ expr(C) ::= expr(A) MULT FLOAT(B) .
 
 /* End Mult */
 
+/* Div */
 
+expr(C)  ::= NUMBER(A) DIV NUMBER(B) . 
+    {
+        C = newNode("/",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
+    }
+
+expr(C)  ::= FLOAT(A) DIV FLOAT(B) . 
+    {
+        C = newNode("/",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
+    }
+
+expr(C)  ::= FLOAT(A) DIV NUMBER(B) . 
+    {
+        C = newNode("/",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
+    }
+
+
+expr(C)  ::= NUMBER(A) DIV FLOAT(B) . 
+    {
+        C = newNode("/",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
+    }
+
+expr(C) ::= expr(A) DIV NUMBER(B) .
+    {
+        C = newNode("/",top,A,newNode(B,tint,NULL,NULL));
+    }
+
+expr(C) ::= expr(A) DIV FLOAT(B) .
+    {
+        C = newNode("/",top,A,newNode(B,tdouble,NULL,NULL));
+    }
+
+/* End Div */
 
 
 

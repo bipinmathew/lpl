@@ -11,6 +11,7 @@
 "+" {return PLUS;}
 "-" {return MINUS;}
 "*" {return MULT;}
+"/" {return DIV;}
 [ \t]* {}
 %%
 

@@ -35,6 +35,10 @@ node* newNode(const char *str,types type, node* l, node* r){
         n->value.op = mult;
         printf("  created mult node.\n");
       }
+      else if(0==strcmp("/",str)){
+        n->value.op = odiv;
+        printf("  created mult node.\n");
+      }
     break;
     case tint:
       n->value.i = atoi(str);
@@ -74,6 +78,11 @@ void printNode(node* n){
         case mult:
           printNode(n->l);
           printf("*");
+          printNode(n->r);
+        break;
+        case odiv:
+          printNode(n->l);
+          printf("/");
           printNode(n->r);
         break;
         default:
@@ -215,6 +224,48 @@ node* _mult(const node* l, const node* r){
   return(out);
 }
 
+
+node* _div(const node* l, const node* r){
+  node *out;
+  initNode(&out);
+  switch(l->type){
+    case tint:
+      switch(r->type){
+        case tint:
+          out->type = tint;
+          out->value.i = l->value.i/r->value.i;
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.i/r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+    case tdouble:
+      switch(r->type){
+        case tint:
+          out->type = tdouble;
+          out->value.d = l->value.d/r->value.i;
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.d/r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+  }
+  return(out);
+}
+
+
 node* evalNode(const node* n){
   node *out,*l,*r;
   switch(n->type){
@@ -235,6 +286,12 @@ node* evalNode(const node* n){
         case mult:
           printf("Evaluating mult.\n");
           out = _mult(l=evalNode(n->l),r=evalNode(n->r));
+          freeNode(l);
+          freeNode(r);
+        break;
+        case odiv:
+          printf("Evaluating div.\n");
+          out = _div(l=evalNode(n->l),r=evalNode(n->r));
           freeNode(l);
           freeNode(r);
         break;
