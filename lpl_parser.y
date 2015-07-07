@@ -55,3 +55,52 @@ expr(C) ::= expr(A) PLUS FLOAT(B) .
     {
         C = newNode("+",top,A,newNode(B,tdouble,NULL,NULL));
     }
+
+
+/* Subtraction */
+
+
+expr(C)  ::= NUMBER(A) MINUS NUMBER(B) . 
+    {
+        C = newNode("-",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
+    }
+
+expr(C)  ::= FLOAT(A) MINUS FLOAT(B) . 
+    {
+        C = newNode("-",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
+    }
+
+expr(C)  ::= FLOAT(A) MINUS NUMBER(B) . 
+    {
+        C = newNode("-",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
+    }
+
+
+expr(C)  ::= NUMBER(A) MINUS FLOAT(B) . 
+    {
+        C = newNode("-",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
+    }
+
+expr(C) ::= expr(A) MINUS NUMBER(B) .
+    {
+        C = newNode("-",top,A,newNode(B,tint,NULL,NULL));
+    }
+
+expr(C) ::= expr(A) MINUS FLOAT(B) .
+    {
+        C = newNode("-",top,A,newNode(B,tdouble,NULL,NULL));
+    }
+
+/* End Subtraction */
+
+
+
+
+
+
+
+
+
+
+
+

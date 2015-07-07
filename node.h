@@ -4,7 +4,7 @@
 
 typedef enum { tnull, tint, tdouble, tchar, top, terror  } types;
 
-typedef enum { plus } ops;
+typedef enum { plus, minus } ops;
 
 typedef union {
   int i;

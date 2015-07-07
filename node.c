@@ -28,6 +28,8 @@ node* newNode(const char *str,types type, node* l, node* r){
         printf("  created plus node.\n");
       }
       else if(0==strcmp("-",str)){
+        n->value.op = minus;
+        printf("  created plus node.\n");
       }
       else if(0==strcmp("*",str)){
       }
@@ -43,7 +45,7 @@ node* newNode(const char *str,types type, node* l, node* r){
   }
 
   return n;
-};
+}
 
 int freeNode(node *n){
   if(n->l != NULL)
@@ -60,6 +62,11 @@ void print(node* n){
         case plus:
           print(n->l);
           printf("+");
+          print(n->r);
+        break;
+        case minus:
+          print(n->l);
+          printf("-");
           print(n->r);
         break;
         default:
@@ -120,6 +127,46 @@ node* _plus(const node* l, const node* r){
   return(out);
 }
 
+node* _minus(const node* l, const node* r){
+  node *out;
+  initNode(&out);
+  switch(l->type){
+    case tint:
+      switch(r->type){
+        case tint:
+          out->type = tint;
+          out->value.i = l->value.i-r->value.i;
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.i-r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+    case tdouble:
+      switch(r->type){
+        case tint:
+          out->type = tdouble;
+          out->value.d = l->value.d-r->value.i;
+        break;
+        case tdouble:
+          out->type = tdouble;
+          out->value.d = l->value.d-r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+  }
+  return(out);
+}
+
 node* evalNode(const node* n){
   node *out,*l,*r;
   switch(n->type){
@@ -130,7 +177,12 @@ node* evalNode(const node* n){
           out = _plus(l=evalNode(n->l),r=evalNode(n->r));
           freeNode(l);
           freeNode(r);
-          // print(out);
+        break;
+        case minus:
+          printf("Evaluating plus.\n");
+          out = _minus(l=evalNode(n->l),r=evalNode(n->r));
+          freeNode(l);
+          freeNode(r);
         break;
         default:
           printf("Error evaluating expression.");
@@ -151,4 +203,4 @@ node* evalNode(const node* n){
   }
   return out;
 
-};
+}
