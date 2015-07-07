@@ -2,7 +2,7 @@
 #define NODE_H
 
 
-typedef enum { tint, tdouble, tchar, top, terror  } types;
+typedef enum { tnull, tint, tdouble, tchar, top, terror  } types;
 
 typedef enum { plus } ops;
 
@@ -21,6 +21,7 @@ typedef struct Node{
   struct Node* r;
 } node;
 
+int initNode(node **p);
 node* newNode(const char *str,types type, node *l, node *r);
 node* evalNode(const node* root);
 

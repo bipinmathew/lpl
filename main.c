@@ -37,7 +37,7 @@ void parse(const char* commandLine, node *result) {
 int main() {
     char commandLine[1024];
     node *result;
-    result = (node *) malloc(sizeof(node));
+    initNode(&result);
     // while (scanf("%s",commandLine)) {
         // parse(commandLine);
         parse("1+2",result);

@@ -3,9 +3,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-node* newNode(const char *str,types type, node *l, node *r){
+int initNode(node **p){
+  if((*p = (node *) malloc(sizeof(node)))==NULL){
+    return(1);
+  }
+  (*p)->l = NULL;
+  (*p)->r = NULL;
+  (*p)->type = tnull;
+  return(0);
+}
+
+node* newNode(const char *str,types type, node* l, node* r){
   node *n;
-  n = (node*)malloc(sizeof(node));
+  initNode(&n);
 
   n->l = l;
   n->r = r;
@@ -72,7 +82,7 @@ void print(node* n){
 
 node* _plus(const node* l, const node* r){
   node *out;
-  out = (node*) malloc(sizeof(node));
+  initNode(&out);
   switch(l->type){
     case tint:
       switch(r->type){
@@ -128,12 +138,12 @@ node* evalNode(const node* n){
     break;
     case tint:
       printf("Evaluating int.\n");
-      out = (node*)malloc(sizeof(node));
+      initNode(&out);
       memcpy(out,n,sizeof(node));
     break;
     case tdouble:
       printf("Evaluating double.\n");
-      out = (node*)malloc(sizeof(node));
+      initNode(&out);
       memcpy(out,n,sizeof(node));
     break;
     default:
