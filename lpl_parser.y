@@ -3,26 +3,26 @@
   #include <stdio.h>
   #include <stdlib.h>
   #include <assert.h>
+  #include <string.h>
   #include "node.h"
 }
 
 %syntax_error
 {
-  *valid = 0;
+  result->type = terror;
 }
 
 %token_type {const char*}
 %type expr {node*}
 %type start {node*}
-%extra_argument {int* valid}
+%extra_argument {node *result}
 
-start(A) ::= expr(B) . 
+start ::= expr(B) . 
     {
-      
-      print(A=evalNode(B));
-      printf("\n");
+      node *temp;
+      memcpy(result,temp=evalNode(B),sizeof(node));
+      free(temp);
       freeNode(B);
-      freeNode(A);
     }
 
 expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 

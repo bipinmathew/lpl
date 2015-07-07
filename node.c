@@ -3,16 +3,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-node* newNode(const char *str,types type, node* l, node* r){
+node* newNode(const char *str,types type, node *l, node *r){
   node *n;
   n = (node*)malloc(sizeof(node));
 
+  n->l = l;
+  n->r = r;
   n->type = type;
+
   switch(n->type){
     case top:
       if(0==strcmp("+",str)){
         n->value.op = plus;
-        printf("  created plus node.\n"); 
+        printf("  created plus node.\n");
       }
       else if(0==strcmp("-",str)){
       }
@@ -20,19 +23,15 @@ node* newNode(const char *str,types type, node* l, node* r){
       }
     break;
     case tint:
-      printf("creating int node.\n");
       n->value.i = atoi(str);
     break;
     case tdouble:
       n->value.d = atof(str);
-      printf("creating double node.\n");
     break;
     default:
-      printf("Bad!");
+      printf("error creating node.");
   }
 
-  n->l = l;
-  n->r = r;
   return n;
 };
 
@@ -41,7 +40,7 @@ int freeNode(node *n){
     freeNode(n->l);
   if(n->r != NULL)
     freeNode(n->r);
-  free(n); 
+  free(n);
 }
 
 void print(node* n){
@@ -63,6 +62,9 @@ void print(node* n){
     case tdouble:
         printf("%f",n->value.d);
     break;
+    case terror:
+        printf("Something bad happened.\n");
+    break;
     default:
       printf("Bad!");
   }
@@ -76,14 +78,14 @@ node* _plus(const node* l, const node* r){
       switch(r->type){
         case tint:
           out->type = tint;
-          out->value.i = l->value.i+r->value.i; 
+          out->value.i = l->value.i+r->value.i;
         break;
         case tdouble:
           out->type = tdouble;
-          out->value.d = l->value.i+r->value.d; 
+          out->value.d = l->value.i+r->value.d;
         break;
         default:
-          printf("Syntax error.");
+          out->type=terror;
         break;
 
       }
@@ -93,14 +95,13 @@ node* _plus(const node* l, const node* r){
         case tint:
           out->type = tdouble;
           out->value.d = l->value.d+r->value.i;
-          
         break;
         case tdouble:
           out->type = tdouble;
           out->value.d = l->value.d+r->value.d;
         break;
         default:
-          printf("Syntax error.");
+          out->type=terror;
         break;
 
       }
@@ -109,30 +110,35 @@ node* _plus(const node* l, const node* r){
   return(out);
 }
 
-node* evalNode(node* n){
-  node *out;
+node* evalNode(const node* n){
+  node *out,*l,*r;
   switch(n->type){
     case top:
       switch(n->value.op){
         case plus:
-          out = _plus(evalNode(n->l),evalNode(n->r));
+          printf("Evaluating plus.\n");
+          out = _plus(l=evalNode(n->l),r=evalNode(n->r));
+          freeNode(l);
+          freeNode(r);
+          // print(out);
         break;
         default:
           printf("Error evaluating expression.");
       }
     break;
     case tint:
-      out = n;
-      // memcpy(out,n,sizeof(node));
+      printf("Evaluating int.\n");
+      out = (node*)malloc(sizeof(node));
+      memcpy(out,n,sizeof(node));
     break;
     case tdouble:
-      out = n;
-      // memcpy(out,n,sizeof(node));
+      printf("Evaluating double.\n");
+      out = (node*)malloc(sizeof(node));
+      memcpy(out,n,sizeof(node));
     break;
     default:
       printf("Bad!");
   }
-
   return out;
-  
+
 };
