@@ -59,18 +59,38 @@ int check(const char *str,double value){
     break;
 
   }
-  freeNode(result);
   if(retval){
     printf("Test failed on expression: %s \n",str);
   }
+
+  printf(" = ");
+  printNode(result);
+  printf("\n");
+
+  freeNode(result);
   return retval;
 }
 
 int main() {
+    FILE *fp;
     char commandLine[1024];
-/*  while (scanf("%s",commandLine)) { */
-/*  parse(commandLine); */
-  check("1+2",3);
+    node *result;
+
+    fp = fopen("errors.log","w");
+    ParseTrace(fp,"err: ");
+
+    if(check("1+2*3",7)){
+      printf("FAIL!\n");
+      exit(1);
+    }
+
+/*    while (scanf("%s",commandLine)) {
+      result=parse(commandLine);
+      printNode(result);
+      printf("\n");
+    } */
+
+/*  check("1+2",3);
   check("1+2+3",6);
   check("3+4.0",7);
   check("5.0+6",11);
@@ -88,7 +108,7 @@ int main() {
 
   check("1/2",0.5);
   check("3/4.0",0.75);
-  check("5.0/6",5.0/6);
+  check("5.0/6",5.0/6); */
 
 /*  } */
     return 0;

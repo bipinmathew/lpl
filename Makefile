@@ -5,7 +5,7 @@ main.o: main.c parser.o scanner.o
 	gcc -Werror  -pedantic-errors -g -c main.c -o main.o 
 
 parser.o: lpl_parser.y 
-	lemon lpl_parser.y -s
+	lemon lpl_parser.y -s -p
 	gcc -Werror  -pedantic-errors -g -c -o lpl_parser.o lpl_parser.c
 
 node.o: node.h node.c

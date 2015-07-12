@@ -24,20 +24,20 @@ node* newNode(const char *str,types type, node* l, node* r){
   switch(n->type){
     case top:
       if(0==strcmp("+",str)){
-        n->value.op = plus;
-        printf("  created plus node.\n");
+        n->value.op = add;
+         printf("  created add node.\n");
       }
       else if(0==strcmp("-",str)){
         n->value.op = minus;
-        printf("  created minus node.\n");
+         printf("  created minus node.\n");
       }
       else if(0==strcmp("*",str)){
         n->value.op = mult;
-        printf("  created mult node.\n");
+         printf("  created mult node.\n");
       }
       else if(0==strcmp("/",str)){
         n->value.op = odiv;
-        printf("  created mult node.\n");
+         printf("  created mult node.\n");
       }
     break;
     case tint:
@@ -65,7 +65,7 @@ void printNode(node* n){
   switch(n->type){
     case top:
       switch(n->value.op){
-        case plus:
+        case add:
           printNode(n->l);
           printf("+");
           printNode(n->r);
@@ -103,7 +103,7 @@ void printNode(node* n){
   }
 }
 
-node* _plus(const node* l, const node* r){
+node* _add(const node* l, const node* r){
   node *out;
   initNode(&out);
   switch(l->type){
@@ -271,26 +271,26 @@ node* evalNode(const node* n){
   switch(n->type){
     case top:
       switch(n->value.op){
-        case plus:
-          printf("Evaluating plus.\n");
-          out = _plus(l=evalNode(n->l),r=evalNode(n->r));
+        case add:
+           printf("Evaluating add.\n");
+          out = _add(l=evalNode(n->l),r=evalNode(n->r));
           freeNode(l);
           freeNode(r);
         break;
         case minus:
-          printf("Evaluating minus.\n");
+           printf("Evaluating minus.\n");
           out = _minus(l=evalNode(n->l),r=evalNode(n->r));
           freeNode(l);
           freeNode(r);
         break;
         case mult:
-          printf("Evaluating mult.\n");
+           printf("Evaluating mult.\n");
           out = _mult(l=evalNode(n->l),r=evalNode(n->r));
           freeNode(l);
           freeNode(r);
         break;
         case odiv:
-          printf("Evaluating div.\n");
+           printf("Evaluating div.\n");
           out = _div(l=evalNode(n->l),r=evalNode(n->r));
           freeNode(l);
           freeNode(r);
@@ -300,12 +300,12 @@ node* evalNode(const node* n){
       }
     break;
     case tint:
-      printf("Evaluating int.\n");
+       printf("Evaluating int.\n");
       initNode(&out);
       memcpy(out,n,sizeof(node));
     break;
     case tdouble:
-      printf("Evaluating double.\n");
+       printf("Evaluating double.\n");
       initNode(&out);
       memcpy(out,n,sizeof(node));
     break;

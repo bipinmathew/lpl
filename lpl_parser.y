@@ -1,3 +1,8 @@
+%left ADD SUB.
+%left MULT DIV.
+
+%token_type {const char*}
+
 %include
 {
   #include <stdio.h>
@@ -12,10 +17,10 @@
   result->type = terror;
 }
 
-%token_type {const char*}
 %type expr {node*}
 %type start {node*}
 %extra_argument {node *result}
+
 
 start ::= expr(B) . 
     {
@@ -25,152 +30,18 @@ start ::= expr(B) .
       freeNode(B);
     }
 
-/* Addition */
 
-expr(C)  ::= NUMBER(A) PLUS NUMBER(B) . 
-    {
-        C = newNode("+",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
+/* Assignment */
+expr(A) ::= NUMBER(B). {A = newNode(B,tint,NULL,NULL);}
+expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);} 
+/* End Assignment */
 
-expr(C)  ::= FLOAT(A) PLUS FLOAT(B) . 
-    {
-        C = newNode("+",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
+/* All productions with an expression on the LHS need to be revisited. we are
+not setting the node type correctly. We should automatically promote from the
+leaf nodes. */
 
-expr(C)  ::= FLOAT(A) PLUS NUMBER(B) . 
-    {
-        C = newNode("+",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
-
-
-expr(C)  ::= NUMBER(A) PLUS FLOAT(B) . 
-    {
-        C = newNode("+",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) PLUS NUMBER(B) .
-    {
-        C = newNode("+",top,A,newNode(B,tint,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) PLUS FLOAT(B) .
-    {
-        C = newNode("+",top,A,newNode(B,tdouble,NULL,NULL));
-    }
-
-/* End Addition */
-
-/* Subtraction */
-
-
-expr(C)  ::= NUMBER(A) MINUS NUMBER(B) . 
-    {
-        C = newNode("-",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
-
-expr(C)  ::= FLOAT(A) MINUS FLOAT(B) . 
-    {
-        C = newNode("-",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
-
-expr(C)  ::= FLOAT(A) MINUS NUMBER(B) . 
-    {
-        C = newNode("-",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
-
-
-expr(C)  ::= NUMBER(A) MINUS FLOAT(B) . 
-    {
-        C = newNode("-",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) MINUS NUMBER(B) .
-    {
-        C = newNode("-",top,A,newNode(B,tint,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) MINUS FLOAT(B) .
-    {
-        C = newNode("-",top,A,newNode(B,tdouble,NULL,NULL));
-    }
-
-/* End Subtraction */
-
-/* Mult */
-
-
-expr(C)  ::= NUMBER(A) MULT NUMBER(B) . 
-    {
-        C = newNode("*",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
-
-expr(C)  ::= FLOAT(A) MULT FLOAT(B) . 
-    {
-        C = newNode("*",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
-
-expr(C)  ::= FLOAT(A) MULT NUMBER(B) . 
-    {
-        C = newNode("*",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
-
-
-expr(C)  ::= NUMBER(A) MULT FLOAT(B) . 
-    {
-        C = newNode("*",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) MULT NUMBER(B) .
-    {
-        C = newNode("*",top,A,newNode(B,tint,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) MULT FLOAT(B) .
-    {
-        C = newNode("*",top,A,newNode(B,tdouble,NULL,NULL));
-    }
-
-/* End Mult */
-
-/* Div */
-
-expr(C)  ::= NUMBER(A) DIV NUMBER(B) . 
-    {
-        C = newNode("/",top,newNode(A,tint,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
-
-expr(C)  ::= FLOAT(A) DIV FLOAT(B) . 
-    {
-        C = newNode("/",top,newNode(A,tdouble,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
-
-expr(C)  ::= FLOAT(A) DIV NUMBER(B) . 
-    {
-        C = newNode("/",top,newNode(A,tdouble,NULL,NULL),newNode(B,tint,NULL,NULL));
-    }
-
-
-expr(C)  ::= NUMBER(A) DIV FLOAT(B) . 
-    {
-        C = newNode("/",top,newNode(A,tint,NULL,NULL),newNode(B,tdouble,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) DIV NUMBER(B) .
-    {
-        C = newNode("/",top,A,newNode(B,tint,NULL,NULL));
-    }
-
-expr(C) ::= expr(A) DIV FLOAT(B) .
-    {
-        C = newNode("/",top,A,newNode(B,tdouble,NULL,NULL));
-    }
-
-/* End Div */
-
-
-
-
-
-
-
+expr(C) ::= expr(A) ADD expr(B). {C = newNode("+",top,A,B);} 
+expr(C) ::= expr(A) SUB expr(B). {C = newNode("-",top,A,B);} 
+expr(C) ::= expr(A) DIV expr(B). {C = newNode("/",top,A,B);} 
+expr(C) ::= expr(A) MULT expr(B). {C = newNode("*",top,A,B);} 
 

@@ -8,8 +8,8 @@
 %%
 [0-9]*\.[0-9]+ {return FLOAT;}
 [0-9]+ {return NUMBER;}
-"+" {return PLUS;}
-"-" {return MINUS;}
+"+" {return ADD;}
+"-" {return SUB;}
 "*" {return MULT;}
 "/" {return DIV;}
 [ \t]* {}
