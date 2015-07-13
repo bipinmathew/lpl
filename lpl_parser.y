@@ -34,6 +34,7 @@ start ::= expr(B) .
 /* Assignment */
 expr(A) ::= NUMBER(B). {A = newNode(B,tint,NULL,NULL);}
 expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);} 
+expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* End Assignment */
 
 /* All productions with an expression on the LHS need to be revisited. we are

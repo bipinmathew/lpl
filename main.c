@@ -84,6 +84,10 @@ int main() {
       exit(1);
     }
 
+    if(check("(1+2)*3+9.0",18)){
+      printf("FAIL!\n");
+      exit(1);
+    }
 /*    while (scanf("%s",commandLine)) {
       result=parse(commandLine);
       printNode(result);

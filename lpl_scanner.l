@@ -12,6 +12,8 @@
 "-" {return SUB;}
 "*" {return MULT;}
 "/" {return DIV;}
+"(" {return LPARENS;}
+")" {return RPARENS;}
 [ \t]* {}
 %%
 
