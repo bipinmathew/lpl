@@ -81,12 +81,10 @@ int main() {
 
     if(check("1+2*3",7)){
       printf("FAIL!\n");
-      exit(1);
     }
 
-    if(check("(1+2)*3+9.0",18)){
+    if(check("9+(1+2)/0",10)){
       printf("FAIL!\n");
-      exit(1);
     }
 /*    while (scanf("%s",commandLine)) {
       result=parse(commandLine);
@@ -115,5 +113,6 @@ int main() {
   check("5.0/6",5.0/6); */
 
 /*  } */
+    fclose(fp);
     return 0;
 }

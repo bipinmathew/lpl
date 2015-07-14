@@ -58,7 +58,35 @@ int freeNode(node *n){
     freeNode(n->l);
   if(n->r != NULL)
     freeNode(n->r);
+  if(n->type==terror){
+    free(n->value.s);
+  }
   free(n);
+}
+
+int _hasError(const node* n){
+  return (n->type==terror);
+}
+
+
+char* _getString(const char *s){
+  char *out;
+  unsigned long slength;
+  slength = strlen(s);
+  out = (char *)malloc(sizeof(char)*(1+slength));
+  out[slength]='\0';
+  strncpy(out,s,1+slength);
+  return out;
+}
+
+
+node* _copyError(const node *in){
+  node *out;
+  initNode(&out);
+  out->type = terror;
+  out->value.s = _getString(in->value.s);
+  strcpy(out->value.s,in->value.s);
+  return out;
 }
 
 void printNode(node* n){
@@ -96,7 +124,7 @@ void printNode(node* n){
         printf("%f",n->value.d);
     break;
     case terror:
-        printf("Something bad happened.\n");
+        printf("%s",n->value.s);
     break;
     default:
       printf("Bad!");
@@ -105,6 +133,8 @@ void printNode(node* n){
 
 node* _add(const node* l, const node* r){
   node *out;
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _hasError(r)) {out = _copyError(r); return out;}
   initNode(&out);
   switch(l->type){
     case tint:
@@ -143,8 +173,12 @@ node* _add(const node* l, const node* r){
   return(out);
 }
 
+
 node* _minus(const node* l, const node* r){
   node *out;
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _hasError(r)) {out = _copyError(r); return out;}
+
   initNode(&out);
   switch(l->type){
     case tint:
@@ -186,6 +220,11 @@ node* _minus(const node* l, const node* r){
 
 node* _mult(const node* l, const node* r){
   node *out;
+
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _hasError(r)) {out = _copyError(r); return out;}
+
+
   initNode(&out);
   switch(l->type){
     case tint:
@@ -224,20 +263,36 @@ node* _mult(const node* l, const node* r){
   return(out);
 }
 
-
 node* _div(const node* l, const node* r){
   node *out;
+  if( _hasError(l)) { out = _copyError(l); return out; };
+  if( _hasError(r)) { out = _copyError(r); return out; };
+
   initNode(&out);
   switch(l->type){
     case tint:
       switch(r->type){
         case tint:
-          out->type = tint;
-          out->value.i = l->value.i/r->value.i;
+          if(r->value.i==0){
+            out->type = terror;
+            out->value.s = _getString("Divide by zero error.");
+            printf("PRINTING ERROR:\n");
+            printf("%s",out->value.s);
+          }
+          else{
+            out->type = tdouble;
+            out->value.d = l->value.d/r->value.i;
+          }
         break;
         case tdouble:
-          out->type = tdouble;
-          out->value.d = l->value.i/r->value.d;
+          if(r->value.d==0.0){
+            out->type = terror;
+            out->value.s = _getString("Divide by zero error.");
+          }
+          else {
+            out->type = tdouble;
+            out->value.d = l->value.d/r->value.d;
+          }
         break;
         default:
           out->type=terror;
@@ -248,12 +303,24 @@ node* _div(const node* l, const node* r){
     case tdouble:
       switch(r->type){
         case tint:
-          out->type = tdouble;
-          out->value.d = l->value.d/r->value.i;
+          if(r->value.i==0){
+            out->type = terror;
+            out->value.s = _getString("Divide by zero error.");
+          }
+          else{
+            out->type = tdouble;
+            out->value.d = l->value.d/r->value.i;
+          }
         break;
         case tdouble:
-          out->type = tdouble;
-          out->value.d = l->value.d/r->value.d;
+          if(r->value.d==0.0){
+            out->type = terror;
+            out->value.s = _getString("Divide by zero error.");
+          }
+          else {
+            out->type = tdouble;
+            out->value.d = l->value.d/r->value.d;
+          }
         break;
         default:
           out->type=terror;
@@ -266,7 +333,7 @@ node* _div(const node* l, const node* r){
 }
 
 
-node* evalNode(const node* n){
+node* evalNode(node* n){
   node *out,*l,*r;
   switch(n->type){
     case top:
@@ -308,6 +375,10 @@ node* evalNode(const node* n){
        printf("Evaluating double.\n");
       initNode(&out);
       memcpy(out,n,sizeof(node));
+    break;
+    case terror:
+       printf("Evaluating error.\n");
+       n = out;
     break;
     default:
       printf("Bad!");

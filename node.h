@@ -10,6 +10,7 @@ typedef union {
   int i;
   double d;
   char c;
+  char *s;
   ops op;
 } uvalue;
 
@@ -23,7 +24,7 @@ typedef struct Node{
 
 int initNode(node **p);
 node* newNode(const char *str,types type, node *l, node *r);
-node* evalNode(const node* root);
+node* evalNode(node* root);
 void printNode(node* n);
 
 #endif
