@@ -333,7 +333,7 @@ node* _div(const node* l, const node* r){
 }
 
 
-node* evalNode(node* n){
+node* evalNode(const node* n){
   node *out,*l,*r;
   switch(n->type){
     case top:

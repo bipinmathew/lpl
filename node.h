@@ -15,16 +15,16 @@ typedef union {
 } uvalue;
 
 
-typedef struct Node{
+typedef struct _node {
   types type;
   uvalue value;
-  struct Node* l;
-  struct Node* r;
+  struct _node* l;
+  struct _node* r;
 } node;
 
 int initNode(node **p);
 node* newNode(const char *str,types type, node *l, node *r);
-node* evalNode(node* root);
+node* evalNode(const node* root);
 void printNode(node* n);
 
 #endif
