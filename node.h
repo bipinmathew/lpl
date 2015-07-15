@@ -23,7 +23,7 @@ typedef struct _node {
 } node;
 
 int initNode(node **p);
-node* newNode(const char *str,types type, node *l, node *r);
+node* newNode(const char *str,types type, node* const l, node* const r);
 node* evalNode(const node* root);
 void printNode(node* n);
 

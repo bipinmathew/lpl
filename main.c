@@ -44,6 +44,7 @@ node* parse(const char* commandLine) {
 int check(const char *str,double value){
   node *result;
   int retval;
+  printf("Trying: %s\n",str);
 
   result=parse(str);
 
@@ -80,6 +81,14 @@ int main() {
     ParseTrace(fp,"err: ");
 
     if(check("1+2*3",7)){
+      printf("FAIL!\n");
+    }
+
+    if(check("(1+2)*(3+4)",21)){
+      printf("FAIL!\n");
+    }
+
+    if(check("(1*2)+(3*4)",14)){
       printf("FAIL!\n");
     }
 

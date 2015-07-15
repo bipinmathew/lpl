@@ -13,7 +13,7 @@ int initNode(node **p){
   return(0);
 }
 
-node* newNode(const char *str,types type, node* l, node* r){
+node* newNode(const char *str,types type, node* const l, node* const r){
   node *n;
   initNode(&n);
 
@@ -334,33 +334,30 @@ node* _div(const node* l, const node* r){
 
 
 node* evalNode(const node* n){
-  node *out,*l,*r;
+  node *out;
+  node *l,*r;
   switch(n->type){
     case top:
       switch(n->value.op){
         case add:
-           printf("Evaluating add.\n");
+          printf("Evaluating add.\n");
           out = _add(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l);
-          freeNode(r);
+          freeNode(l); freeNode(r);
         break;
         case minus:
-           printf("Evaluating minus.\n");
+          printf("Evaluating minus.\n");
           out = _minus(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l);
-          freeNode(r);
+          freeNode(l); freeNode(r);
         break;
         case mult:
-           printf("Evaluating mult.\n");
+          printf("Evaluating mult.\n");
           out = _mult(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l);
-          freeNode(r);
+          freeNode(l); freeNode(r);
         break;
         case odiv:
-           printf("Evaluating div.\n");
+          printf("Evaluating div.\n");
           out = _div(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l);
-          freeNode(r);
+          freeNode(l); freeNode(r);
         break;
         default:
           printf("Error evaluating expression.");
@@ -368,13 +365,13 @@ node* evalNode(const node* n){
     break;
     case tint:
        printf("Evaluating int.\n");
-      initNode(&out);
-      memcpy(out,n,sizeof(node));
+       initNode(&out);
+       memcpy(out,n,sizeof(node));
     break;
     case tdouble:
        printf("Evaluating double.\n");
-      initNode(&out);
-      memcpy(out,n,sizeof(node));
+       initNode(&out);
+       memcpy(out,n,sizeof(node));
     break;
     case terror:
        printf("Evaluating error.\n");
