@@ -1,3 +1,4 @@
+%right COMMA.
 %left ADD SUB.
 %left MULT DIV.
 
@@ -9,7 +10,7 @@
   #include <stdlib.h>
   #include <assert.h>
   #include <string.h>
-  #include "node.h"
+  #include "../node/node.h"
 }
 
 %syntax_error
@@ -34,13 +35,13 @@ start ::= expr(B) .
 /* Assignment */
 expr(A) ::= NUMBER(B). {A = newNode(B,tint,NULL,NULL);}
 expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);}
-expr(A) ::= ARRAY(B). {A = newNode(B,tarray,NULL,NULL);} 
+expr(A) ::= array(B). [COMMA] {A = newNode(B,tarray,NULL,NULL);} 
 expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* End Assignment */
 
 /* Arrays */
-ARRAY(A) ::= COMMA expr(B). {A = newNode(",",tarray,NULL,B);}
-ARRAY(A) ::= ARRAY(B), expr(C). {A = newNode(",",tarray,B,C);}
+array(A) ::= COMMA expr(B). {A = newNode(",",tarray,NULL,B);}
+array(A) ::= array(B) COMMA expr(C). {A = newNode(",",tarray,B,C);}
 /* End Arrays */
 
 
