@@ -2,7 +2,7 @@
 #define NODE_H
 
 
-typedef enum { tnull, tint, tdouble, tchar, top, terror  } types;
+typedef enum { tnull, tint, tdouble, tchar, top, terror, tarray  } types;
 
 typedef enum { add, minus, mult, odiv } ops;
 

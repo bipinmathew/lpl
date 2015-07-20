@@ -33,9 +33,17 @@ start ::= expr(B) .
 
 /* Assignment */
 expr(A) ::= NUMBER(B). {A = newNode(B,tint,NULL,NULL);}
-expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);} 
+expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);}
+expr(A) ::= ARRAY(B). {A = newNode(B,tarray,NULL,NULL);} 
 expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* End Assignment */
+
+/* Arrays */
+ARRAY(A) ::= COMMA expr(B). {A = newNode(",",tarray,NULL,B);}
+ARRAY(A) ::= ARRAY(B), expr(C). {A = newNode(",",tarray,B,C);}
+/* End Arrays */
+
+
 
 /* All productions with an expression on the LHS need to be revisited. we are
 not setting the node type correctly. We should automatically promote from the
