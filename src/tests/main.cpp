@@ -34,7 +34,16 @@ class Node{
     Node *l,*r;
 };
 
-class intNode : public Node {
+template <class T>
+class elementaryNode : public Node{
+  public:
+    virtual T getValue() {return value;};
+    virtual void setValue(T _value) {value = _value;};
+  private:
+    T value;
+};
+
+class intNode : public elementaryNode<int> {
   public:
     intNode(){};
     intNode(int value){setValue(value);};
@@ -44,14 +53,10 @@ class intNode : public Node {
     virtual Node* _add(doubleNode *r);
     virtual Node* _add(intNode *r);
     virtual intNode* clone(){return new intNode(*this);};
-    virtual int getValue() {return value;};
-    virtual void setValue(int _value) {value = _value;};
-  private:
-    int value;
 };
 
 
-class doubleNode : public Node {
+class doubleNode : public elementaryNode<double> {
   public:
     doubleNode(){};
     doubleNode(double value){setValue(value);};
@@ -62,11 +67,6 @@ class doubleNode : public Node {
     virtual Node* _add(Node *r);
     virtual Node* _add(intNode *r);
     virtual doubleNode* clone(){return new doubleNode(*this);};
-    virtual double getValue() {return value;};
-    virtual void setValue(double _value) {value = _value;};
-  private:
-    double value;
-
 };
 
 
@@ -113,13 +113,9 @@ void evalVisitor::visit(addNode *_elm){
   S.pop();
 };
 
-class errorNode : public Node{
+class errorNode : public elementaryNode<std::string>{
   public:
     errorNode(const char *s){setValue(s);};
-    virtual std::string getValue() {return value;};
-    virtual void setValue(std::string _value) {value = _value;};
-  private:
-    std::string value;
 };
 
 
