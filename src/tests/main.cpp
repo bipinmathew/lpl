@@ -7,13 +7,25 @@ class Node;
 class doubleNode;
 class intNode;
 class addNode;
+class errorNode;
 
 class Visitor {
   public:
-    virtual void visit(doubleNode *_elm){};
-    virtual void visit(intNode *_elm){};
-    virtual void visit(addNode *_elm){};
-    virtual void visit(Node *_elm){};
+    virtual void visit(Node *_elm)=0;
+    virtual void visit(intNode *_elm)=0;
+    virtual void visit(doubleNode *_elm)=0;
+    virtual void visit(addNode *_elm)=0;
+};
+
+class evalVisitor : public Visitor {
+  public:
+    void visit(Node *_elm);
+    void visit(intNode *_elm);
+    void visit(doubleNode *_elm);
+    void visit(addNode *_elm);
+  private:
+    std::stack <Node*> S;
+
 };
 
 class Node{
@@ -24,7 +36,7 @@ class Node{
     virtual Node* getLeft(){return l;};
     virtual Node* getRight(){return r;};
     virtual void identify(){std::cout<<"I am a generic node."<<std::endl;};
-    virtual void accept(Visitor* _v){std::cout<<"Visiting generic node."<<std::endl; _v->visit(this);};
+    virtual void accept(Visitor* _v) = 0;
 
     virtual Node* operator+(  Node& r);
     virtual Node* operator+(  intNode& r);
@@ -38,6 +50,8 @@ class elementaryNode : public Node{
   public:
     virtual T getValue() {return value;};
     virtual void setValue(T _value) {value = _value;};
+    elementaryNode(T _v) {setValue(_v);};
+    elementaryNode(){};
   private:
     T value;
 };
@@ -45,7 +59,7 @@ class elementaryNode : public Node{
 class intNode : public elementaryNode<int> {
   public:
     intNode(){};
-    intNode(int value){setValue(value);};
+    intNode(int value) : elementaryNode<int> (value){};
     virtual void accept(Visitor* _v){_v->visit(this);};
     virtual void identify(){std::cout<<"I am a int node."<<std::endl;};
     virtual Node* operator+(  Node& r);
@@ -57,16 +71,20 @@ class intNode : public elementaryNode<int> {
 class doubleNode : public elementaryNode<double> {
   public:
     doubleNode(){};
-    doubleNode(double value){setValue(value);};
+    doubleNode(double value) : elementaryNode<double> (value){};
     virtual void accept(Visitor* _v){_v->visit(this);};
     virtual void identify(){std::cout<<"I am a double node."<<std::endl;};
     virtual Node* operator+(  Node& r);
     virtual Node* operator+(  intNode& r);
     virtual Node* operator+(  doubleNode& r);
-    virtual doubleNode* clone(){return new doubleNode(*this);};
 };
 
 
+class errorNode : public elementaryNode<std::string>{
+  public:
+    errorNode( char *s){setValue(s);};
+    virtual void accept( Visitor *_v){_v->visit(this);};
+};
 
 
 class addNode : public Node {
@@ -75,18 +93,6 @@ class addNode : public Node {
 };
 
 
-class evalVisitor : public Visitor {
-  public:
-    void visit(doubleNode *_elm);
-    void visit(intNode *_elm);
-    void visit(addNode *_elm);
-    void visit(Node *_elm);
-    double visit(double* _elm);
-    int visit(int* _elm);
-  private:
-    std::stack <Node*> S;
-
-};
 
 
 void evalVisitor::visit(Node *_elm){std::cout<<"Visited a generic."<<std::endl;};
@@ -110,10 +116,6 @@ void evalVisitor::visit(addNode *_elm){
   S.pop();
 };
 
-class errorNode : public elementaryNode<std::string>{
-  public:
-    errorNode( char *s){setValue(s);};
-};
 
 
 Node* Node::operator+(  Node& r){
