@@ -1,105 +1,78 @@
-#include <stdio.h>
-#include <iostream>
-#include <stack>
-#include <memory>
-
-class Node;
-class doubleNode;
-class intNode;
-class addNode;
-class errorNode;
-
-class Visitor {
-  public:
-    virtual void visit(Node *_elm)=0;
-    virtual void visit(intNode *_elm)=0;
-    virtual void visit(doubleNode *_elm)=0;
-    virtual void visit(addNode *_elm)=0;
-};
-
-class evalVisitor : public Visitor {
-  public:
-    void visit(Node *_elm);
-    void visit(intNode *_elm);
-    void visit(doubleNode *_elm);
-    void visit(addNode *_elm);
-  private:
-    std::stack <Node*> S;
-
-};
-
-class Node{
-  public:
-    Node(){l=NULL;r=NULL;};
-    virtual void setLeft(Node *_l){l = _l;};
-    virtual void setRight(Node *_r){r = _r;};
-    virtual Node* getLeft(){return l;};
-    virtual Node* getRight(){return r;};
-    virtual void identify(){std::cout<<"I am a generic node."<<std::endl;};
-    virtual void accept(Visitor* _v) = 0;
-
-    virtual Node* operator+(  Node& r);
-    virtual Node* operator+(  intNode& r);
-    virtual Node* operator+(  doubleNode& r);
-  private:
-    Node *l,*r;
-};
-
-template <class T>
-class elementaryNode : public Node{
-  public:
-    virtual T getValue() {return value;};
-    virtual void setValue(T _value) {value = _value;};
-    elementaryNode(T _v) {setValue(_v);};
-    elementaryNode(){};
-  private:
-    T value;
-};
-
-class intNode : public elementaryNode<int> {
-  public:
-    intNode(){};
-    intNode(int value) : elementaryNode<int> (value){};
-    virtual void accept(Visitor* _v){_v->visit(this);};
-    virtual void identify(){std::cout<<"I am a int node."<<std::endl;};
-    virtual Node* operator+(  Node& r);
-    virtual Node* operator+(  doubleNode& r);
-    virtual Node* operator+(  intNode& r);
-};
+#include "node.h"
 
 
-class doubleNode : public elementaryNode<double> {
-  public:
-    doubleNode(){};
-    doubleNode(double value) : elementaryNode<double> (value){};
-    virtual void accept(Visitor* _v){_v->visit(this);};
-    virtual void identify(){std::cout<<"I am a double node."<<std::endl;};
-    virtual Node* operator+(  Node& r);
-    virtual Node* operator+(  intNode& r);
-    virtual Node* operator+(  doubleNode& r);
-};
+Node::Node(){l=NULL;r=NULL;};
+void Node::setLeft(Node *_l){l = _l;};
+void Node::setRight(Node *_r){r = _r;};
+Node* Node::getLeft(){return l;};
+Node* Node::getRight(){return r;};
+void Node::identify(){std::cout<<"I am a generic node."<<std::endl;};
+Node* Node::operator+(   Node& r)  {
+      return new errorNode("node+node error.");
+    }
+Node* Node::operator+(  doubleNode& r){
+    return r+(*this);
+}
+ Node* Node::operator+(   intNode& r)  {
+    return r+(*this);
+}
 
 
-class errorNode : public elementaryNode<std::string>{
-  public:
-    errorNode( char *s){setValue(s);};
-    virtual void accept( Visitor *_v){_v->visit(this);};
-};
+Node* doubleNode::operator+(  Node& r){
+      return r+(*this);
+}
+Node* doubleNode::operator+(  doubleNode& r){
+  dbg("double class doing double addition"<<std::endl);
+  return new doubleNode(getValue()+r.getValue());
+}
+Node* doubleNode::operator+(  intNode& r){
+  dbg("double class doing int addition"<<std::endl);
+  return new doubleNode(getValue()+r.getValue());
+}
 
 
-class addNode : public Node {
-  public:
-    virtual void accept(Visitor* _v){_v->visit(this);};
-};
+Node* intNode::operator+(   Node& r){
+      return r+(*this);
+}
+Node* intNode::operator+(   doubleNode& r){
+  dbg("int class doing double addition"<<std::endl);
+  return new doubleNode(getValue()+r.getValue());
+}
+Node* intNode::operator+(   intNode& r){
+  dbg("int class doing int addition"<<std::endl);
+  return new intNode(getValue()+r.getValue());
+}
+
+intNode::intNode(){};
+intNode::intNode(int value) : elementaryNode<int> (value){};
+void intNode::accept(Visitor* _v){_v->visit(this);};
+void intNode::identify(){std::cout<<"I am a int node."<<std::endl;};
+Node* intNode::operator+(   Node& r) ;
+Node* intNode::operator+(   doubleNode& r) ;
+Node* intNode::operator+(   intNode& r) ;
 
 
 
+doubleNode::doubleNode(){};
+doubleNode::doubleNode(double value) : elementaryNode<double> (value){};
+void doubleNode::accept(Visitor* _v){_v->visit(this);};
+void doubleNode::identify(){std::cout<<"I am a double node."<<std::endl;};
+Node* doubleNode::operator+(  Node& r);
+Node* doubleNode::operator+(  intNode& r);
+Node* doubleNode::operator+(  doubleNode& r);
 
-void evalVisitor::visit(Node *_elm){std::cout<<"Visited a generic."<<std::endl;};
-void evalVisitor::visit(doubleNode *_elm){std::cout<<"Visited a double."<<std::endl; S.push(_elm);};
-void evalVisitor::visit(intNode *_elm){std::cout<<"Visited a int."<<std::endl; S.push(_elm);};
+
+errorNode::errorNode( std::string s ) : elementaryNode<std::string>(s){};
+void errorNode::accept( Visitor *_v){_v->visit(this);};
+
+
+void addNode::accept(Visitor* _v){_v->visit(this);};
+
+void evalVisitor::visit(Node *_elm){dbg("Visited a generic."<<std::endl);};
+void evalVisitor::visit(doubleNode *_elm){dbg("Visited a double."<<std::endl); S.push(_elm);};
+void evalVisitor::visit(intNode *_elm){dbg("Visited a int."<<std::endl); S.push(_elm);};
 void evalVisitor::visit(addNode *_elm){
-  printf("Visit addNode.\n");
+  dbg("Visit addNode." << std::endl);
   Node *l, *r;
   l = S.top();
   l->identify();
@@ -110,49 +83,7 @@ void evalVisitor::visit(addNode *_elm){
   S.pop();
 
   S.push((*l)+(*r));
-
-  l = S.top();
-  l->identify();
-  S.pop();
 };
-
-
-
-Node* Node::operator+(  Node& r){
-      return new errorNode("node+node error.");
-    }
-Node* Node::operator+(  doubleNode& r){
-    return r+(*this);
-}
-Node* Node::operator+(  intNode& r){
-    return r+(*this);
-}
-
-
-Node* doubleNode::operator+(  Node& r){
-      return r+(*this);
-}
-Node* doubleNode::operator+(  doubleNode& r){
-  std::cout<<"double class doing double addition"<<std::endl;
-  return new doubleNode(getValue()+r.getValue());
-}
-Node* doubleNode::operator+(  intNode& r){
-  std::cout<<"double class doing int addition"<<std::endl;
-  return new doubleNode(getValue()+r.getValue());
-}
-
-
-Node* intNode::operator+(  Node& r){
-      return r+(*this);
-}
-Node* intNode::operator+(  doubleNode& r){
-  std::cout<<"int class doing double addition"<<std::endl;
-  return new doubleNode(getValue()+r.getValue());
-}
-Node* intNode::operator+(  intNode& r){
-  std::cout<<"int class doing int addition"<<std::endl;
-  return new intNode(getValue()+r.getValue());
-}
 
 
 int main(){
