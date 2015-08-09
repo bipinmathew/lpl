@@ -1,4 +1,3 @@
-%right COMMA.
 %left ADD SUB.
 %left MULT DIV.
 
@@ -35,13 +34,10 @@ start ::= expr(B) .
 /* Assignment */
 expr(A) ::= NUMBER(B). {A = newNode(B,tint,NULL,NULL);}
 expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);}
-expr(A) ::= array(B). [COMMA] {A = newNode(B,tarray,NULL,NULL);} 
 expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* End Assignment */
 
 /* Arrays */
-array(A) ::= COMMA expr(B). {A = newNode(",",tarray,NULL,B);}
-array(A) ::= array(B) COMMA expr(C). {A = newNode(",",tarray,B,C);}
 /* End Arrays */
 
 

@@ -14,7 +14,6 @@
 "/" {return DIV;}
 "(" {return LPARENS;}
 ")" {return RPARENS;}
-"," {return COMMA;}
 [ \t]* {}
 %%
 
