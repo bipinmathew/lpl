@@ -8,3 +8,7 @@ scanner.o: lpl_scanner.l
 	gcc -Werror  -pedantic-errors -g -c -o lpl_scanner.o lpl_scanner.c
 
 all: parser.o scanner.o
+
+clean: 
+	rm -rf lpl_scanner.c lpl_scanner.h 
+	rm -rf lpl_parser.o
