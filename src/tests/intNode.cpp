@@ -1,10 +1,10 @@
 #include "node.h"
 
 
-intNode::intNode(){};
-intNode::intNode(int value) : elementaryNode<int> (value){};
-void intNode::accept(Visitor* _v){_v->visit(this);};
-void intNode::identify(){std::cout<<"I am a int node."<<std::endl;};
+intNode::intNode(){}
+intNode::intNode(int value) : elementaryNode<int> (value){}
+void intNode::accept(Visitor* _v){_v->visit(this);}
+void intNode::identify(){std::cout<<"I am a int node."<<std::endl;}
 
 
 Node* intNode::operator+(   Node& r){

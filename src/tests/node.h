@@ -75,6 +75,7 @@ class errorNode : public elementaryNode<std::string>{
 
 class addNode : public Node {
   public:
+    addNode(Node *_l, Node *_r);
     virtual void accept(Visitor* _v);
 };
 
