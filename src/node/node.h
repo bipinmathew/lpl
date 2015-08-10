@@ -1,30 +1,143 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef __NODE__H
+#define __NODE__H
+
+#include <stdio.h>
+#include <iostream>
+
+class Node;
+class doubleNode;
+class intNode;
+class addNode;
+class subNode;
+class divNode;
+class multNode;
+class errorNode;
+
+#include "visitors.h"
+#include "debug.h"
 
 
-typedef enum { tnull, tint, tdouble, tchar, top, terror, tarray  } types;
+class Node{
+  public:
+    Node();
+    virtual void setLeft(Node *_l);
+    virtual void setRight(Node *_r);
+    virtual Node* getLeft();
+    virtual Node* getRight();
+    virtual void identify();
+    virtual void accept(Visitor* _v) = 0;
 
-typedef enum { add, minus, mult, odiv } ops;
+    virtual Node* operator+(   Node& r) ;
+    virtual Node* operator+(   intNode& r) ;
+    virtual Node* operator+(  doubleNode& r);
 
-typedef union {
-  int i;
-  double d;
-  char c;
-  char *s;
-  ops op;
-} uvalue;
+    virtual Node* operator-(   Node& r) ;
+    virtual Node* operator-(   intNode& r) ;
+    virtual Node* operator-(  doubleNode& r);
+
+    virtual Node* operator/(   Node& r) ;
+    virtual Node* operator/(   intNode& r) ;
+    virtual Node* operator/(  doubleNode& r);
+
+    virtual Node* operator*(   Node& r) ;
+    virtual Node* operator*(   intNode& r) ;
+    virtual Node* operator*(  doubleNode& r);
+
+  private:
+    Node *l,*r;
+};
+
+template <class T>
+class elementaryNode : public Node{
+  public:
+    virtual T getValue() {return value;};
+    virtual void setValue(T _value) {value = _value;};
+    elementaryNode(T _v) {setValue(_v);};
+    elementaryNode(){};
+  private:
+    T value;
+};
+
+class intNode : public elementaryNode<int> {
+  public:
+    intNode();
+    intNode(int value);
+    virtual void accept(Visitor* _v);
+     virtual void identify();
+     virtual Node* operator+(   Node& r) ;
+     virtual Node* operator+(   doubleNode& r) ;
+     virtual Node* operator+(   intNode& r) ;
 
 
-typedef struct _node {
-  types type;
-  uvalue value;
-  struct _node* l;
-  struct _node* r;
-} node;
+     virtual Node* operator-(   Node& r) ;
+     virtual Node* operator-(   doubleNode& r) ;
+     virtual Node* operator-(   intNode& r) ;
 
-int initNode(node **p);
-node* newNode(const char *str,types type, node* const l, node* const r);
-node* evalNode(const node* root);
-void printNode(node* n);
+    virtual Node* operator/(   Node& r) ;
+    virtual Node* operator/(   intNode& r) ;
+    virtual Node* operator/(  doubleNode& r);
+
+    virtual Node* operator*(   Node& r) ;
+    virtual Node* operator*(   intNode& r) ;
+    virtual Node* operator*(  doubleNode& r);
+
+};
+
+
+class doubleNode : public elementaryNode<double> {
+  public:
+    doubleNode();
+    doubleNode(double value);
+    virtual void accept(Visitor* _v);
+    virtual void identify();
+    virtual Node* operator+(  Node& r);
+    virtual Node* operator+(  intNode& r);
+    virtual Node* operator+(  doubleNode& r);
+
+    virtual Node* operator-(   Node& r) ;
+    virtual Node* operator-(   doubleNode& r) ;
+    virtual Node* operator-(   intNode& r) ;
+
+    virtual Node* operator/(   Node& r) ;
+    virtual Node* operator/(   intNode& r) ;
+    virtual Node* operator/(  doubleNode& r);
+
+    virtual Node* operator*(   Node& r) ;
+    virtual Node* operator*(   intNode& r) ;
+    virtual Node* operator*(  doubleNode& r);
+
+};
+
+
+class errorNode : public elementaryNode<std::string>{
+  public:
+    errorNode( std::string s );
+    virtual void accept( Visitor *_v);
+};
+
+
+class addNode : public Node {
+  public:
+    addNode(Node *_l, Node *_r);
+    virtual void accept(Visitor* _v);
+};
+
+class subNode : public Node {
+  public:
+    subNode(Node *_l, Node *_r);
+    virtual void accept(Visitor* _v);
+};
+
+class divNode : public Node {
+  public:
+    divNode(Node *_l, Node *_r);
+    virtual void accept(Visitor* _v);
+};
+
+class multNode : public Node {
+  public:
+    multNode(Node *_l, Node *_r);
+    virtual void accept(Visitor* _v);
+};
 
 #endif

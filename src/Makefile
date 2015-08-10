@@ -1,5 +1,5 @@
 main: main.o parser.o scanner.o node.o
-	gcc -I./node -Werror  -pedantic-errors -g parse/lpl_parser.o parse/lpl_scanner.o node/node.o main.o -o main
+	gcc -Werror  -pedantic-errors -g parse/lpl_parser.o parse/lpl_scanner.o node/node.o main.o -o main
 
 main.o: main.c parser.o scanner.o 
 	gcc -I./node -I./parse -Werror  -pedantic-errors -g -c main.c -o main.o

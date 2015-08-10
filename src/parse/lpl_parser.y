@@ -9,31 +9,30 @@
   #include <stdlib.h>
   #include <assert.h>
   #include <string.h>
-  #include "../node/node.h"
+  #include "node.h"
 }
 
-%syntax_error
+/* %syntax_error
 {
   result->type = terror;
-}
+} */
 
-%type expr {node*}
-%type start {node*}
-%extra_argument {node *result}
+%type expr {Node*}
+%type start {Node*}
+%extra_argument {Node *result}
 
 
 start ::= expr(B) . 
     {
-      node *temp;
-      memcpy(result,temp=evalNode(B),sizeof(node));
-      free(temp);
-      freeNode(B);
+      evalVisitor *v = new evalVisitor();
+      v->visit(B);
+      delete v;
     }
 
 
 /* Assignment */
-expr(A) ::= NUMBER(B). {A = newNode(B,tint,NULL,NULL);}
-expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);}
+expr(A) ::= NUMBER(B). {A = new intNode(atoi(B));}
+expr(A) ::= FLOAT(B).  {A = new doubleNode(atof(B));}
 expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* End Assignment */
 
@@ -46,8 +45,7 @@ expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 not setting the node type correctly. We should automatically promote from the
 leaf nodes. */
 
-expr(C) ::= expr(A) ADD expr(B). {C = newNode("+",top,A,B);} 
-expr(C) ::= expr(A) SUB expr(B). {C = newNode("-",top,A,B);} 
-expr(C) ::= expr(A) DIV expr(B). {C = newNode("/",top,A,B);} 
-expr(C) ::= expr(A) MULT expr(B). {C = newNode("*",top,A,B);} 
-
+expr(C) ::= expr(A) ADD expr(B). {C = new addNode(A,B);} 
+expr(C) ::= expr(A) SUB expr(B). {C = new subNode(A,B);} 
+expr(C) ::= expr(A) DIV expr(B). {C = new divNode(A,B);} 
+expr(C) ::= expr(A) MULT expr(B). {C = new multNode(A,B);} 
