@@ -15,13 +15,13 @@ class Visitor {
 
 class evalVisitor : public Visitor {
   public:
-    void visit(Node *_elm);
-    void visit(intNode *_elm);
-    void visit(doubleNode *_elm);
-    void visit(addNode *_elm);
-    void visit(subNode *_elm);
-    void visit(divNode *_elm);
-    void visit(multNode *_elm);
+    virtual void visit(Node *_elm);
+    virtual void visit(intNode *_elm);
+    virtual void visit(doubleNode *_elm);
+    virtual void visit(addNode *_elm);
+    virtual void visit(subNode *_elm);
+    virtual void visit(divNode *_elm);
+    virtual void visit(multNode *_elm);
   private:
     std::stack <Node*> S;
 };

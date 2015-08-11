@@ -12,7 +12,7 @@ class subNode;
 class divNode;
 class multNode;
 class errorNode;
-
+#define DEBUG_BUILD
 #include "visitors.h"
 #include "debug.h"
 

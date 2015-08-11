@@ -1,7 +1,9 @@
 #include "node.h"
+#include <iostream>
+#include "debug.h"
 
-doubleNode::doubleNode(){}
-doubleNode::doubleNode(double value) : elementaryNode<double> (value){}
+doubleNode::doubleNode(){dbg("doubleNode default constructor."<<std::endl);}
+doubleNode::doubleNode(double value) : elementaryNode<double> (value){dbg("doubleNode double constructor."<<std::endl);}
 void doubleNode::accept(Visitor* _v){_v->visit(this);}
 void doubleNode::identify(){std::cout<<"I am a double node."<<std::endl;}
 
@@ -57,11 +59,11 @@ bool doubleNode::operator==(  Node& r){
       return r==(*this);
 }
 bool doubleNode::operator==(  doubleNode& r){
-  dbg("double class doing double division"<<std::endl);
-  return new doubleNode(getValue()==r.getValue());
+  dbg("double node comparing double node"<<std::endl);
+  return getValue()==r.getValue();
 }
 bool doubleNode::operator==(  intNode& r){
-  dbg("double class doing int division"<<std::endl);
-  return new doubleNode(getValue()==r.getValue());
+  dbg("double node comparing int node"<<std::endl);
+  return getValue()==r.getValue();
 }
 

@@ -1,6 +1,8 @@
 #include "node.h"
+#include <iostream>
+#include "debug.h"
 
-Node::Node(){l=NULL;r=NULL;}
+Node::Node(){dbg("  Node constructor."<<std::endl;);l=NULL;r=NULL;}
 void Node::setLeft(Node *_l){l = _l;}
 void Node::setRight(Node *_r){r = _r;}
 Node* Node::getLeft(){return l;}

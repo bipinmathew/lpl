@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define DEBUG_BUILD
 #include "node.h"
 #include "lpl_parser.h"
 #include "lpl_scanner.h"
@@ -59,25 +60,29 @@ int main() {
     // fp = fopen("errors.log","w");
     // ParseTrace(fp,"err: ");
 
-    if(check("1+2*3",7)){
+    if(check("1+2",3)){
       printf("FAIL!\n");
     }
 
-    if(check("1+2*3.0",7)){
-      printf("FAIL!\n");
-    }
+//    if(check("1+2*3",7)){
+//      printf("FAIL!\n");
+//    }
 
-    if(check("(1+2)*(3+4)",21)){
-      printf("FAIL!\n");
-    }
+//    if(check("1+2*3.0",7)){
+//      printf("FAIL!\n");
+//    }
 
-    if(check("(1*2)+(3*4)",14)){
-      printf("FAIL!\n");
-    }
+//    if(check("(1+2)*(3+4)",21)){
+//      printf("FAIL!\n");
+//    }
 
-    if(check("9+(1+2)/0",10)){
-      printf("FAIL!\n");
-    }
+//    if(check("(1*2)+(3*4)",14)){
+//      printf("FAIL!\n");
+//    }
+
+//    if(check("9+(1+2)/0",10)){
+//      printf("FAIL!\n");
+//    }
 /*    while (scanf("%s",commandLine)) {
       result=parse(commandLine);
       printNode(result);
