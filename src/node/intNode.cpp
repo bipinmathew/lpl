@@ -55,3 +55,15 @@ Node* intNode::operator*(   intNode& r){
   return new intNode(getValue()*r.getValue());
 }
 
+bool intNode::operator==(   Node& r){
+      return r==(*this);
+}
+bool intNode::operator==(   doubleNode& r){
+  dbg("int class doing double division"<<std::endl);
+  return new doubleNode(getValue()==r.getValue());
+}
+bool intNode::operator==(   intNode& r){
+  dbg("int class doing int division"<<std::endl);
+  return new intNode(getValue()==r.getValue());
+}
+

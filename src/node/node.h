@@ -43,6 +43,9 @@ class Node{
     virtual Node* operator*(   intNode& r) ;
     virtual Node* operator*(  doubleNode& r);
 
+    virtual bool operator==(   Node& r) ;
+    virtual bool operator==(   intNode& r) ;
+    virtual bool operator==(  doubleNode& r);
   private:
     Node *l,*r;
 };
@@ -81,6 +84,9 @@ class intNode : public elementaryNode<int> {
     virtual Node* operator*(   intNode& r) ;
     virtual Node* operator*(  doubleNode& r);
 
+    virtual bool operator==(   Node& r) ;
+    virtual bool operator==(   intNode& r) ;
+    virtual bool operator==(  doubleNode& r);
 };
 
 
@@ -106,6 +112,9 @@ class doubleNode : public elementaryNode<double> {
     virtual Node* operator*(   intNode& r) ;
     virtual Node* operator*(  doubleNode& r);
 
+    virtual bool operator==(   Node& r) ;
+    virtual bool operator==(   intNode& r) ;
+    virtual bool operator==(  doubleNode& r);
 };
 
 

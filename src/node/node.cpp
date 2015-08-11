@@ -45,3 +45,13 @@ Node* Node::operator*(  doubleNode& r){
  Node* Node::operator*(   intNode& r)  {
     return r*(*this);
 }
+
+bool Node::operator==(   Node& r)  {
+      return false; // this should be an error.
+}
+bool Node::operator==(  doubleNode& r){
+    return r==(*this);
+}
+bool Node::operator==(   intNode& r)  {
+    return r==(*this);
+}

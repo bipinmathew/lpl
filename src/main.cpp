@@ -5,17 +5,17 @@
 #include "lpl_scanner.h"
 
 void* ParseAlloc(void* (*allocProc)(size_t));
-void Parse(void* parser, int token, const char* tokenInfo, node* result);
+void Parse(void* parser, int token, const char* tokenInfo, Node* result);
 void ParseFree(void* parser, void(*freeProc)(void*));
 
-node* parse(const char* commandLine) {
+Node* parse(const char* commandLine) {
     /*  Set up the scanner */
     yyscan_t scanner;
     YY_BUFFER_STATE bufferState;
     void* shellParser;
     int lexCode;
-    node *result;
-    initNode(&result);
+    Node *result;
+    // initNode(&result);
 
     yylex_init(&scanner);
 
@@ -28,7 +28,7 @@ node* parse(const char* commandLine) {
         lexCode = yylex(scanner);
         Parse(shellParser, lexCode, yyget_text(scanner), result);
     }
-    while (lexCode > 0 && result->type!=terror);
+    while (lexCode > 0 );
 
     if (-1 == lexCode) {
         fprintf(stderr,"The scanner encountered an error.\n");
@@ -41,46 +41,29 @@ node* parse(const char* commandLine) {
     return result;
 }
 
-int check(const char *str,double value){
-  node *result;
+int check(const char *str,double _value){
+  Node *result;
+  doubleNode *value = new doubleNode(_value);
   int retval;
   printf("Trying: %s\n",str);
 
   result=parse(str);
-
-  switch(result->type){
-    case tint:
-      retval=value!=result->value.i;
-    break;
-    case tdouble:
-      retval=value!=result->value.d;
-    break;
-    default:
-      retval=1;
-    break;
-
-  }
-  if(retval){
-    printf("Test failed on expression: %s \n",str);
-  }
-
-  printf(" = ");
-  printNode(result);
-  printf("\n");
-
-  freeNode(result);
-  return retval;
+  return result==value;
 }
 
 int main() {
     FILE *fp;
     char commandLine[1024];
-    node *result;
+    Node *result;
 
-    fp = fopen("errors.log","w");
-    ParseTrace(fp,"err: ");
+    // fp = fopen("errors.log","w");
+    // ParseTrace(fp,"err: ");
 
     if(check("1+2*3",7)){
+      printf("FAIL!\n");
+    }
+
+    if(check("1+2*3.0",7)){
       printf("FAIL!\n");
     }
 
@@ -122,6 +105,6 @@ int main() {
   check("5.0/6",5.0/6); */
 
 /*  } */
-    fclose(fp);
+//    fclose(fp);
     return 0;
 }

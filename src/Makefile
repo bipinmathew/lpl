@@ -1,5 +1,5 @@
-main: main.o parser.o scanner.o node.o
-	g++ -Werror  -pedantic-errors -g parse/lpl_parser.o parse/lpl_scanner.o node/node.o main.o -o main
+main: main.o parser.o scanner.o nodes
+	g++ -Werror  -pedantic-errors -g parse/lpl_parser.o parse/lpl_scanner.o node/*.o main.o -o main
 
 main.o: main.cpp parser.o scanner.o 
 	g++ -I./node -I./parse -Werror  -pedantic-errors -g -c main.cpp -o main.o
@@ -10,8 +10,8 @@ parser.o:
 scanner.o:
 	$(MAKE) -C parse scanner.o
 
-node.o:
-	$(MAKE) -C node 
+nodes:
+	$(MAKE) -C node all
 
 clean:
 	$(MAKE) -C parse clean
