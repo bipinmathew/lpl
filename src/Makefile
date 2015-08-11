@@ -1,8 +1,8 @@
 main: main.o parser.o scanner.o node.o
-	gcc -Werror  -pedantic-errors -g parse/lpl_parser.o parse/lpl_scanner.o node/node.o main.o -o main
+	g++ -Werror  -pedantic-errors -g parse/lpl_parser.o parse/lpl_scanner.o node/node.o main.o -o main
 
-main.o: main.c parser.o scanner.o 
-	gcc -I./node -I./parse -Werror  -pedantic-errors -g -c main.c -o main.o
+main.o: main.cpp parser.o scanner.o 
+	g++ -I./node -I./parse -Werror  -pedantic-errors -g -c main.cpp -o main.o
 
 parser.o:
 	$(MAKE) -C parse parser.o
