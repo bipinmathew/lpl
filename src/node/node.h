@@ -127,7 +127,9 @@ class errorNode : public elementaryNode<std::string>{
 
 class addNode : public Node {
   public:
+    addNode();
     addNode(Node *_l, Node *_r);
+    virtual void identify();
     virtual void accept(Visitor* _v);
 };
 

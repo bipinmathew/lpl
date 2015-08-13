@@ -14,7 +14,6 @@ int main(){
   a.setLeft(&d);
   a.setRight(&i);
 
-  i.accept(&v);
-  d.accept(&v);
-  a.accept(&v);
+  v.visit(&a);
+
 }

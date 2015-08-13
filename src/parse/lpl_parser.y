@@ -25,8 +25,9 @@
 start ::= expr(B) . 
     {
       evalVisitor *v = new evalVisitor();
+      std::cout<<"OY VEY"<<std::endl;
       B->identify();
-      v->visit(B);
+      B->accept(v);
       delete v;
     }
 
@@ -46,7 +47,7 @@ expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 not setting the node type correctly. We should automatically promote from the
 leaf nodes. */
 
-expr(C) ::= expr(A) ADD expr(B). {C = new addNode(A,B); C->identify();} 
+expr(C) ::= expr(A) ADD expr(B). {C = new addNode(A,B);} 
 expr(C) ::= expr(A) SUB expr(B). {C = new subNode(A,B);} 
 expr(C) ::= expr(A) DIV expr(B). {C = new divNode(A,B);} 
 expr(C) ::= expr(A) MULT expr(B). {C = new multNode(A,B);} 
