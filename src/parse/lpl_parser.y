@@ -24,8 +24,7 @@
 
 start ::= expr(B) . 
     {
-      *result = (B->clone());
-      std::cout<<"inside parser."<<std::endl;
+      *result = B;
       // result->identify();
       // evalVisitor *v = new evalVisitor();
       // Node *n;

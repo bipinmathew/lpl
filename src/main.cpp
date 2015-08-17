@@ -34,8 +34,6 @@ Node* parse(const char* commandLine) {
     if (-1 == lexCode) {
         fprintf(stderr,"The scanner encountered an error.\n");
     }
-    std::cout<<"FLOP"<<std::endl;
-    result->identify();
 
     /*  Cleanup the scanner and parser */
     yy_delete_buffer(bufferState, scanner);
@@ -44,14 +42,25 @@ Node* parse(const char* commandLine) {
     return result;
 }
 
+int eval(Node *root, Visitor *v){
+  if(root->getLeft()!=NULL)
+    eval(root->getLeft(),v);
+  if(root->getRight()!=NULL)
+    eval(root->getRight(),v);
+  root->accept(v);
+  return 0;
+}
+
 int check(const char *str,double _value){
   Node *result;
+  evalVisitor *v = new evalVisitor();
   doubleNode *value = new doubleNode(_value);
   int retval;
   printf("Trying: %s\n",str);
 
   result=parse(str);
-  result->identify();
+  eval(result,v);
+  // result->identify();
   // return result==value;
 }
 
