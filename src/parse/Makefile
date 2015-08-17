@@ -11,5 +11,5 @@ scanner.o: lpl_scanner.l
 all: parser.o scanner.o
 
 clean: 
-	rm -rf lpl_scanner.c lpl_scanner.h 
-	rm -rf lpl_parser.o lpl_scanner.o
+	rm -rf lpl_scanner.cpp lpl_scanner.h 
+	rm -rf lpl_parser.cpp lpl_parser.h lpl_parser.out lpl_parser.o lpl_scanner.o
