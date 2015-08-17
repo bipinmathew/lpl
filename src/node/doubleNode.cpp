@@ -6,6 +6,7 @@ doubleNode::doubleNode(){dbg("doubleNode default constructor."<<std::endl);}
 doubleNode::doubleNode(double value) : elementaryNode<double> (value){dbg("doubleNode double constructor."<<std::endl);}
 void doubleNode::accept(Visitor* _v){_v->visit(this);}
 void doubleNode::identify(){std::cout<<"I am a double node."<<std::endl;}
+Node* doubleNode::clone(){return new doubleNode(*this);}
 
 Node* doubleNode::operator+(  Node& r){
       return r+(*this);

@@ -19,16 +19,20 @@
 
 %type expr {Node*}
 %type start {Node*}
-%extra_argument {Node *result}
+%extra_argument {Node **result}
 
 
 start ::= expr(B) . 
     {
-      evalVisitor *v = new evalVisitor();
-      std::cout<<"OY VEY"<<std::endl;
-      B->identify();
-      B->accept(v);
-      delete v;
+      *result = (B->clone());
+      std::cout<<"inside parser."<<std::endl;
+      // result->identify();
+      // evalVisitor *v = new evalVisitor();
+      // Node *n;
+      // std::cout<<"OY VEY"<<std::endl;
+
+      // result->accept(v);
+      // delete v;
     }
 
 

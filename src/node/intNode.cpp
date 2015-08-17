@@ -6,6 +6,7 @@ intNode::intNode(){dbg("intNode default constructor."<<std::endl);}
 intNode::intNode(int value) : elementaryNode<int> (value){dbg("intNode int constructor."<<std::endl);}
 void intNode::accept(Visitor* _v){_v->visit(this);}
 void intNode::identify(){std::cout<<"I am a int node."<<std::endl;}
+Node* intNode::clone(){return new intNode(*this);}
 
 
 Node* intNode::operator+(   Node& r){

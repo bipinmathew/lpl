@@ -6,7 +6,7 @@
 #include "lpl_scanner.h"
 
 void* ParseAlloc(void* (*allocProc)(size_t));
-void Parse(void* parser, int token, const char* tokenInfo, Node* result);
+void Parse(void* parser, int token, const char* tokenInfo, Node** result);
 void ParseFree(void* parser, void(*freeProc)(void*));
 
 Node* parse(const char* commandLine) {
@@ -27,13 +27,15 @@ Node* parse(const char* commandLine) {
 
     do {
         lexCode = yylex(scanner);
-        Parse(shellParser, lexCode, yyget_text(scanner), result);
+        Parse(shellParser, lexCode, yyget_text(scanner), &result);
     }
     while (lexCode > 0 );
 
     if (-1 == lexCode) {
         fprintf(stderr,"The scanner encountered an error.\n");
     }
+    std::cout<<"FLOP"<<std::endl;
+    result->identify();
 
     /*  Cleanup the scanner and parser */
     yy_delete_buffer(bufferState, scanner);
@@ -49,7 +51,8 @@ int check(const char *str,double _value){
   printf("Trying: %s\n",str);
 
   result=parse(str);
-  return result==value;
+  result->identify();
+  // return result==value;
 }
 
 int main() {
