@@ -22,6 +22,7 @@ class evalVisitor : public Visitor {
     virtual void visit(subNode *_elm);
     virtual void visit(divNode *_elm);
     virtual void visit(multNode *_elm);
+    Node* getTop();
   private:
     std::stack <Node*> S;
 };

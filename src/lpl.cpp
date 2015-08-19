@@ -42,26 +42,31 @@ Node* parse(const char* commandLine) {
     return result;
 }
 
-int eval(Node *root, Visitor *v){
+
+Node* evalHelper(Node *root, evalVisitor *v){
   if(root->getLeft()!=NULL)
-    eval(root->getLeft(),v);
+    evalHelper(root->getLeft(),v);
   if(root->getRight()!=NULL)
-    eval(root->getRight(),v);
+    evalHelper(root->getRight(),v);
   root->accept(v);
-  return 0;
+}
+
+Node* eval(Node *root){
+	evalVisitor *v = new evalVisitor();
+	evalHelper(root,v);
+	return v->getTop();
 }
 
 int check(const char *str,double _value){
   Node *result;
-  evalVisitor *v = new evalVisitor();
   doubleNode *value = new doubleNode(_value);
   int retval;
   printf("Trying: %s\n",str);
 
   result=parse(str);
-  eval(result,v);
+  result = eval(result);
   // result->identify();
-  // return result==value;
+  return result==value;
 }
 
 int main() {
@@ -76,25 +81,25 @@ int main() {
       printf("FAIL!\n");
     }
 
-//    if(check("1+2*3",7)){
-//      printf("FAIL!\n");
-//    }
+    if(check("1+2*3",7)){
+      printf("FAIL!\n");
+    }
 
-//    if(check("1+2*3.0",7)){
-//      printf("FAIL!\n");
-//    }
+    if(check("1+2*3.0",7)){
+      printf("FAIL!\n");
+    }
 
-//    if(check("(1+2)*(3+4)",21)){
-//      printf("FAIL!\n");
-//    }
+    if(check("(1+2)*(3+4)",21)){
+      printf("FAIL!\n");
+    }
 
-//    if(check("(1*2)+(3*4)",14)){
-//      printf("FAIL!\n");
-//    }
+    if(check("(1*2)+(3*4)",14)){
+      printf("FAIL!\n");
+    }
 
-//    if(check("9+(1+2)/0",10)){
-//      printf("FAIL!\n");
-//    }
+    if(check("9+(1+2)/0",10)){
+      printf("FAIL!\n");
+    }
 /*    while (scanf("%s",commandLine)) {
       result=parse(commandLine);
       printNode(result);
