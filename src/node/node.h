@@ -33,6 +33,7 @@ class syntaxErrorException : public std::exception {
 class Node{
   public:
     Node();
+    virtual ~Node();
     virtual void setLeft(Node *_l);
     virtual void setRight(Node *_r);
     virtual Node* getLeft();

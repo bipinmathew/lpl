@@ -52,9 +52,12 @@ Node* evalHelper(Node *root, evalVisitor *v){
 }
 
 Node* eval(Node *root){
+	Node* r;
 	evalVisitor *v = new evalVisitor();
 	evalHelper(root,v);
-	return v->getTop();
+	r = v->getTop();
+	delete v;
+	return r;
 }
 
 bool check(const char *str,double _value){
@@ -70,10 +73,13 @@ bool check(const char *str,double _value){
 	}
 	catch(std::exception &e){
 		std::cerr << e.what() << std::endl;
+		delete result;
+		delete value;
 		return 0;
 	}
 
   r = !((*result)==(*value));
+	delete result;
 	delete value;
 	return r;
 }

@@ -3,6 +3,15 @@
 #include "debug.h"
 
 Node::Node(){dbg("  Node constructor."<<std::endl;);l=NULL;r=NULL;}
+Node::~Node(){
+  dbg("  Node base destructor."<<std::endl;);
+  if(getLeft()!=NULL){
+    delete getLeft();
+  }
+  if(getRight()!=NULL){
+    delete getRight();
+  }
+}
 void Node::setLeft(Node *_l){l = _l;}
 void Node::setRight(Node *_r){r = _r;}
 Node* Node::getLeft(){return l;}
