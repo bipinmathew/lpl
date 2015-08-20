@@ -9,10 +9,6 @@ doubleNode.o: node.h doubleNode.cpp
 	g++ -Werror  -pedantic-errors -g -c -o doubleNode.o doubleNode.cpp
 
 
-errorNode.o: node.h errorNode.cpp
-	g++ -Werror  -pedantic-errors -g -c -o errorNode.o errorNode.cpp
-
-
 addNode.o: node.h addNode.cpp
 	g++ -Werror  -pedantic-errors -g -c -o addNode.o addNode.cpp
 
@@ -32,7 +28,7 @@ multNode.o: node.h multNode.cpp
 visitors.o: visitors.h node.h visitors.cpp
 	g++ -Werror  -pedantic-errors -g -c -o visitors.o visitors.cpp
 
-all: node.o intNode.o doubleNode.o errorNode.o addNode.o subNode.o divNode.o multNode.o visitors.o
+all: node.o intNode.o doubleNode.o addNode.o subNode.o divNode.o multNode.o visitors.o
 
 clean:
 	rm -rf *.o

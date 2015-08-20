@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <exception>
 
 class Node;
 class doubleNode;
@@ -11,11 +12,23 @@ class addNode;
 class subNode;
 class divNode;
 class multNode;
-class errorNode;
 #define DEBUG_BUILD
 #include "visitors.h"
 #include "debug.h"
 
+
+class divByZeroException : public std::exception {
+    virtual const char* what() const throw(){
+      return "Divide by Zero.";
+    }
+};
+
+
+class syntaxErrorException : public std::exception {
+    virtual const char* what() const throw(){
+      return "syntax error.";
+    }
+};
 
 class Node{
   public:
@@ -120,14 +133,6 @@ class doubleNode : public elementaryNode<double> {
     virtual bool operator==(   Node& r) ;
     virtual bool operator==(   intNode& r) ;
     virtual bool operator==(  doubleNode& r);
-};
-
-
-class errorNode : public elementaryNode<std::string>{
-  public:
-    errorNode( std::string s );
-    virtual Node* clone();
-    virtual void accept( Visitor *_v);
 };
 
 

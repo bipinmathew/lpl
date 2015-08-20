@@ -9,7 +9,7 @@ Node* Node::getLeft(){return l;}
 Node* Node::getRight(){return r;}
 void Node::identify(){std::cout<<"I am a generic node."<<std::endl;}
 Node* Node::operator+(   Node& r)  {
-      return new errorNode("node+node error.");
+      throw syntaxErrorException();
     }
 Node* Node::operator+(  doubleNode& r){
     return r+(*this);
@@ -19,7 +19,7 @@ Node* Node::operator+(  doubleNode& r){
 }
 
 Node* Node::operator-(   Node& r)  {
-      return new errorNode("node-node error.");
+      throw syntaxErrorException();
     }
 Node* Node::operator-(  doubleNode& r){
     return r-(*this);
@@ -29,7 +29,7 @@ Node* Node::operator-(  doubleNode& r){
 }
 
 Node* Node::operator/(   Node& r)  {
-      return new errorNode("node/node error.");
+      throw syntaxErrorException();
     }
 Node* Node::operator/(  doubleNode& r){
     return r/(*this);
@@ -39,7 +39,7 @@ Node* Node::operator/(  doubleNode& r){
 }
 
 Node* Node::operator*(   Node& r)  {
-      return new errorNode("node*node error.");
+      throw syntaxErrorException();
     }
 Node* Node::operator*(  doubleNode& r){
     return r*(*this);
@@ -49,9 +49,11 @@ Node* Node::operator*(  doubleNode& r){
 }
 
 bool Node::operator==(   Node& r)  {
-      return false; // this should be an error.
+  dbg("generic node doing generic comparison."<<std::endl;);
+  return false; // this should be an error.
 }
 bool Node::operator==(  doubleNode& r){
+    dbg("generic node doing double comparison."<<std::endl;);
     return r==(*this);
 }
 bool Node::operator==(   intNode& r)  {

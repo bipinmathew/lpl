@@ -57,16 +57,25 @@ Node* eval(Node *root){
 	return v->getTop();
 }
 
-int check(const char *str,double _value){
+bool check(const char *str,double _value){
   Node *result;
+	bool r=0;
   doubleNode *value = new doubleNode(_value);
   int retval;
   printf("Trying: %s\n",str);
 
   result=parse(str);
-  result = eval(result);
-  // result->identify();
-  return result==value;
+	try{
+		result = eval(result);
+	}
+	catch(std::exception &e){
+		std::cerr << e.what() << std::endl;
+		return 0;
+	}
+
+  r = !((*result)==(*value));
+	delete value;
+	return r;
 }
 
 int main() {

@@ -57,6 +57,7 @@ Node* doubleNode::operator*(  intNode& r){
 }
 
 bool doubleNode::operator==(  Node& r){
+      dbg("double node comparing generic node"<<std::endl);
       return r==(*this);
 }
 bool doubleNode::operator==(  doubleNode& r){
