@@ -25,6 +25,7 @@
 start ::= expr(B) . 
     {
       *result = B;
+      // delete B;
       // result->identify();
       // evalVisitor *v = new evalVisitor();
       // Node *n;

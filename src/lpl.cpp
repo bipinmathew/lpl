@@ -61,24 +61,26 @@ const Node* eval(const Node *root){
 }
 
 bool check(const char *str,double _value){
-  const Node *result;
+  const Node *root, *result;
 	bool r=0;
   doubleNode *value = new doubleNode(_value);
   int retval;
   printf("Trying: %s\n",str);
 
-  result=parse(str);
+  root=parse(str);
 	try{
-		result = eval(result);
+		result = eval(root);
 	}
 	catch(std::exception &e){
 		std::cerr << e.what() << std::endl;
+		delete root;
 		delete result;
 		delete value;
 		return 0;
 	}
 
   r = !((*result)==(*value));
+	delete root;
 	delete result;
 	delete value;
 	return r;
@@ -101,7 +103,7 @@ int main() {
     }
 
     if(check("1+2*3.0",7)){
-      printf("FAIL!\n");
+       printf("FAIL!\n");
     }
 
     if(check("(1+2)*(3+4)",21)){
@@ -112,9 +114,9 @@ int main() {
       printf("FAIL!\n");
     }
 
-    // if(check("9+(1+2)/0",10)){
-    //   printf("FAIL!\n");
-    // }
+    if(check("9+(1+2)/0",10)){
+      printf("FAIL!\n");
+    }
 /*    while (scanf("%s",commandLine)) {
       result=parse(commandLine);
       printNode(result);
