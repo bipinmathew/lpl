@@ -43,7 +43,7 @@ Node* parse(const char* commandLine) {
 }
 
 
-Node* evalHelper(const Node *root, evalVisitor *v){
+void evalHelper(const Node *root, evalVisitor *v){
   if(root->getLeft()!=NULL)
     evalHelper(root->getLeft(),v);
   if(root->getRight()!=NULL)
@@ -112,9 +112,9 @@ int main() {
       printf("FAIL!\n");
     }
 
-    if(check("9+(1+2)/0",10)){
-      printf("FAIL!\n");
-    }
+    // if(check("9+(1+2)/0",10)){
+    //   printf("FAIL!\n");
+    // }
 /*    while (scanf("%s",commandLine)) {
       result=parse(commandLine);
       printNode(result);

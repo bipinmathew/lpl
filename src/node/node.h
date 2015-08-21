@@ -43,7 +43,7 @@ class Node{
     virtual void identify() const;
     virtual void accept(Visitor* _v) const = 0;
 
-    virtual Node* clone() = 0;
+    virtual Node* clone() const = 0;
 
     virtual Node* operator+( const Node& r) const;
     virtual Node* operator+( const intNode& r) const;
@@ -86,7 +86,7 @@ class intNode : public elementaryNode<int> {
     virtual void accept(Visitor* _v) const;
      virtual void identify() const;
 
-    virtual Node* clone();
+    virtual Node* clone() const;
      virtual Node* operator+( const Node& r) const;
      virtual Node* operator+( const doubleNode& r) const;
      virtual Node* operator+( const intNode& r) const;
@@ -116,7 +116,7 @@ class doubleNode : public elementaryNode<double> {
     doubleNode(double value);
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
-    virtual Node* clone();
+    virtual Node* clone() const;
     virtual Node* operator+( const Node& r) const;
     virtual Node* operator+( const intNode& r) const;
     virtual Node* operator+( const doubleNode& r) const;
@@ -144,28 +144,28 @@ class addNode : public Node {
     addNode();
     addNode(Node *_l, Node *_r);
     virtual void identify() const;
-    virtual Node* clone();
+    virtual Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 
 class subNode : public Node {
   public:
     subNode(Node *_l, Node *_r);
-    virtual Node* clone();
+    virtual Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 
 class divNode : public Node {
   public:
     divNode(Node *_l, Node *_r);
-    virtual Node* clone();
+    virtual Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 
 class multNode : public Node {
   public:
     multNode(Node *_l, Node *_r);
-    virtual Node* clone();
+    virtual Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 

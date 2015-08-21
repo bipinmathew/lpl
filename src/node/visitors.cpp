@@ -3,8 +3,8 @@
 
 const Node* evalVisitor::getTop(){return S.top();}
 void evalVisitor::visit(const Node *_elm){dbg("Visited a generic."<<std::endl);}
-void evalVisitor::visit(const doubleNode *_elm){dbg("Visited a double."<<std::endl); S.push(_elm);}
-void evalVisitor::visit(const intNode *_elm){dbg("Visited a int."<<std::endl); S.push(_elm);}
+void evalVisitor::visit(const doubleNode *_elm){dbg("Visited a double."<<std::endl); S.push(_elm->clone());}
+void evalVisitor::visit(const intNode *_elm){dbg("Visited a int."<<std::endl); S.push(_elm->clone());}
 void evalVisitor::visit(const addNode *_elm){
   dbg("Visit addNode." << std::endl);
   const Node *l, *r;
@@ -17,6 +17,8 @@ void evalVisitor::visit(const addNode *_elm){
   S.pop();
 
   S.push((*l)+(*r));
+	delete l;
+	delete r;
 }
 
 
@@ -32,6 +34,8 @@ void evalVisitor::visit(const subNode *_elm){
   S.pop();
 
   S.push((*l)-(*r));
+	delete l;
+	delete r;
 }
 
 void evalVisitor::visit(const divNode *_elm){
@@ -46,6 +50,8 @@ void evalVisitor::visit(const divNode *_elm){
   S.pop();
 
   S.push((*l)/(*r));
+	delete l;
+	delete r;
 }
 
 void evalVisitor::visit(const multNode *_elm){
@@ -60,4 +66,6 @@ void evalVisitor::visit(const multNode *_elm){
   S.pop();
 
   S.push((*l)*(*r));
+	delete l;
+	delete r;
 }
