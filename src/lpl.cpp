@@ -43,7 +43,7 @@ Node* parse(const char* commandLine) {
 }
 
 
-Node* evalHelper(Node *root, evalVisitor *v){
+Node* evalHelper(const Node *root, evalVisitor *v){
   if(root->getLeft()!=NULL)
     evalHelper(root->getLeft(),v);
   if(root->getRight()!=NULL)
@@ -51,8 +51,8 @@ Node* evalHelper(Node *root, evalVisitor *v){
   root->accept(v);
 }
 
-Node* eval(Node *root){
-	Node* r;
+const Node* eval(const Node *root){
+	const Node* r;
 	evalVisitor *v = new evalVisitor();
 	evalHelper(root,v);
 	r = v->getTop();
@@ -61,7 +61,7 @@ Node* eval(Node *root){
 }
 
 bool check(const char *str,double _value){
-  Node *result;
+  const Node *result;
 	bool r=0;
   doubleNode *value = new doubleNode(_value);
   int retval;

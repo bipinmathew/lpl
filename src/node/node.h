@@ -37,31 +37,33 @@ class Node{
     virtual void setLeft(Node *_l);
     virtual void setRight(Node *_r);
     virtual Node* getLeft();
+    virtual Node* getLeft() const;
     virtual Node* getRight();
-    virtual void identify();
-    virtual void accept(Visitor* _v) = 0;
+    virtual Node* getRight() const;
+    virtual void identify() const;
+    virtual void accept(Visitor* _v) const = 0;
 
     virtual Node* clone() = 0;
 
-    virtual Node* operator+(   Node& r) ;
-    virtual Node* operator+(   intNode& r) ;
-    virtual Node* operator+(  doubleNode& r);
+    virtual Node* operator+( const Node& r) const;
+    virtual Node* operator+( const intNode& r) const;
+    virtual Node* operator+( const doubleNode& r) const;
 
-    virtual Node* operator-(   Node& r) ;
-    virtual Node* operator-(   intNode& r) ;
-    virtual Node* operator-(  doubleNode& r);
+    virtual Node* operator-( const Node& r ) const  ;
+    virtual Node* operator-( const intNode& r ) const  ;
+    virtual Node* operator-( const doubleNode& r ) const ;
 
-    virtual Node* operator/(   Node& r) ;
-    virtual Node* operator/(   intNode& r) ;
-    virtual Node* operator/(  doubleNode& r);
+    virtual Node* operator/( const Node& r ) const  ;
+    virtual Node* operator/( const intNode& r ) const  ;
+    virtual Node* operator/( const doubleNode& r ) const ;
 
-    virtual Node* operator*(   Node& r) ;
-    virtual Node* operator*(   intNode& r) ;
-    virtual Node* operator*(  doubleNode& r);
+    virtual Node* operator*( const Node& r ) const  ;
+    virtual Node* operator*( const intNode& r ) const  ;
+    virtual Node* operator*( const doubleNode& r ) const ;
 
-    virtual bool operator==(   Node& r) ;
-    virtual bool operator==(   intNode& r) ;
-    virtual bool operator==(  doubleNode& r);
+    virtual bool operator==( const Node& r) const;
+    virtual bool operator==( const intNode& r) const;
+    virtual bool operator==( const doubleNode& r) const;
   private:
     Node *l,*r;
 };
@@ -69,7 +71,7 @@ class Node{
 template <class T>
 class elementaryNode : public Node{
   public:
-    virtual T getValue() {return value;};
+    virtual T getValue() const {return value;};
     virtual void setValue(T _value) {value = _value;};
     elementaryNode(T _v) {setValue(_v);};
     elementaryNode(){};
@@ -81,30 +83,30 @@ class intNode : public elementaryNode<int> {
   public:
     intNode();
     intNode(int value);
-    virtual void accept(Visitor* _v);
-     virtual void identify();
+    virtual void accept(Visitor* _v) const;
+     virtual void identify() const;
 
     virtual Node* clone();
-     virtual Node* operator+(   Node& r) ;
-     virtual Node* operator+(   doubleNode& r) ;
-     virtual Node* operator+(   intNode& r) ;
+     virtual Node* operator+( const Node& r) const;
+     virtual Node* operator+( const doubleNode& r) const;
+     virtual Node* operator+( const intNode& r) const;
 
 
-     virtual Node* operator-(   Node& r) ;
-     virtual Node* operator-(   doubleNode& r) ;
-     virtual Node* operator-(   intNode& r) ;
+     virtual Node* operator-( const Node& r ) const  ;
+     virtual Node* operator-( const doubleNode& r ) const  ;
+     virtual Node* operator-( const intNode& r ) const  ;
 
-    virtual Node* operator/(   Node& r) ;
-    virtual Node* operator/(   intNode& r) ;
-    virtual Node* operator/(  doubleNode& r);
+    virtual Node* operator/( const Node& r ) const  ;
+    virtual Node* operator/( const intNode& r ) const  ;
+    virtual Node* operator/( const doubleNode& r ) const ;
 
-    virtual Node* operator*(   Node& r) ;
-    virtual Node* operator*(   intNode& r) ;
-    virtual Node* operator*(  doubleNode& r);
+    virtual Node* operator*( const Node& r ) const  ;
+    virtual Node* operator*( const intNode& r ) const  ;
+    virtual Node* operator*( const doubleNode& r ) const ;
 
-    virtual bool operator==(   Node& r) ;
-    virtual bool operator==(   intNode& r) ;
-    virtual bool operator==(  doubleNode& r);
+    virtual bool operator==(   const Node& r) const;
+    virtual bool operator==(   const intNode& r) const;
+    virtual bool operator==(   const doubleNode& r) const;
 };
 
 
@@ -112,28 +114,28 @@ class doubleNode : public elementaryNode<double> {
   public:
     doubleNode();
     doubleNode(double value);
-    virtual void accept(Visitor* _v);
-    virtual void identify();
+    virtual void accept(Visitor* _v) const;
+    virtual void identify() const;
     virtual Node* clone();
-    virtual Node* operator+(  Node& r);
-    virtual Node* operator+(  intNode& r);
-    virtual Node* operator+(  doubleNode& r);
+    virtual Node* operator+( const Node& r) const;
+    virtual Node* operator+( const intNode& r) const;
+    virtual Node* operator+( const doubleNode& r) const;
 
-    virtual Node* operator-(   Node& r) ;
-    virtual Node* operator-(   doubleNode& r) ;
-    virtual Node* operator-(   intNode& r) ;
+    virtual Node* operator-( const Node& r ) const  ;
+    virtual Node* operator-( const doubleNode& r ) const  ;
+    virtual Node* operator-( const intNode& r ) const  ;
 
-    virtual Node* operator/(   Node& r) ;
-    virtual Node* operator/(   intNode& r) ;
-    virtual Node* operator/(  doubleNode& r);
+    virtual Node* operator/( const Node& r ) const  ;
+    virtual Node* operator/( const intNode& r ) const  ;
+    virtual Node* operator/( const doubleNode& r ) const ;
 
-    virtual Node* operator*(   Node& r) ;
-    virtual Node* operator*(   intNode& r) ;
-    virtual Node* operator*(  doubleNode& r);
+    virtual Node* operator*( const Node& r ) const  ;
+    virtual Node* operator*( const intNode& r ) const  ;
+    virtual Node* operator*( const doubleNode& r ) const ;
 
-    virtual bool operator==(   Node& r) ;
-    virtual bool operator==(   intNode& r) ;
-    virtual bool operator==(  doubleNode& r);
+    virtual bool operator==(   const Node& r) const ;
+    virtual bool operator==(   const intNode& r) const ;
+    virtual bool operator==(   const doubleNode& r) const ;
 };
 
 
@@ -141,30 +143,30 @@ class addNode : public Node {
   public:
     addNode();
     addNode(Node *_l, Node *_r);
-    virtual void identify();
+    virtual void identify() const;
     virtual Node* clone();
-    virtual void accept(Visitor* _v);
+    virtual void accept(Visitor* _v) const;
 };
 
 class subNode : public Node {
   public:
     subNode(Node *_l, Node *_r);
     virtual Node* clone();
-    virtual void accept(Visitor* _v);
+    virtual void accept(Visitor* _v) const;
 };
 
 class divNode : public Node {
   public:
     divNode(Node *_l, Node *_r);
     virtual Node* clone();
-    virtual void accept(Visitor* _v);
+    virtual void accept(Visitor* _v) const;
 };
 
 class multNode : public Node {
   public:
     multNode(Node *_l, Node *_r);
     virtual Node* clone();
-    virtual void accept(Visitor* _v);
+    virtual void accept(Visitor* _v) const;
 };
 
 #endif

@@ -4,26 +4,26 @@
 #include "node.h"
 class Visitor {
   public:
-    virtual void visit(Node *_elm)=0;
-    virtual void visit(intNode *_elm)=0;
-    virtual void visit(doubleNode *_elm)=0;
-    virtual void visit(addNode *_elm)=0;
-    virtual void visit(subNode *_elm)=0;
-    virtual void visit(divNode *_elm)=0;
-    virtual void visit(multNode *_elm)=0;
+    virtual void visit(const Node *_elm)=0;
+    virtual void visit(const intNode *_elm)=0;
+    virtual void visit(const doubleNode *_elm)=0;
+    virtual void visit(const addNode *_elm)=0;
+    virtual void visit(const subNode *_elm)=0;
+    virtual void visit(const divNode *_elm)=0;
+    virtual void visit(const multNode *_elm)=0;
 };
 
 class evalVisitor : public Visitor {
   public:
-    virtual void visit(Node *_elm);
-    virtual void visit(intNode *_elm);
-    virtual void visit(doubleNode *_elm);
-    virtual void visit(addNode *_elm);
-    virtual void visit(subNode *_elm);
-    virtual void visit(divNode *_elm);
-    virtual void visit(multNode *_elm);
-    Node* getTop();
+    virtual void visit(const Node *_elm);
+    virtual void visit(const intNode *_elm);
+    virtual void visit(const doubleNode *_elm);
+    virtual void visit(const addNode *_elm);
+    virtual void visit(const subNode *_elm);
+    virtual void visit(const divNode *_elm);
+    virtual void visit(const multNode *_elm);
+    const Node* getTop();
   private:
-    std::stack <Node*> S;
+    std::stack <const Node*> S;
 };
 #endif
