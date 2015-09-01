@@ -54,8 +54,17 @@ void evalHelper(const Node *root, evalVisitor *v){
 const Node* eval(const Node *root){
 	const Node* r;
 	evalVisitor *v = new evalVisitor();
-	evalHelper(root,v);
-	r = v->getTop();
+  try{
+	  evalHelper(root,v);
+  }
+  catch(std::exception &e){
+		std::cerr << e.what() << std::endl;
+    v->cleanup();
+    delete v;
+    throw e;
+  }
+	r = v->getTop()->clone();
+  v->cleanup();
 	delete v;
 	return r;
 }
@@ -74,7 +83,6 @@ bool check(const char *str,double _value){
 	catch(std::exception &e){
 		std::cerr << e.what() << std::endl;
 		delete root;
-		delete result;
 		delete value;
 		return 0;
 	}
