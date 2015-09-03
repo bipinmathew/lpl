@@ -2,7 +2,6 @@
 #include <iostream>
 #include "debug.h"
 
-intNode::intNode(){dbg("intNode default constructor."<<std::endl);}
 intNode::intNode(int value) : elementaryNode<int> (value){dbg("intNode int constructor."<<std::endl);}
 void intNode::accept(Visitor* _v) const {_v->visit(this);}
 void intNode::identify() const {std::cout<<"I am a int node."<<std::endl;}

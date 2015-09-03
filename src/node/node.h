@@ -72,14 +72,12 @@ class elementaryNode : public Node{
     virtual T getValue() const {return value;};
     virtual void setValue(T _value) {value = _value;};
     elementaryNode(T _v) {setValue(_v);};
-    elementaryNode(){};
   private:
     T value;
 };
 
 class intNode : public elementaryNode<int> {
   public:
-    intNode();
     intNode(int value);
     virtual void accept(Visitor* _v) const;
      virtual void identify() const;
@@ -110,7 +108,6 @@ class intNode : public elementaryNode<int> {
 
 class doubleNode : public elementaryNode<double> {
   public:
-    doubleNode();
     doubleNode(double value);
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
@@ -139,7 +136,6 @@ class doubleNode : public elementaryNode<double> {
 
 class addNode : public Node {
   public:
-    addNode();
     addNode(Node *_l, Node *_r);
     virtual void identify() const;
     virtual Node* clone() const;

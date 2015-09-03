@@ -2,7 +2,6 @@
 #include <iostream>
 #include "debug.h"
 
-doubleNode::doubleNode(){dbg("doubleNode default constructor."<<std::endl);}
 doubleNode::doubleNode(double value) : elementaryNode<double> (value){dbg("doubleNode double constructor."<<std::endl);}
 void doubleNode::accept(Visitor* _v) const {_v->visit(this);}
 void doubleNode::identify() const {std::cout<<"I am a double node."<<std::endl;}
