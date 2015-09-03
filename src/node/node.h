@@ -36,9 +36,7 @@ class Node{
     virtual ~Node();
     virtual void setLeft(Node *_l);
     virtual void setRight(Node *_r);
-    virtual Node* getLeft();
     virtual Node* getLeft() const;
-    virtual Node* getRight();
     virtual Node* getRight() const;
     virtual void identify() const;
     virtual void accept(Visitor* _v) const = 0;

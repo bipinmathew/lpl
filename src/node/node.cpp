@@ -14,8 +14,6 @@ Node::~Node(){
 }
 void Node::setLeft(Node *_l){l = _l;}
 void Node::setRight(Node *_r){r = _r;}
-Node* Node::getLeft(){return l;}
-Node* Node::getRight(){return r;}
 
 Node* Node::getLeft() const {return l;}
 Node* Node::getRight() const {return r;}
@@ -63,8 +61,7 @@ Node* Node::operator*( const doubleNode& r ) const {
 }
 
 bool Node::operator==( const Node& r) const  {
-  dbg("generic node doing generic comparison."<<std::endl;);
-  return false; // this should be an error.
+  throw syntaxErrorException();
 }
 bool Node::operator==( const doubleNode& r) const {
     dbg("generic node doing double comparison."<<std::endl;);
