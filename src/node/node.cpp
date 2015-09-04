@@ -21,7 +21,7 @@ Node* Node::getRight() const {return r;}
 
 void Node::identify() const {std::cout<<"I am a generic node."<<std::endl;}
 Node* Node::operator+( const Node& r) const {
-      throw syntaxErrorException();
+      throw syntaxError();
     }
 Node* Node::operator+( const doubleNode& r) const {
     return r+(*this);
@@ -31,7 +31,7 @@ Node* Node::operator+( const doubleNode& r) const {
 }
 
 Node* Node::operator-( const Node& r ) const   {
-      throw syntaxErrorException();
+      throw syntaxError();
     }
 Node* Node::operator-( const doubleNode& r ) const {
     return r-(*this);
@@ -41,7 +41,7 @@ Node* Node::operator-( const doubleNode& r ) const {
 }
 
 Node* Node::operator/( const Node& r ) const   {
-      throw syntaxErrorException();
+      throw syntaxError();
     }
 Node* Node::operator/( const doubleNode& r ) const {
     return r/(*this);
@@ -51,7 +51,7 @@ Node* Node::operator/( const doubleNode& r ) const {
 }
 
 Node* Node::operator*( const Node& r ) const   {
-      throw syntaxErrorException();
+      throw syntaxError();
     }
 Node* Node::operator*( const doubleNode& r ) const {
     return r*(*this);
@@ -61,7 +61,7 @@ Node* Node::operator*( const doubleNode& r ) const {
 }
 
 bool Node::operator==( const Node& r) const  {
-  throw syntaxErrorException();
+  throw syntaxError();
 }
 bool Node::operator==( const doubleNode& r) const {
     dbg("generic node doing double comparison."<<std::endl;);

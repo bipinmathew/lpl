@@ -17,14 +17,14 @@ class multNode;
 #include "debug.h"
 
 
-class divByZeroException : public std::exception {
+class divByZeroError : public std::exception {
     virtual const char* what() const throw(){
       return "Divide by Zero.";
     }
 };
 
 
-class syntaxErrorException : public std::exception {
+class syntaxError : public std::exception {
     virtual const char* what() const throw(){
       return "syntax error.";
     }

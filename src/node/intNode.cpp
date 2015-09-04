@@ -42,7 +42,7 @@ Node* intNode::operator/( const doubleNode& r ) const {
 Node* intNode::operator/( const intNode& r ) const {
   dbg("int class doing int division"<<std::endl);
   if(r.getValue()==0)
-      throw divByZeroException();
+      throw divByZeroError();
   else
       return new intNode(getValue()/r.getValue());
 }

@@ -12,10 +12,10 @@
   #include "node.h"
 }
 
-/* %syntax_error
+%syntax_error
 {
-  result->type = terror;
-} */
+  throw syntaxError();
+}
 
 %type expr {Node*}
 %type start {Node*}
@@ -23,23 +23,15 @@
 
 
 start ::= expr(B) . 
-    {
-      *result = B;
-      // delete B;
-      // result->identify();
-      // evalVisitor *v = new evalVisitor();
-      // Node *n;
-      // std::cout<<"OY VEY"<<std::endl;
-
-      // result->accept(v);
-      // delete v;
-    }
+{
+  *result = B;
+}
 
 
 /* Assignment */
-expr(A) ::= NUMBER(B). {A = new intNode(atoi(B));}
-expr(A) ::= FLOAT(B).  {A = new doubleNode(atof(B));}
-expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
+expr(A) ::= NUMBER(B). {*result = A = new intNode(atoi(B));}
+expr(A) ::= FLOAT(B).  {*result = A = new doubleNode(atof(B));}
+expr(A) ::= LPARENS expr(B) RPARENS. {*result=A=B;}
 /* End Assignment */
 
 /* Arrays */
@@ -51,7 +43,7 @@ expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 not setting the node type correctly. We should automatically promote from the
 leaf nodes. */
 
-expr(C) ::= expr(A) ADD expr(B). {C = new addNode(A,B);} 
-expr(C) ::= expr(A) SUB expr(B). {C = new subNode(A,B);} 
-expr(C) ::= expr(A) DIV expr(B). {C = new divNode(A,B);} 
-expr(C) ::= expr(A) MULT expr(B). {C = new multNode(A,B);} 
+expr(C) ::= expr(A) ADD expr(B). {*result = C = new addNode(A,B);} 
+expr(C) ::= expr(A) SUB expr(B). {*result = C = new subNode(A,B);} 
+expr(C) ::= expr(A) DIV expr(B). {*result = C = new divNode(A,B);} 
+expr(C) ::= expr(A) MULT expr(B). {*result = C = new multNode(A,B);}
