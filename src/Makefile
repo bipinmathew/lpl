@@ -7,4 +7,4 @@ libparser:
 clean:
 	$(MAKE) -C parser clean
 	$(MAKE) -C tip  clean
-	rm lpl.o lpl
+	rm lpl

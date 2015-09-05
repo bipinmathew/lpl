@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser/parser.h"
-#include "parser/node/node.h"
+#include "parser/nodes/node.h"
 
 bool check(const char *str,double _value){
   const Node *root=NULL, *result=NULL;
