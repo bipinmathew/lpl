@@ -28,4 +28,5 @@ class evalVisitor : public Visitor {
     std::stack <const Node*> S;
     std::stack <const Node*> T;
 };
+
 #endif

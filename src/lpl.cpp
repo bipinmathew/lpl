@@ -38,40 +38,38 @@ int main() {
     fp = fopen("errors.log","w");
     ParseTrace(fp,"err: ");
 
-    if(check("1+2",3)){
-       printf("FAIL!\n");
-    }
-
-    if(check("1+2*3",7)){
-      printf("FAIL!\n");
-    }
-
-    if(check("1+2*3.0",7)){
-       printf("FAIL!\n");
-    }
-
-    if(check("(1+2)*(3+4)",21)){
-      printf("FAIL!\n");
-    }
-
-    if(check("(1*2)+(3*4)",14)){
-      printf("FAIL!\n");
-    }
-
-    if(check("9+(1+2)/0",10)){
-      printf("FAIL!\n");
-    } 
-    if(check("+++",10)){
-      printf("FAIL!");
-    }
-    if(check("3+++3",6)){
-      printf("FAIL!\n");
-    }
-    /*  while (scanf("%s",commandLine)) {
-          result=parse(commandLine);
-          printNode(result);
-          printf("\n");
-        } */
+  //    if(check("1+2",3)){
+  //       printf("FAIL!\n");
+  //    }
+  //
+  //    if(check("1+2*3",7)){
+  //      printf("FAIL!\n");
+  //    }
+  //
+  //    if(check("1+2*3.0",7)){
+  //       printf("FAIL!\n");
+  //    }
+  //
+  //    if(check("(1+2)*(3+4)",21)){
+  //      printf("FAIL!\n");
+  //    }
+  //
+  //    if(check("(1*2)+(3*4)",14)){
+  //      printf("FAIL!\n");
+  //    }
+  //
+  //    if(check("9+(1+2)/0",10)){
+  //      printf("FAIL!\n");
+  //    } 
+  //    if(check("+++",10)){
+  //      printf("FAIL!");
+  //    }
+  //    if(check("3+++3",6)){
+  //      printf("FAIL!\n");
+  //    }
+  while (scanf("%s",commandLine)) {
+          std::cout << *eval(parse(commandLine)) << std::endl;
+  }
 
 /*  check("1+2",3);
   check("1+2+3",6);

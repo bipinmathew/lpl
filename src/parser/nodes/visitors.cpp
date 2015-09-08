@@ -77,3 +77,4 @@ void evalVisitor::visit(const multNode *_elm){
 
   S.push((*l)*(*r));
 }
+

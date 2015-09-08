@@ -1,10 +1,14 @@
 #include "node.h"
 #include <iostream>
+#include <string>
 #include "debug.h"
 
 intNode::intNode(int value) : elementaryNode<int> (value){dbg("intNode int constructor."<<std::endl);}
 void intNode::accept(Visitor* _v) const {_v->visit(this);}
 void intNode::identify() const {std::cout<<"I am a int node."<<std::endl;}
+
+std::string intNode::print() const {return std::to_string(getValue());}
+
 Node* intNode::clone() const {return new intNode(*this);}
 
 
@@ -70,4 +74,3 @@ bool intNode::operator==(   const intNode& r) const {
   dbg("int comparing int node"<<std::endl);
   return getValue()==r.getValue();
 }
-

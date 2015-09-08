@@ -62,9 +62,14 @@ class Node{
     virtual bool operator==( const Node& r) const;
     virtual bool operator==( const intNode& r) const;
     virtual bool operator==( const doubleNode& r) const;
+
+    friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
+    virtual std::ostream& print (std::ostream& rhs) const {return rhs << "generic node."; };
     Node *l,*r;
 };
+
+std::ostream &operator<<(std::ostream &os, Node const *rhs);
 
 template <class T>
 class elementaryNode : public Node{
@@ -80,7 +85,13 @@ class intNode : public elementaryNode<int> {
   public:
     intNode(int value);
     virtual void accept(Visitor* _v) const;
-     virtual void identify() const;
+    virtual void identify() const;
+
+    std::ostream& print(std::ostream& os) const {
+      return os << getValue();
+    }
+
+    virtual std::string print() const;
 
     virtual Node* clone() const;
      virtual Node* operator+( const Node& r) const;
@@ -105,12 +116,20 @@ class intNode : public elementaryNode<int> {
     virtual bool operator==(   const doubleNode& r) const;
 };
 
+std::ostream &operator<<(std::ostream &os, intNode const *rhs);
 
 class doubleNode : public elementaryNode<double> {
   public:
     doubleNode(double value);
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
+
+
+    std::ostream& print(std::ostream& os) const {
+      return os << getValue();
+    }
+
+    virtual std::string print() const;
     virtual Node* clone() const;
     virtual Node* operator+( const Node& r) const;
     virtual Node* operator+( const intNode& r) const;
@@ -132,6 +151,9 @@ class doubleNode : public elementaryNode<double> {
     virtual bool operator==(   const intNode& r) const ;
     virtual bool operator==(   const doubleNode& r) const ;
 };
+
+
+std::ostream &operator<<(std::ostream &os, doubleNode const *rhs);
 
 
 class addNode : public Node {
