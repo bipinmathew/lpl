@@ -12,7 +12,6 @@ class addNode;
 class subNode;
 class divNode;
 class multNode;
-#define DEBUG_BUILD
 #include "visitors.h"
 #include "debug.h"
 

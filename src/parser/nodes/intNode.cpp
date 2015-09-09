@@ -5,7 +5,7 @@
 
 intNode::intNode(int value) : elementaryNode<int> (value){dbg("intNode int constructor."<<std::endl);}
 void intNode::accept(Visitor* _v) const {_v->visit(this);}
-void intNode::identify() const {std::cout<<"I am a int node."<<std::endl;}
+void intNode::identify() const {dbg("I am a int node."<<std::endl);}
 
 std::string intNode::print() const {return std::to_string(getValue());}
 

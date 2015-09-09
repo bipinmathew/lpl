@@ -4,7 +4,7 @@
 
 doubleNode::doubleNode(double value) : elementaryNode<double> (value){dbg("doubleNode double constructor."<<std::endl);}
 void doubleNode::accept(Visitor* _v) const {_v->visit(this);}
-void doubleNode::identify() const {std::cout<<"I am a double node."<<std::endl;}
+void doubleNode::identify() const {dbg("I am a double node."<<std::endl);}
 
 std::string doubleNode::print() const {return std::to_string(getValue());}
 

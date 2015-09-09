@@ -19,7 +19,7 @@ Node* Node::getLeft() const {return l;}
 Node* Node::getRight() const {return r;}
 
 
-void Node::identify() const {std::cout<<"I am a generic node."<<std::endl;}
+void Node::identify() const {dbg("I am a generic node."<<std::endl);}
 Node* Node::operator+( const Node& r) const {
       throw syntaxError();
     }
