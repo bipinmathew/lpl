@@ -64,7 +64,7 @@ class Node{
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
-    virtual std::ostream& print (std::ostream& rhs) const {return rhs << "generic node."; };
+    virtual std::ostream& print (std::ostream& rhs) const;
     Node *l,*r;
 };
 
@@ -86,11 +86,8 @@ class intNode : public elementaryNode<int> {
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
 
-    std::ostream& print(std::ostream& os) const {
-      return os << getValue();
-    }
+    virtual std::ostream& print(std::ostream& os) const;
 
-    virtual std::string print() const;
 
     virtual Node* clone() const;
      virtual Node* operator+( const Node& r) const;
@@ -124,11 +121,8 @@ class doubleNode : public elementaryNode<double> {
     virtual void identify() const;
 
 
-    std::ostream& print(std::ostream& os) const {
-      return os << getValue();
-    }
+    std::ostream& print(std::ostream& os) const;
 
-    virtual std::string print() const;
     virtual Node* clone() const;
     virtual Node* operator+( const Node& r) const;
     virtual Node* operator+( const intNode& r) const;

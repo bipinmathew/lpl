@@ -70,3 +70,6 @@ bool Node::operator==( const doubleNode& r) const {
 bool Node::operator==( const intNode& r) const {
     return r==(*this);
 }
+
+
+std::ostream& Node::print (std::ostream& rhs) const {return rhs << "generic node."; }

@@ -6,7 +6,11 @@ doubleNode::doubleNode(double value) : elementaryNode<double> (value){dbg("doubl
 void doubleNode::accept(Visitor* _v) const {_v->visit(this);}
 void doubleNode::identify() const {dbg("I am a double node."<<std::endl);}
 
-std::string doubleNode::print() const {return std::to_string(getValue());}
+
+
+std::ostream& doubleNode::print(std::ostream& os) const {
+  return os << getValue();
+}
 
 Node* doubleNode::clone() const {return new doubleNode(*this);}
 
