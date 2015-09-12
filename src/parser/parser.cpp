@@ -29,6 +29,13 @@ Node* parse(const char* commandLine) {
         try{
           Parse(shellParser, lexCode, yyget_text(scanner), &result);
         }
+        catch(syntaxError &e){
+          if(result != NULL) delete result;
+          yy_delete_buffer(bufferState, scanner);
+          yylex_destroy(scanner);
+          ParseFree(shellParser, free);
+          throw e;
+        }
         catch(std::exception &e){
           if(result != NULL) delete result;
           yy_delete_buffer(bufferState, scanner);
