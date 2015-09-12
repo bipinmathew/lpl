@@ -5,13 +5,13 @@
 #include "gtest/gtest.h"
 
 
-inline void check(const char *str,double _value){
+bool check(const char *str,double _value){
   const Node *root=NULL, *result=NULL;
 	bool r=0;
   int retval;
   doubleNode *value;
 
-  printf("Trying: %s\n",str);
+  //printf("Trying: %s\n",str);
 
 	try{
     value = new doubleNode(_value);
@@ -25,19 +25,27 @@ inline void check(const char *str,double _value){
     throw;
 	}
 
-  EXPECT_EQ((*result),(*value));
+  r= ((*result)==(*value));
 	delete root;
 	delete result;
 	delete value;
+  return r;
 }
 
 
 TEST(LPL,Arithmetic){
-  check("1+2",3);
-  check("1+2*3",7);
-  check("1+2*3.0",7);
-  check("(1+2)*(3+4)",21);
-  check("(1*2)+(3*4)",14);
+  EXPECT_TRUE(check("1+2",3));
+  EXPECT_TRUE(check("1+2*3",7));
+  EXPECT_TRUE(check("1+2*3.0",7));
+  EXPECT_TRUE(check("(1+2)*(3+4)",21));
+  EXPECT_TRUE(check("(1*2)+(3*4)",14));
+  // EXPECT_TRUE(check("+++",10));
+  // EXPECT_TRUE(check("3+++3",6));
+}
+
+
+TEST(LPL,Exceptions){
+  EXPECT_THROW(check("9+(1+2)/0",10),divByZeroError);
 }
 
 
