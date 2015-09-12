@@ -1,18 +1,48 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "parser/parser.h"
+#include "parser/nodes/node.h"
 #include "gtest/gtest.h"
 
-EXPECT_EQ(3,parse("1+2"));
-EXPECT_EQ(7,parse("1+2*3"));
-EXPECT_EQ(7,parse("1+2*3.0"));
-EXPECT_EQ(21,parse("(1+2)*(3+4)"));
-EXPECT_EQ(14,parse("(1*2)+(3*4)"));
-EXPECT_EQ(10,parse("9+(1+2)/0"));
-EXPECT_EQ(10,parse("+++"));
-EXPECT_EQ(6,parse("3+++3"));
-EXPECT_EQ(3,parse("1+2"));
-EXPECT_EQ(6,parse("1+2+3"));
-EXPECT_EQ(7,parse("3+4.0"));
-EXPECT_EQ(11,parse("5.0+6"));
-EXPECT_EQ(2,parse("1*2"));
-EXPECT_EQ(6,parse("1*2*3"));
-EXPECT_EQ(12,parse("3*4.0"));
-EXPECT_EQ(30,parse("5.0*6"));
+
+inline void check(const char *str,double _value){
+  const Node *root=NULL, *result=NULL;
+	bool r=0;
+  int retval;
+  doubleNode *value;
+
+  printf("Trying: %s\n",str);
+
+	try{
+    value = new doubleNode(_value);
+    root=parse(str);
+		result = eval(root);
+	}
+	catch(std::exception &e){
+		std::cerr << e.what() << std::endl;
+    if (root!=NULL)  delete root;
+		delete value;
+    throw;
+	}
+
+  EXPECT_EQ((*result),(*value));
+	delete root;
+	delete result;
+	delete value;
+}
+
+
+TEST(LPL,Arithmetic){
+  check("1+2",3);
+  check("1+2*3",7);
+  check("1+2*3.0",7);
+  check("(1+2)*(3+4)",21);
+  check("(1*2)+(3*4)",14);
+}
+
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+
