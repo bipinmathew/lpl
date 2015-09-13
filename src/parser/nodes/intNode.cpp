@@ -45,14 +45,17 @@ Node* intNode::operator/( const Node& r ) const {
 }
 Node* intNode::operator/( const doubleNode& r ) const {
   dbg("int class doing double division"<<std::endl);
-  return new doubleNode(getValue()/r.getValue());
+  if(r.getValue()==0)
+      throw divByZeroError();
+  else
+    return new doubleNode(getValue()/r.getValue());
 }
 Node* intNode::operator/( const intNode& r ) const {
   dbg("int class doing int division"<<std::endl);
   if(r.getValue()==0)
       throw divByZeroError();
   else
-      return new intNode(getValue()/r.getValue());
+      return new doubleNode(((double)getValue())/((double)r.getValue()));
 }
 
 Node* intNode::operator*( const Node& r ) const {
