@@ -15,15 +15,15 @@ std::ostream& intNode::print(std::ostream& os) const {
 
 Node* intNode::clone() const {return new intNode(*this);}
 
-
-Node* intNode::operator+( const Node& r) const{
-      return r+(*this);
+Node* intNode::add( const Node& r) const {
+  dbg("double class doing double addition"<<std::endl);
+  return r.add(*this);
 }
-Node* intNode::operator+( const doubleNode& r) const{
+Node* intNode::add( const doubleNode& r) const{
   dbg("int class doing double addition"<<std::endl);
   return new doubleNode(getValue()+r.getValue());
 }
-Node* intNode::operator+( const intNode& r) const{
+Node* intNode::add( const intNode& r) const{
   dbg("int class doing int addition"<<std::endl);
   return new intNode(getValue()+r.getValue());
 }

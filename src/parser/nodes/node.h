@@ -31,6 +31,8 @@ class syntaxError : public std::exception {
 
 class Node{
   public:
+    friend class intNode;
+    friend class doubleNode;
     Node();
     virtual ~Node();
     virtual void setLeft(Node *_l);
@@ -42,9 +44,7 @@ class Node{
 
     virtual Node* clone() const = 0;
 
-    virtual Node* operator+( const Node& r) const;
-    virtual Node* operator+( const intNode& r) const;
-    virtual Node* operator+( const doubleNode& r) const;
+    Node* operator+( const Node& r) const;
 
     virtual Node* operator-( const Node& r ) const  ;
     virtual Node* operator-( const intNode& r ) const  ;
@@ -64,6 +64,9 @@ class Node{
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
+    virtual Node* add( const Node& r) const;
+    virtual Node* add( const intNode& r) const;
+    virtual Node* add( const doubleNode& r) const;
     virtual std::ostream& print (std::ostream& rhs) const;
     Node *l,*r;
 };
@@ -82,6 +85,7 @@ class elementaryNode : public Node{
 
 class intNode : public elementaryNode<int> {
   public:
+    friend class Node;
     intNode(int value);
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
@@ -90,14 +94,10 @@ class intNode : public elementaryNode<int> {
 
 
     virtual Node* clone() const;
-     virtual Node* operator+( const Node& r) const;
-     virtual Node* operator+( const doubleNode& r) const;
-     virtual Node* operator+( const intNode& r) const;
 
-
-     virtual Node* operator-( const Node& r ) const  ;
-     virtual Node* operator-( const doubleNode& r ) const  ;
-     virtual Node* operator-( const intNode& r ) const  ;
+    virtual Node* operator-( const Node& r ) const  ;
+    virtual Node* operator-( const doubleNode& r ) const  ;
+    virtual Node* operator-( const intNode& r ) const  ;
 
     virtual Node* operator/( const Node& r ) const  ;
     virtual Node* operator/( const intNode& r ) const  ;
@@ -110,12 +110,17 @@ class intNode : public elementaryNode<int> {
     virtual bool operator==(   const Node& r) const;
     virtual bool operator==(   const intNode& r) const;
     virtual bool operator==(   const doubleNode& r) const;
+  private:
+    virtual Node* add( const Node& r) const;
+    virtual Node* add( const intNode& r) const;
+    virtual Node* add( const doubleNode& r) const;
 };
 
 std::ostream &operator<<(std::ostream &os, intNode const *rhs);
 
 class doubleNode : public elementaryNode<double> {
   public:
+    friend class Node;
     doubleNode(double value);
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
@@ -124,9 +129,6 @@ class doubleNode : public elementaryNode<double> {
     std::ostream& print(std::ostream& os) const;
 
     virtual Node* clone() const;
-    virtual Node* operator+( const Node& r) const;
-    virtual Node* operator+( const intNode& r) const;
-    virtual Node* operator+( const doubleNode& r) const;
 
     virtual Node* operator-( const Node& r ) const  ;
     virtual Node* operator-( const doubleNode& r ) const  ;
@@ -143,6 +145,10 @@ class doubleNode : public elementaryNode<double> {
     virtual bool operator==(   const Node& r) const ;
     virtual bool operator==(   const intNode& r) const ;
     virtual bool operator==(   const doubleNode& r) const ;
+  private:
+    virtual Node* add( const Node& r) const;
+    virtual Node* add( const intNode& r) const;
+    virtual Node* add( const doubleNode& r) const;
 };
 
 
