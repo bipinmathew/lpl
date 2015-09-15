@@ -32,12 +32,12 @@ bool check(const char *str,double _value){
 }
 
 int main() {
-    FILE *fp;
-    char commandLine[1024];
-    Node *result;
+  FILE *fp;
+  char commandLine[1024];
+  Node *result;
 
-    fp = fopen("errors.log","w");
-    ParseTrace(fp,"err: ");
+  fp = fopen("errors.log","w");
+  ParseTrace(fp,"err: ");
 
   while (scanf("%s",commandLine)) {
     try{
@@ -48,9 +48,6 @@ int main() {
     }
 
   }
-
-
-/*  } */
-    fclose(fp);
-    return 0;
+  fclose(fp);
+  return 0;
 }

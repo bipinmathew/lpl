@@ -29,17 +29,22 @@ terminalNode* doubleNode::add( const intNode& r) const {
   return new doubleNode(getValue()+r.getValue());
 }
 
-terminalNode* doubleNode::operator-( const terminalNode& r ) const {
-      return r-(*this);
+
+
+terminalNode* doubleNode::sub( const terminalNode& r) const {
+  dbg("double class doing double subtraction"<<std::endl);
+  return r.sub(*this);
 }
-terminalNode* doubleNode::operator-( const doubleNode& r ) const {
+
+terminalNode* doubleNode::sub( const doubleNode& r) const {
   dbg("double class doing double subtraction"<<std::endl);
   return new doubleNode(getValue()-r.getValue());
 }
-terminalNode* doubleNode::operator-( const intNode& r ) const {
+terminalNode* doubleNode::sub( const intNode& r) const {
   dbg("double class doing int subtraction"<<std::endl);
   return new doubleNode(getValue()-r.getValue());
 }
+
 
 terminalNode* doubleNode::operator/( const terminalNode& r ) const {
       return r/(*this);

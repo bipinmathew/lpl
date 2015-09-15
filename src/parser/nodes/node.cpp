@@ -22,31 +22,14 @@ Node* Node::getRight() const {return r;}
 void Node::identify() const {dbg("I am a generic node."<<std::endl);}
 
 terminalNode* terminalNode::operator+( const terminalNode& r ) const {
-    return r.add(*this);
+    return this->add(r);
 }
 
-//Node* Node::add( const Node& r) const {
-//    dbg("this seems like an error."<<std::endl);
-//    return r.add(*this);
-//}
-//Node* Node::add( const doubleNode& r) const {
-//    dbg("this seems like an error."<<std::endl);
-//    return r.add(*this);
-//}
-//Node* Node::add( const intNode& r) const {
-//    dbg("this seems like an error."<<std::endl);
-//    return r.add(*this);
-//}
 
-terminalNode* terminalNode::operator-( const terminalNode& r ) const   {
-      throw syntaxError();
-    }
-terminalNode* terminalNode::operator-( const doubleNode& r ) const {
-    return r-(*this);
+terminalNode* terminalNode::operator-( const terminalNode& r ) const {
+    return this->sub(r);
 }
-terminalNode* terminalNode::operator-( const intNode& r ) const   {
-    return r-(*this);
-}
+
 
 terminalNode* terminalNode::operator/( const terminalNode& r ) const   {
       throw syntaxError();

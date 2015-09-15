@@ -59,10 +59,8 @@ class terminalNode : public Node {
     friend class doubleNode;
 
     terminalNode* operator+( const terminalNode& r) const;
+    terminalNode* operator-( const terminalNode& r ) const  ;
 
-    virtual terminalNode* operator-( const terminalNode& r ) const  ;
-    virtual terminalNode* operator-( const intNode& r ) const  ;
-    virtual terminalNode* operator-( const doubleNode& r ) const ;
 
     virtual terminalNode* operator/( const terminalNode& r ) const  ;
     virtual terminalNode* operator/( const intNode& r ) const  ;
@@ -79,6 +77,12 @@ class terminalNode : public Node {
     virtual terminalNode* add( const terminalNode& r) const = 0;
     virtual terminalNode* add( const intNode& r) const = 0;
     virtual terminalNode* add( const doubleNode& r) const = 0;
+
+    virtual terminalNode* sub( const terminalNode& r) const = 0;
+    virtual terminalNode* sub( const intNode& r) const = 0;
+    virtual terminalNode* sub( const doubleNode& r) const = 0;
+
+
 };
 
 
@@ -104,10 +108,6 @@ class intNode : public elementaryNode<int> {
 
     virtual terminalNode* clone() const;
 
-    virtual terminalNode* operator-( const terminalNode& r ) const  ;
-    virtual terminalNode* operator-( const doubleNode& r ) const  ;
-    virtual terminalNode* operator-( const intNode& r ) const  ;
-
     virtual terminalNode* operator/( const terminalNode& r ) const  ;
     virtual terminalNode* operator/( const intNode& r ) const  ;
     virtual terminalNode* operator/( const doubleNode& r ) const ;
@@ -123,6 +123,10 @@ class intNode : public elementaryNode<int> {
     virtual terminalNode* add( const terminalNode& r) const;
     virtual terminalNode* add( const intNode& r) const;
     virtual terminalNode* add( const doubleNode& r) const;
+
+    virtual terminalNode* sub( const terminalNode& r) const;
+    virtual terminalNode* sub( const intNode& r) const;
+    virtual terminalNode* sub( const doubleNode& r) const;
 };
 
 std::ostream &operator<<(std::ostream &os, intNode const *rhs);
@@ -139,10 +143,6 @@ class doubleNode : public elementaryNode<double> {
 
     virtual terminalNode* clone() const;
 
-    virtual terminalNode* operator-( const terminalNode& r ) const  ;
-    virtual terminalNode* operator-( const doubleNode& r ) const  ;
-    virtual terminalNode* operator-( const intNode& r ) const  ;
-
     virtual terminalNode* operator/( const terminalNode& r ) const  ;
     virtual terminalNode* operator/( const intNode& r ) const  ;
     virtual terminalNode* operator/( const doubleNode& r ) const ;
@@ -158,6 +158,11 @@ class doubleNode : public elementaryNode<double> {
     virtual terminalNode* add( const terminalNode& r) const;
     virtual terminalNode* add( const intNode& r) const;
     virtual terminalNode* add( const doubleNode& r) const;
+
+
+    virtual terminalNode* sub( const terminalNode& r) const;
+    virtual terminalNode* sub( const intNode& r) const;
+    virtual terminalNode* sub( const doubleNode& r) const;
 };
 
 
