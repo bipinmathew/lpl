@@ -16,7 +16,7 @@ std::ostream& intNode::print(std::ostream& os) const {
 terminalNode* intNode::clone() const {return new intNode(*this);}
 
 terminalNode* intNode::add( const terminalNode& r) const {
-  dbg("double class doing double addition"<<std::endl);
+  dbg("this should be syntax error."<<std::endl);
   return r.add(*this);
 }
 terminalNode* intNode::add( const doubleNode& r) const{
@@ -30,7 +30,7 @@ terminalNode* intNode::add( const intNode& r) const{
 
 
 terminalNode* intNode::sub( const terminalNode& r) const {
-  dbg("int class doing double subtraction"<<std::endl);
+  dbg("this should be syntax error."<<std::endl);
   return r.sub(*this);
 }
 terminalNode* intNode::sub( const doubleNode& r) const{
@@ -42,19 +42,18 @@ terminalNode* intNode::sub( const intNode& r) const{
   return new intNode(getValue()-r.getValue());
 }
 
-
-
-terminalNode* intNode::operator/( const terminalNode& r ) const {
-      return r/(*this);
+terminalNode* intNode::div( const terminalNode& r ) const {
+  dbg("this should be syntax (int) error."<<std::endl);
+  return r.div(*this);
 }
-terminalNode* intNode::operator/( const doubleNode& r ) const {
+terminalNode* intNode::div( const doubleNode& r ) const {
   dbg("int class doing double division"<<std::endl);
   if(r.getValue()==0)
       throw divByZeroError();
   else
     return new doubleNode(getValue()/r.getValue());
 }
-terminalNode* intNode::operator/( const intNode& r ) const {
+terminalNode* intNode::div( const intNode& r ) const {
   dbg("int class doing int division"<<std::endl);
   if(r.getValue()==0)
       throw divByZeroError();

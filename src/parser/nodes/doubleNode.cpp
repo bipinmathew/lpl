@@ -45,15 +45,15 @@ terminalNode* doubleNode::sub( const intNode& r) const {
   return new doubleNode(getValue()-r.getValue());
 }
 
-
-terminalNode* doubleNode::operator/( const terminalNode& r ) const {
-      return r/(*this);
+terminalNode* doubleNode::div( const terminalNode& r ) const {
+  dbg("this should be syntax error."<<std::endl);
+  return r.div(*this);
 }
-terminalNode* doubleNode::operator/( const doubleNode& r ) const {
+terminalNode* doubleNode::div( const doubleNode& r ) const {
   dbg("double class doing double division"<<std::endl);
   return new doubleNode(getValue()/r.getValue());
 }
-terminalNode* doubleNode::operator/( const intNode& r ) const {
+terminalNode* doubleNode::div( const intNode& r ) const {
   dbg("double class doing int division"<<std::endl);
   return new doubleNode(getValue()/r.getValue());
 }

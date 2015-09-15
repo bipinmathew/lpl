@@ -30,15 +30,8 @@ terminalNode* terminalNode::operator-( const terminalNode& r ) const {
     return this->sub(r);
 }
 
-
 terminalNode* terminalNode::operator/( const terminalNode& r ) const   {
-      throw syntaxError();
-    }
-terminalNode* terminalNode::operator/( const doubleNode& r ) const {
-    return r/(*this);
-}
-terminalNode* terminalNode::operator/( const intNode& r ) const   {
-    return r/(*this);
+    return this->div(r);
 }
 
 terminalNode* terminalNode::operator*( const terminalNode& r ) const   {
