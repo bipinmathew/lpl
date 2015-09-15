@@ -6,7 +6,8 @@
 
 
 bool check(const char *str,double _value){
-  const Node *root=NULL, *result=NULL;
+  const Node *root=NULL;
+  const terminalNode *result=NULL;
 	bool r=0;
   int retval;
   doubleNode *value;

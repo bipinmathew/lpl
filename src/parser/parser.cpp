@@ -67,8 +67,8 @@ void evalHelper(const Node *root, evalVisitor *v){
   root->accept(v);
 }
 
-const Node* eval(const Node *root){
-	const Node* r;
+const terminalNode* eval(const Node *root){
+	const terminalNode* r;
 	evalVisitor *v = new evalVisitor();
   try{
 	  evalHelper(root,v);
@@ -78,9 +78,8 @@ const Node* eval(const Node *root){
     delete v;
     throw;
   }
-	r = v->getTop()->clone();
-  v->cleanup();
-	delete v;
+	r = v->getTop();
+  // v->cleanup();
+	// delete v;
 	return r;
 }
-

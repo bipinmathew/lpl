@@ -22,11 +22,11 @@ class evalVisitor : public Visitor {
     virtual void visit(const subNode *_elm);
     virtual void visit(const divNode *_elm);
     virtual void visit(const multNode *_elm);
-    const Node* getTop() const;
+    const terminalNode* getTop() const;
     void cleanup();
   private:
-    std::stack <const Node*> S;
-    std::stack <const Node*> T;
+    std::stack <const terminalNode*> S;
+    std::stack <const terminalNode*> T;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "node.h"
 #include "visitors.h"
 
-const Node* evalVisitor::getTop() const {return S.top();}
+const terminalNode* evalVisitor::getTop() const {return S.top();}
 void evalVisitor::cleanup(){
   const Node *l;
   dbg("Unwinding stack...\n");
@@ -23,7 +23,7 @@ void evalVisitor::visit(const doubleNode *_elm){dbg("Visited a double."<<std::en
 void evalVisitor::visit(const intNode *_elm){dbg("Visited a int."<<std::endl); S.push(_elm->clone());}
 void evalVisitor::visit(const addNode *_elm){
   dbg("Visit addNode." << std::endl);
-  const Node *l, *r;
+  const terminalNode *l, *r;
   T.push(l = S.top());
   l->identify();
   S.pop();
@@ -38,7 +38,7 @@ void evalVisitor::visit(const addNode *_elm){
 
 void evalVisitor::visit(const subNode *_elm){
   dbg("Visit subNode." << std::endl);
-  const Node *l, *r;
+  const terminalNode *l, *r;
   T.push(l = S.top());
   l->identify();
   S.pop();
@@ -52,7 +52,7 @@ void evalVisitor::visit(const subNode *_elm){
 
 void evalVisitor::visit(const divNode *_elm){
   dbg("Visit divNode." << std::endl);
-  const Node *l, *r;
+  const terminalNode *l, *r;
   T.push(l = S.top());
   l->identify();
   S.pop();
@@ -66,7 +66,7 @@ void evalVisitor::visit(const divNode *_elm){
 
 void evalVisitor::visit(const multNode *_elm){
   dbg("Visit multNode." << std::endl);
-  const Node *l, *r;
+  const terminalNode *l, *r;
   T.push(l = S.top());
   l->identify();
   S.pop();

@@ -13,44 +13,44 @@ std::ostream& intNode::print(std::ostream& os) const {
 }
 
 
-Node* intNode::clone() const {return new intNode(*this);}
+terminalNode* intNode::clone() const {return new intNode(*this);}
 
-Node* intNode::add( const Node& r) const {
+terminalNode* intNode::add( const terminalNode& r) const {
   dbg("double class doing double addition"<<std::endl);
   return r.add(*this);
 }
-Node* intNode::add( const doubleNode& r) const{
+terminalNode* intNode::add( const doubleNode& r) const{
   dbg("int class doing double addition"<<std::endl);
   return new doubleNode(getValue()+r.getValue());
 }
-Node* intNode::add( const intNode& r) const{
+terminalNode* intNode::add( const intNode& r) const{
   dbg("int class doing int addition"<<std::endl);
   return new intNode(getValue()+r.getValue());
 }
 
-Node* intNode::operator-( const Node& r ) const {
+terminalNode* intNode::operator-( const terminalNode& r ) const {
       return r-(*this);
 }
-Node* intNode::operator-( const doubleNode& r ) const {
+terminalNode* intNode::operator-( const doubleNode& r ) const {
   dbg("int class doing double subtraction"<<std::endl);
   return new doubleNode(getValue()-r.getValue());
 }
-Node* intNode::operator-( const intNode& r ) const {
+terminalNode* intNode::operator-( const intNode& r ) const {
   dbg("int class doing int subtraction"<<std::endl);
   return new intNode(getValue()-r.getValue());
 }
 
-Node* intNode::operator/( const Node& r ) const {
+terminalNode* intNode::operator/( const terminalNode& r ) const {
       return r/(*this);
 }
-Node* intNode::operator/( const doubleNode& r ) const {
+terminalNode* intNode::operator/( const doubleNode& r ) const {
   dbg("int class doing double division"<<std::endl);
   if(r.getValue()==0)
       throw divByZeroError();
   else
     return new doubleNode(getValue()/r.getValue());
 }
-Node* intNode::operator/( const intNode& r ) const {
+terminalNode* intNode::operator/( const intNode& r ) const {
   dbg("int class doing int division"<<std::endl);
   if(r.getValue()==0)
       throw divByZeroError();
@@ -58,19 +58,19 @@ Node* intNode::operator/( const intNode& r ) const {
       return new doubleNode(((double)getValue())/((double)r.getValue()));
 }
 
-Node* intNode::operator*( const Node& r ) const {
+terminalNode* intNode::operator*( const terminalNode& r ) const {
       return r*(*this);
 }
-Node* intNode::operator*( const doubleNode& r ) const {
+terminalNode* intNode::operator*( const doubleNode& r ) const {
   dbg("int class doing double multiplication"<<std::endl);
   return new doubleNode(getValue()*r.getValue());
 }
-Node* intNode::operator*( const intNode& r ) const {
+terminalNode* intNode::operator*( const intNode& r ) const {
   dbg("int class doing int multiplication"<<std::endl);
   return new intNode(getValue()*r.getValue());
 }
 
-bool intNode::operator==(   const Node& r) const {
+bool intNode::operator==(   const terminalNode& r) const {
       return r==(*this);
 }
 bool intNode::operator==(   const doubleNode& r) const {

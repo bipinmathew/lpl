@@ -21,61 +21,61 @@ Node* Node::getRight() const {return r;}
 
 void Node::identify() const {dbg("I am a generic node."<<std::endl);}
 
-Node* Node::operator+( const Node& r ) const {
+terminalNode* terminalNode::operator+( const terminalNode& r ) const {
     return r.add(*this);
 }
 
-Node* Node::add( const Node& r) const {
-    dbg("this seems like an error."<<std::endl);
-    return r.add(*this);
-}
-Node* Node::add( const doubleNode& r) const {
-    dbg("this seems like an error."<<std::endl);
-    return r.add(*this);
-}
-Node* Node::add( const intNode& r) const {
-    dbg("this seems like an error."<<std::endl);
-    return r.add(*this);
-}
+//Node* Node::add( const Node& r) const {
+//    dbg("this seems like an error."<<std::endl);
+//    return r.add(*this);
+//}
+//Node* Node::add( const doubleNode& r) const {
+//    dbg("this seems like an error."<<std::endl);
+//    return r.add(*this);
+//}
+//Node* Node::add( const intNode& r) const {
+//    dbg("this seems like an error."<<std::endl);
+//    return r.add(*this);
+//}
 
-Node* Node::operator-( const Node& r ) const   {
+terminalNode* terminalNode::operator-( const terminalNode& r ) const   {
       throw syntaxError();
     }
-Node* Node::operator-( const doubleNode& r ) const {
+terminalNode* terminalNode::operator-( const doubleNode& r ) const {
     return r-(*this);
 }
- Node* Node::operator-( const intNode& r ) const   {
+terminalNode* terminalNode::operator-( const intNode& r ) const   {
     return r-(*this);
 }
 
-Node* Node::operator/( const Node& r ) const   {
+terminalNode* terminalNode::operator/( const terminalNode& r ) const   {
       throw syntaxError();
     }
-Node* Node::operator/( const doubleNode& r ) const {
+terminalNode* terminalNode::operator/( const doubleNode& r ) const {
     return r/(*this);
 }
- Node* Node::operator/( const intNode& r ) const   {
+terminalNode* terminalNode::operator/( const intNode& r ) const   {
     return r/(*this);
 }
 
-Node* Node::operator*( const Node& r ) const   {
+terminalNode* terminalNode::operator*( const terminalNode& r ) const   {
       throw syntaxError();
     }
-Node* Node::operator*( const doubleNode& r ) const {
+terminalNode* terminalNode::operator*( const doubleNode& r ) const {
     return r*(*this);
 }
- Node* Node::operator*( const intNode& r ) const   {
+terminalNode* terminalNode::operator*( const intNode& r ) const   {
     return r*(*this);
 }
 
-bool Node::operator==( const Node& r) const  {
+bool terminalNode::operator==( const terminalNode& r) const  {
   throw syntaxError();
 }
-bool Node::operator==( const doubleNode& r) const {
+bool terminalNode::operator==( const doubleNode& r) const {
     dbg("generic node doing double comparison."<<std::endl;);
     return r==(*this);
 }
-bool Node::operator==( const intNode& r) const {
+bool terminalNode::operator==( const intNode& r) const {
     return r==(*this);
 }
 

@@ -6,6 +6,7 @@
 #include <exception>
 
 class Node;
+class terminalNode;
 class doubleNode;
 class intNode;
 class addNode;
@@ -31,8 +32,6 @@ class syntaxError : public std::exception {
 
 class Node{
   public:
-    friend class intNode;
-    friend class doubleNode;
     Node();
     virtual ~Node();
     virtual void setLeft(Node *_l);
@@ -44,37 +43,47 @@ class Node{
 
     virtual Node* clone() const = 0;
 
-    Node* operator+( const Node& r) const;
-
-    virtual Node* operator-( const Node& r ) const  ;
-    virtual Node* operator-( const intNode& r ) const  ;
-    virtual Node* operator-( const doubleNode& r ) const ;
-
-    virtual Node* operator/( const Node& r ) const  ;
-    virtual Node* operator/( const intNode& r ) const  ;
-    virtual Node* operator/( const doubleNode& r ) const ;
-
-    virtual Node* operator*( const Node& r ) const  ;
-    virtual Node* operator*( const intNode& r ) const  ;
-    virtual Node* operator*( const doubleNode& r ) const ;
-
-    virtual bool operator==( const Node& r) const;
-    virtual bool operator==( const intNode& r) const;
-    virtual bool operator==( const doubleNode& r) const;
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
-    virtual Node* add( const Node& r) const;
-    virtual Node* add( const intNode& r) const;
-    virtual Node* add( const doubleNode& r) const;
     virtual std::ostream& print (std::ostream& rhs) const;
     Node *l,*r;
 };
 
 std::ostream &operator<<(std::ostream &os, Node const *rhs);
 
+
+class terminalNode : public Node {
+  public:
+    friend class intNode;
+    friend class doubleNode;
+
+    terminalNode* operator+( const terminalNode& r) const;
+
+    virtual terminalNode* operator-( const terminalNode& r ) const  ;
+    virtual terminalNode* operator-( const intNode& r ) const  ;
+    virtual terminalNode* operator-( const doubleNode& r ) const ;
+
+    virtual terminalNode* operator/( const terminalNode& r ) const  ;
+    virtual terminalNode* operator/( const intNode& r ) const  ;
+    virtual terminalNode* operator/( const doubleNode& r ) const ;
+
+    virtual terminalNode* operator*( const terminalNode& r ) const  ;
+    virtual terminalNode* operator*( const intNode& r ) const  ;
+    virtual terminalNode* operator*( const doubleNode& r ) const ;
+
+    virtual bool operator==( const terminalNode& r) const;
+    virtual bool operator==( const intNode& r) const;
+    virtual bool operator==( const doubleNode& r) const;
+  private:
+    virtual terminalNode* add( const terminalNode& r) const = 0;
+    virtual terminalNode* add( const intNode& r) const = 0;
+    virtual terminalNode* add( const doubleNode& r) const = 0;
+};
+
+
 template <class T>
-class elementaryNode : public Node{
+class elementaryNode : public terminalNode{
   public:
     virtual T getValue() const {return value;};
     virtual void setValue(T _value) {value = _value;};
@@ -93,27 +102,27 @@ class intNode : public elementaryNode<int> {
     virtual std::ostream& print(std::ostream& os) const;
 
 
-    virtual Node* clone() const;
+    virtual terminalNode* clone() const;
 
-    virtual Node* operator-( const Node& r ) const  ;
-    virtual Node* operator-( const doubleNode& r ) const  ;
-    virtual Node* operator-( const intNode& r ) const  ;
+    virtual terminalNode* operator-( const terminalNode& r ) const  ;
+    virtual terminalNode* operator-( const doubleNode& r ) const  ;
+    virtual terminalNode* operator-( const intNode& r ) const  ;
 
-    virtual Node* operator/( const Node& r ) const  ;
-    virtual Node* operator/( const intNode& r ) const  ;
-    virtual Node* operator/( const doubleNode& r ) const ;
+    virtual terminalNode* operator/( const terminalNode& r ) const  ;
+    virtual terminalNode* operator/( const intNode& r ) const  ;
+    virtual terminalNode* operator/( const doubleNode& r ) const ;
 
-    virtual Node* operator*( const Node& r ) const  ;
-    virtual Node* operator*( const intNode& r ) const  ;
-    virtual Node* operator*( const doubleNode& r ) const ;
+    virtual terminalNode* operator*( const terminalNode& r ) const  ;
+    virtual terminalNode* operator*( const intNode& r ) const  ;
+    virtual terminalNode* operator*( const doubleNode& r ) const ;
 
-    virtual bool operator==(   const Node& r) const;
+    virtual bool operator==(   const terminalNode& r) const;
     virtual bool operator==(   const intNode& r) const;
     virtual bool operator==(   const doubleNode& r) const;
   private:
-    virtual Node* add( const Node& r) const;
-    virtual Node* add( const intNode& r) const;
-    virtual Node* add( const doubleNode& r) const;
+    virtual terminalNode* add( const terminalNode& r) const;
+    virtual terminalNode* add( const intNode& r) const;
+    virtual terminalNode* add( const doubleNode& r) const;
 };
 
 std::ostream &operator<<(std::ostream &os, intNode const *rhs);
@@ -128,27 +137,27 @@ class doubleNode : public elementaryNode<double> {
 
     std::ostream& print(std::ostream& os) const;
 
-    virtual Node* clone() const;
+    virtual terminalNode* clone() const;
 
-    virtual Node* operator-( const Node& r ) const  ;
-    virtual Node* operator-( const doubleNode& r ) const  ;
-    virtual Node* operator-( const intNode& r ) const  ;
+    virtual terminalNode* operator-( const terminalNode& r ) const  ;
+    virtual terminalNode* operator-( const doubleNode& r ) const  ;
+    virtual terminalNode* operator-( const intNode& r ) const  ;
 
-    virtual Node* operator/( const Node& r ) const  ;
-    virtual Node* operator/( const intNode& r ) const  ;
-    virtual Node* operator/( const doubleNode& r ) const ;
+    virtual terminalNode* operator/( const terminalNode& r ) const  ;
+    virtual terminalNode* operator/( const intNode& r ) const  ;
+    virtual terminalNode* operator/( const doubleNode& r ) const ;
 
-    virtual Node* operator*( const Node& r ) const  ;
-    virtual Node* operator*( const intNode& r ) const  ;
-    virtual Node* operator*( const doubleNode& r ) const ;
+    virtual terminalNode* operator*( const terminalNode& r ) const  ;
+    virtual terminalNode* operator*( const intNode& r ) const  ;
+    virtual terminalNode* operator*( const doubleNode& r ) const ;
 
-    virtual bool operator==(   const Node& r) const ;
+    virtual bool operator==(   const terminalNode& r) const ;
     virtual bool operator==(   const intNode& r) const ;
     virtual bool operator==(   const doubleNode& r) const ;
   private:
-    virtual Node* add( const Node& r) const;
-    virtual Node* add( const intNode& r) const;
-    virtual Node* add( const doubleNode& r) const;
+    virtual terminalNode* add( const terminalNode& r) const;
+    virtual terminalNode* add( const intNode& r) const;
+    virtual terminalNode* add( const doubleNode& r) const;
 };
 
 

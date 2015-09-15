@@ -12,60 +12,60 @@ std::ostream& doubleNode::print(std::ostream& os) const {
   return os << getValue();
 }
 
-Node* doubleNode::clone() const {return new doubleNode(*this);}
+terminalNode* doubleNode::clone() const {return new doubleNode(*this);}
 
 
-Node* doubleNode::add( const Node& r) const {
+terminalNode* doubleNode::add( const terminalNode& r) const {
   dbg("double class doing double addition"<<std::endl);
   return r.add(*this);
 }
 
-Node* doubleNode::add( const doubleNode& r) const {
+terminalNode* doubleNode::add( const doubleNode& r) const {
   dbg("double class doing double addition"<<std::endl);
   return new doubleNode(getValue()+r.getValue());
 }
-Node* doubleNode::add( const intNode& r) const {
+terminalNode* doubleNode::add( const intNode& r) const {
   dbg("double class doing int addition"<<std::endl);
   return new doubleNode(getValue()+r.getValue());
 }
 
-Node* doubleNode::operator-( const Node& r ) const {
+terminalNode* doubleNode::operator-( const terminalNode& r ) const {
       return r-(*this);
 }
-Node* doubleNode::operator-( const doubleNode& r ) const {
+terminalNode* doubleNode::operator-( const doubleNode& r ) const {
   dbg("double class doing double subtraction"<<std::endl);
   return new doubleNode(getValue()-r.getValue());
 }
-Node* doubleNode::operator-( const intNode& r ) const {
+terminalNode* doubleNode::operator-( const intNode& r ) const {
   dbg("double class doing int subtraction"<<std::endl);
   return new doubleNode(getValue()-r.getValue());
 }
 
-Node* doubleNode::operator/( const Node& r ) const {
+terminalNode* doubleNode::operator/( const terminalNode& r ) const {
       return r/(*this);
 }
-Node* doubleNode::operator/( const doubleNode& r ) const {
+terminalNode* doubleNode::operator/( const doubleNode& r ) const {
   dbg("double class doing double division"<<std::endl);
   return new doubleNode(getValue()/r.getValue());
 }
-Node* doubleNode::operator/( const intNode& r ) const {
+terminalNode* doubleNode::operator/( const intNode& r ) const {
   dbg("double class doing int division"<<std::endl);
   return new doubleNode(getValue()/r.getValue());
 }
 
-Node* doubleNode::operator*( const Node& r ) const {
+terminalNode* doubleNode::operator*( const terminalNode& r ) const {
       return r*(*this);
 }
-Node* doubleNode::operator*( const doubleNode& r ) const {
+terminalNode* doubleNode::operator*( const doubleNode& r ) const {
   dbg("double class doing double multiplication"<<std::endl);
   return new doubleNode(getValue()*r.getValue());
 }
-Node* doubleNode::operator*( const intNode& r ) const {
+terminalNode* doubleNode::operator*( const intNode& r ) const {
   dbg("double class doing int multiplication"<<std::endl);
   return new doubleNode(getValue()*r.getValue());
 }
 
-bool doubleNode::operator==(  const Node& r) const {
+bool doubleNode::operator==(  const terminalNode& r) const {
       dbg("double node comparing generic node"<<std::endl);
       return r==(*this);
 }
