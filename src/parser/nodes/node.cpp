@@ -38,15 +38,6 @@ terminalNode* terminalNode::operator*( const terminalNode& r ) const   {
 }
 
 bool terminalNode::operator==( const terminalNode& r) const  {
-  throw syntaxError();
+    return this->eq(r);
 }
-bool terminalNode::operator==( const doubleNode& r) const {
-    dbg("generic node doing double comparison."<<std::endl;);
-    return r==(*this);
-}
-bool terminalNode::operator==( const intNode& r) const {
-    return r==(*this);
-}
-
-
 std::ostream& Node::print (std::ostream& rhs) const {return rhs << "generic node."; }

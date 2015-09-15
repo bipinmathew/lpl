@@ -70,15 +70,15 @@ terminalNode* doubleNode::mult( const intNode& r ) const {
   return new doubleNode(getValue()*r.getValue());
 }
 
-bool doubleNode::operator==(  const terminalNode& r) const {
+bool doubleNode::eq(  const terminalNode& r) const {
       dbg("double node comparing generic node"<<std::endl);
-      return r==(*this);
+      return r.eq(*this);
 }
-bool doubleNode::operator==(  const doubleNode& r) const {
+bool doubleNode::eq(  const doubleNode& r) const {
   dbg("double node comparing double node"<<std::endl);
   return getValue()==r.getValue();
 }
-bool doubleNode::operator==(  const intNode& r) const {
+bool doubleNode::eq(  const intNode& r) const {
   dbg("double node comparing int node"<<std::endl);
   return getValue()==r.getValue();
 }
