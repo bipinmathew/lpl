@@ -25,7 +25,6 @@ terminalNode* terminalNode::operator+( const terminalNode& r ) const {
     return this->add(r);
 }
 
-
 terminalNode* terminalNode::operator-( const terminalNode& r ) const {
     return this->sub(r);
 }
@@ -35,13 +34,7 @@ terminalNode* terminalNode::operator/( const terminalNode& r ) const   {
 }
 
 terminalNode* terminalNode::operator*( const terminalNode& r ) const   {
-      throw syntaxError();
-    }
-terminalNode* terminalNode::operator*( const doubleNode& r ) const {
-    return r*(*this);
-}
-terminalNode* terminalNode::operator*( const intNode& r ) const   {
-    return r*(*this);
+    return this->mult(r);
 }
 
 bool terminalNode::operator==( const terminalNode& r) const  {

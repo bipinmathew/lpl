@@ -58,14 +58,14 @@ terminalNode* doubleNode::div( const intNode& r ) const {
   return new doubleNode(getValue()/r.getValue());
 }
 
-terminalNode* doubleNode::operator*( const terminalNode& r ) const {
-      return r*(*this);
+terminalNode* doubleNode::mult( const terminalNode& r ) const {
+      return r.mult(*this);
 }
-terminalNode* doubleNode::operator*( const doubleNode& r ) const {
+terminalNode* doubleNode::mult( const doubleNode& r ) const {
   dbg("double class doing double multiplication"<<std::endl);
   return new doubleNode(getValue()*r.getValue());
 }
-terminalNode* doubleNode::operator*( const intNode& r ) const {
+terminalNode* doubleNode::mult( const intNode& r ) const {
   dbg("double class doing int multiplication"<<std::endl);
   return new doubleNode(getValue()*r.getValue());
 }

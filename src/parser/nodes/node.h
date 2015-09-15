@@ -61,10 +61,7 @@ class terminalNode : public Node {
     terminalNode* operator+( const terminalNode& r ) const;
     terminalNode* operator-( const terminalNode& r ) const;
     terminalNode* operator/( const terminalNode& r ) const;
-
-    virtual terminalNode* operator*( const terminalNode& r ) const  ;
-    virtual terminalNode* operator*( const intNode& r ) const  ;
-    virtual terminalNode* operator*( const doubleNode& r ) const ;
+    terminalNode* operator*( const terminalNode& r ) const  ;
 
     virtual bool operator==( const terminalNode& r) const;
     virtual bool operator==( const intNode& r) const;
@@ -81,6 +78,10 @@ class terminalNode : public Node {
     virtual terminalNode* div( const terminalNode& r) const = 0;
     virtual terminalNode* div( const intNode& r) const = 0;
     virtual terminalNode* div( const doubleNode& r) const = 0;
+
+    virtual terminalNode* mult( const terminalNode& r) const = 0;
+    virtual terminalNode* mult( const intNode& r) const = 0;
+    virtual terminalNode* mult( const doubleNode& r) const = 0;
 
 };
 
@@ -107,10 +108,6 @@ class intNode : public elementaryNode<int> {
 
     virtual terminalNode* clone() const;
 
-    virtual terminalNode* operator*( const terminalNode& r ) const  ;
-    virtual terminalNode* operator*( const intNode& r ) const  ;
-    virtual terminalNode* operator*( const doubleNode& r ) const ;
-
     virtual bool operator==(   const terminalNode& r) const;
     virtual bool operator==(   const intNode& r) const;
     virtual bool operator==(   const doubleNode& r) const;
@@ -126,6 +123,10 @@ class intNode : public elementaryNode<int> {
     virtual terminalNode* div( const terminalNode& r) const;
     virtual terminalNode* div( const intNode& r) const;
     virtual terminalNode* div( const doubleNode& r) const;
+
+    virtual terminalNode* mult( const terminalNode& r) const;
+    virtual terminalNode* mult( const intNode& r) const;
+    virtual terminalNode* mult( const doubleNode& r) const;
 };
 
 std::ostream &operator<<(std::ostream &os, intNode const *rhs);
@@ -142,10 +143,6 @@ class doubleNode : public elementaryNode<double> {
 
     virtual terminalNode* clone() const;
 
-    virtual terminalNode* operator*( const terminalNode& r ) const  ;
-    virtual terminalNode* operator*( const intNode& r ) const  ;
-    virtual terminalNode* operator*( const doubleNode& r ) const ;
-
     virtual bool operator==(   const terminalNode& r) const ;
     virtual bool operator==(   const intNode& r) const ;
     virtual bool operator==(   const doubleNode& r) const ;
@@ -161,6 +158,10 @@ class doubleNode : public elementaryNode<double> {
     virtual terminalNode* div( const terminalNode& r) const;
     virtual terminalNode* div( const intNode& r) const;
     virtual terminalNode* div( const doubleNode& r) const;
+
+    virtual terminalNode* mult( const terminalNode& r) const;
+    virtual terminalNode* mult( const intNode& r) const;
+    virtual terminalNode* mult( const doubleNode& r) const;
 };
 
 
