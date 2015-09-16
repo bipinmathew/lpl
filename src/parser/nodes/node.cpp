@@ -37,7 +37,7 @@ terminalNode* operator*( const terminalNode& l,  const terminalNode& r ) {
     return l.mult(r);
 }
 
-bool terminalNode::operator==( const terminalNode& r) const  {
-    return this->eq(r);
+bool operator==( const terminalNode& l, const terminalNode& r) {
+    return l.eq(r);
 }
 std::ostream& Node::print (std::ostream& rhs) const {return rhs << "generic node."; }

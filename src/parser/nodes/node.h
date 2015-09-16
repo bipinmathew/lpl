@@ -62,7 +62,7 @@ class terminalNode : public Node {
     friend terminalNode* operator-( const terminalNode& l, const terminalNode& r );
     friend terminalNode* operator/( const terminalNode& l, const terminalNode& r );
     friend terminalNode* operator*( const terminalNode& l, const terminalNode& r );
-    bool operator==( const terminalNode& r) const;
+    friend bool operator==( const terminalNode& l, const terminalNode& r);
 
   private:
     virtual terminalNode* add( const terminalNode& r) const = 0;
@@ -100,7 +100,6 @@ class elementaryNode : public terminalNode{
 
 class intNode : public elementaryNode<int> {
   public:
-    friend class Node;
     intNode(int value);
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
@@ -136,7 +135,6 @@ std::ostream &operator<<(std::ostream &os, intNode const *rhs);
 
 class doubleNode : public elementaryNode<double> {
   public:
-    friend class Node;
     doubleNode(double value);
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
