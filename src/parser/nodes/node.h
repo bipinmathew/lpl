@@ -58,10 +58,10 @@ class terminalNode : public Node {
     friend class intNode;
     friend class doubleNode;
 
-    terminalNode* operator+( const terminalNode& r ) const;
-    terminalNode* operator-( const terminalNode& r ) const;
-    terminalNode* operator/( const terminalNode& r ) const;
-    terminalNode* operator*( const terminalNode& r ) const  ;
+    friend terminalNode* operator+( const terminalNode& l, const terminalNode& r );
+    friend terminalNode* operator-( const terminalNode& l, const terminalNode& r );
+    friend terminalNode* operator/( const terminalNode& l, const terminalNode& r );
+    friend terminalNode* operator*( const terminalNode& l, const terminalNode& r );
     bool operator==( const terminalNode& r) const;
 
   private:

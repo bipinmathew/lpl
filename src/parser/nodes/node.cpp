@@ -21,20 +21,20 @@ Node* Node::getRight() const {return r;}
 
 void Node::identify() const {dbg("I am a generic node."<<std::endl);}
 
-terminalNode* terminalNode::operator+( const terminalNode& r ) const {
-    return this->add(r);
+terminalNode* operator+( const terminalNode& l,  const terminalNode& r ) {
+    return l.add(r);
 }
 
-terminalNode* terminalNode::operator-( const terminalNode& r ) const {
-    return this->sub(r);
+terminalNode* operator-( const terminalNode& l,  const terminalNode& r ) {
+    return l.sub(r);
 }
 
-terminalNode* terminalNode::operator/( const terminalNode& r ) const   {
-    return this->div(r);
+terminalNode* operator/( const terminalNode& l,  const terminalNode& r ) {
+    return l.div(r);
 }
 
-terminalNode* terminalNode::operator*( const terminalNode& r ) const   {
-    return this->mult(r);
+terminalNode* operator*( const terminalNode& l,  const terminalNode& r ) {
+    return l.mult(r);
 }
 
 bool terminalNode::operator==( const terminalNode& r) const  {
