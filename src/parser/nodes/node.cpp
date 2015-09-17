@@ -2,7 +2,7 @@
 #include <iostream>
 #include "debug.h"
 
-Node::Node(){dbg("  Node constructor."<<std::endl;);l=NULL;r=NULL;}
+Node::Node(){dbg("Node constructor."<<std::endl;);l=NULL;r=NULL;}
 Node::~Node(){
   dbg("  Node base destructor."<<std::endl;);
   if(getLeft()!=NULL){
@@ -22,6 +22,7 @@ Node* Node::getRight() const {return r;}
 void Node::identify() const {dbg("I am a generic node."<<std::endl);}
 
 terminalNode* operator+( const terminalNode& l,  const terminalNode& r ) {
+    dbg("Dispatching add function..."<<std::endl;);
     return l.add(r);
 }
 

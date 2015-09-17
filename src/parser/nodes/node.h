@@ -34,18 +34,19 @@ class Node{
   public:
     Node();
     virtual ~Node();
-    virtual void setLeft(Node *_l);
-    virtual void setRight(Node *_r);
-    virtual Node* getLeft() const;
-    virtual Node* getRight() const;
+    void setLeft(Node *_l);
+    void setRight(Node *_r);
+    Node* getLeft() const;
+    Node* getRight() const;
+
     virtual void identify() const;
     virtual void accept(Visitor* _v) const = 0;
 
-    virtual Node* clone() const = 0;
 
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
+    virtual Node* clone() const = 0;
     virtual std::ostream& print (std::ostream& rhs) const;
     Node *l,*r;
 };
@@ -65,6 +66,7 @@ class terminalNode : public Node {
     friend bool operator==( const terminalNode& l, const terminalNode& r);
 
   private:
+
     virtual terminalNode* add( const terminalNode& r) const = 0;
     virtual terminalNode* add( const intNode& r) const = 0;
     virtual terminalNode* add( const doubleNode& r) const = 0;
@@ -91,8 +93,8 @@ class terminalNode : public Node {
 template <class T>
 class elementaryNode : public terminalNode{
   public:
-    virtual T getValue() const {return value;};
-    virtual void setValue(T _value) {value = _value;};
+    T getValue() const {return value;};
+    void setValue(T _value) {value = _value;};
     elementaryNode(T _v) {setValue(_v);};
   private:
     T value;
@@ -104,12 +106,12 @@ class intNode : public elementaryNode<int> {
     virtual void accept(Visitor* _v) const;
     virtual void identify() const;
 
-    virtual std::ostream& print(std::ostream& os) const;
 
 
-    virtual terminalNode* clone() const;
+    terminalNode* clone() const;
 
   private:
+    virtual std::ostream& print(std::ostream& os) const;
     virtual terminalNode* add( const terminalNode& r) const;
     virtual terminalNode* add( const intNode& r) const;
     virtual terminalNode* add( const doubleNode& r) const;
@@ -140,11 +142,11 @@ class doubleNode : public elementaryNode<double> {
     virtual void identify() const;
 
 
-    std::ostream& print(std::ostream& os) const;
 
-    virtual terminalNode* clone() const;
+    terminalNode* clone() const;
 
   private:
+    std::ostream& print(std::ostream& os) const;
     virtual terminalNode* add( const terminalNode& r) const;
     virtual terminalNode* add( const intNode& r) const;
     virtual terminalNode* add( const doubleNode& r) const;
@@ -173,29 +175,29 @@ std::ostream &operator<<(std::ostream &os, doubleNode const *rhs);
 class addNode : public Node {
   public:
     addNode(Node *_l, Node *_r);
+    Node* clone() const;
     virtual void identify() const;
-    virtual Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 
 class subNode : public Node {
   public:
     subNode(Node *_l, Node *_r);
-    virtual Node* clone() const;
+    Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 
 class divNode : public Node {
   public:
     divNode(Node *_l, Node *_r);
-    virtual Node* clone() const;
+    Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 
 class multNode : public Node {
   public:
     multNode(Node *_l, Node *_r);
-    virtual Node* clone() const;
+    Node* clone() const;
     virtual void accept(Visitor* _v) const;
 };
 
