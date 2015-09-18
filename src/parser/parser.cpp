@@ -64,7 +64,7 @@ void evalHelper(const Node *root, evalVisitor *v){
     evalHelper(root->getLeft(),v);
   if(root->getRight()!=NULL)
     evalHelper(root->getRight(),v);
-  root->accept(v);
+  root->acceptVisitor(v);
 }
 
 const terminalNode* eval(const Node *root){

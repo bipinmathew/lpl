@@ -19,7 +19,7 @@ Node* Node::getLeft() const {return l;}
 Node* Node::getRight() const {return r;}
 
 
-void Node::identify() const {dbg("I am a generic node."<<std::endl);}
+void Node::_print() const {dbg("I am a generic node."<<std::endl);}
 
 terminalNode* operator+( const terminalNode& l,  const terminalNode& r ) {
     dbg("Dispatching add function..."<<std::endl;);

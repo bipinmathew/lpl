@@ -25,11 +25,11 @@ void evalVisitor::visit(const addNode *_elm){
   dbg("Visit addNode." << std::endl);
   const terminalNode *l, *r;
   T.push(l = S.top());
-  l->identify();
+  l->print();
   S.pop();
 
   T.push(r = S.top());
-  r->identify();
+  r->print();
   S.pop();
 
   S.push((*l)+(*r));
@@ -40,11 +40,11 @@ void evalVisitor::visit(const subNode *_elm){
   dbg("Visit subNode." << std::endl);
   const terminalNode *l, *r;
   T.push(l = S.top());
-  l->identify();
+  l->print();
   S.pop();
 
   T.push(r = S.top());
-  r->identify();
+  r->print();
   S.pop();
 
   S.push((*l)-(*r));
@@ -54,11 +54,11 @@ void evalVisitor::visit(const divNode *_elm){
   dbg("Visit divNode." << std::endl);
   const terminalNode *l, *r;
   T.push(l = S.top());
-  l->identify();
+  l->print();
   S.pop();
 
   T.push(r = S.top());
-  r->identify();
+  r->print();
   S.pop();
 
   S.push((*l)/(*r));
@@ -68,11 +68,11 @@ void evalVisitor::visit(const multNode *_elm){
   dbg("Visit multNode." << std::endl);
   const terminalNode *l, *r;
   T.push(l = S.top());
-  l->identify();
+  l->print();
   S.pop();
 
   T.push(r = S.top());
-  r->identify();
+  r->print();
   S.pop();
 
   S.push((*l)*(*r));

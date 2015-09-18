@@ -13,6 +13,7 @@ class addNode;
 class subNode;
 class divNode;
 class multNode;
+
 #include "visitors.h"
 #include "debug.h"
 
@@ -30,22 +31,27 @@ class syntaxError : public std::exception {
     }
 };
 
+
 class Node{
   public:
+    friend class NodeIter;
     Node();
     virtual ~Node();
     void setLeft(Node *_l);
     void setRight(Node *_r);
     Node* getLeft() const;
     Node* getRight() const;
+    void acceptVisitor(Visitor* _v) const { return accept(_v); };
 
-    virtual void identify() const;
-    virtual void accept(Visitor* _v) const = 0;
+
+    void print() const { return _print(); };
 
 
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
+    virtual void accept(Visitor* _v) const = 0;
+    virtual void _print () const;
     virtual Node* clone() const = 0;
     virtual std::ostream& print (std::ostream& rhs) const;
     Node *l,*r;
@@ -103,14 +109,10 @@ class elementaryNode : public terminalNode{
 class intNode : public elementaryNode<int> {
   public:
     intNode(int value);
-    virtual void accept(Visitor* _v) const;
-    virtual void identify() const;
-
-
-
     terminalNode* clone() const;
-
   private:
+    virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
     virtual std::ostream& print(std::ostream& os) const;
     virtual terminalNode* add( const terminalNode& r) const;
     virtual terminalNode* add( const intNode& r) const;
@@ -138,14 +140,12 @@ std::ostream &operator<<(std::ostream &os, intNode const *rhs);
 class doubleNode : public elementaryNode<double> {
   public:
     doubleNode(double value);
-    virtual void accept(Visitor* _v) const;
-    virtual void identify() const;
-
-
 
     terminalNode* clone() const;
 
   private:
+    virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
     std::ostream& print(std::ostream& os) const;
     virtual terminalNode* add( const terminalNode& r) const;
     virtual terminalNode* add( const intNode& r) const;
@@ -176,29 +176,36 @@ class addNode : public Node {
   public:
     addNode(Node *_l, Node *_r);
     Node* clone() const;
-    virtual void identify() const;
+  private:
     virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
 };
 
 class subNode : public Node {
   public:
     subNode(Node *_l, Node *_r);
     Node* clone() const;
+  private:
     virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
 };
 
 class divNode : public Node {
   public:
     divNode(Node *_l, Node *_r);
     Node* clone() const;
+  private:
     virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
 };
 
 class multNode : public Node {
   public:
     multNode(Node *_l, Node *_r);
     Node* clone() const;
+  private:
     virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
 };
 
 #endif
