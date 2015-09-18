@@ -28,7 +28,10 @@ multNode.o: node.h multNode.cpp
 visitors.o: visitors.h node.h visitors.cpp
 	$(CXX) $(CXXFLAGS)   -c -o visitors.o visitors.cpp
 
-all: node.o intNode.o doubleNode.o addNode.o subNode.o divNode.o multNode.o visitors.o
+node_errors.o: node_errors.h node_errors.cpp
+	$(CXX) $(CXXFLAGS)   -c -o node_errors.o node_errors.cpp
+
+all: node.o intNode.o doubleNode.o addNode.o subNode.o divNode.o multNode.o visitors.o node_errors.o
 
 clean:
 	rm -rf *.o

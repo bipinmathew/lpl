@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <exception>
 
 class Node;
 class terminalNode;
@@ -14,33 +13,20 @@ class subNode;
 class divNode;
 class multNode;
 
+#include "node_errors.h"
 #include "visitors.h"
 #include "debug.h"
 
 
-class divByZeroError : public std::exception {
-    virtual const char* what() const throw(){
-      return "Divide by Zero.";
-    }
-};
-
-
-class syntaxError : public std::exception {
-    virtual const char* what() const throw(){
-      return "syntax error.";
-    }
-};
-
-
 class Node{
   public:
-    friend class NodeIter;
     Node();
     virtual ~Node();
     void setLeft(Node *_l);
     void setRight(Node *_r);
     Node* getLeft() const;
     Node* getRight() const;
+
     void acceptVisitor(Visitor* _v) const { return accept(_v); };
 
 
