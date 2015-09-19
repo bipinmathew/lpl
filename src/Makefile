@@ -1,9 +1,9 @@
 all: export CXXFLAGS = -std=c++11 -pedantic-errors -O3
-all: lpl
+all: lpl docs
 
 
 debug: export CXXFLAGS +=  -std=c++11 -pedantic-errors -g3 -DDEBUG
-debug: lpl
+debug: lpl docs
 
 lpl: libparser tests
 	$(CXX)  $(CXXFLAGS) -static lpl.cpp -L parser -lparser -o lpl
@@ -13,6 +13,10 @@ libparser:
 
 tests:
 	$(MAKE) -C test all 
+
+.PHONY: docs
+docs:
+	doxygen ./lpl_docs.config
 
 clean:
 	$(MAKE) -C parser clean
