@@ -22,4 +22,4 @@ clean:
 	$(MAKE) -C parser clean
 	$(MAKE) -C test clean 
 	$(MAKE) -C tip  clean
-	rm lpl
+	rm -rf lpl ./docs/*
