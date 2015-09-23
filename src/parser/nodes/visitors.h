@@ -27,6 +27,7 @@ class evalVisitor : public Visitor {
     virtual ~evalVisitor();
     void cleanup();
   private:
+    bool getDyadicArgs(const terminalNode** l,const terminalNode** r);
     std::stack <const terminalNode*> S;
     std::stack <const terminalNode*> T;
 };

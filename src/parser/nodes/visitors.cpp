@@ -24,6 +24,18 @@ void evalVisitor::cleanup(){
   }
 }
 
+bool evalVisitor::getDyadicArgs(const terminalNode** l, const terminalNode** r){
+  if(S.size() < 2){
+    throw unexpectedNumArgsError();
+  }
+  T.push(*l = S.top());
+  S.pop();
+
+  T.push(*r = S.top());
+  S.pop();
+  return 0;
+}
+
 void evalVisitor::eval(const Node *root){
   if(root->getLeft()!=NULL)
     eval(root->getLeft());
@@ -38,13 +50,7 @@ void evalVisitor::visit(const intNode *_elm){dbg("Visited a int."<<std::endl); S
 void evalVisitor::visit(const addNode *_elm){
   dbg("Visit addNode." << std::endl);
   const terminalNode *l, *r;
-  T.push(l = S.top());
-  l->print();
-  S.pop();
-
-  T.push(r = S.top());
-  r->print();
-  S.pop();
+  getDyadicArgs(&l,&r);
 
   S.push((*l)+(*r));
 }
@@ -53,13 +59,7 @@ void evalVisitor::visit(const addNode *_elm){
 void evalVisitor::visit(const subNode *_elm){
   dbg("Visit subNode." << std::endl);
   const terminalNode *l, *r;
-  T.push(l = S.top());
-  l->print();
-  S.pop();
-
-  T.push(r = S.top());
-  r->print();
-  S.pop();
+  getDyadicArgs(&l,&r);
 
   S.push((*l)-(*r));
 }
@@ -67,13 +67,7 @@ void evalVisitor::visit(const subNode *_elm){
 void evalVisitor::visit(const divNode *_elm){
   dbg("Visit divNode." << std::endl);
   const terminalNode *l, *r;
-  T.push(l = S.top());
-  l->print();
-  S.pop();
-
-  T.push(r = S.top());
-  r->print();
-  S.pop();
+  getDyadicArgs(&l,&r);
 
   S.push((*l)/(*r));
 }
@@ -81,13 +75,7 @@ void evalVisitor::visit(const divNode *_elm){
 void evalVisitor::visit(const multNode *_elm){
   dbg("Visit multNode." << std::endl);
   const terminalNode *l, *r;
-  T.push(l = S.top());
-  l->print();
-  S.pop();
-
-  T.push(r = S.top());
-  r->print();
-  S.pop();
+  getDyadicArgs(&l,&r);
 
   S.push((*l)*(*r));
 }
