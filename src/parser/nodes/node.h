@@ -33,12 +33,12 @@ class Node{
     void print() const { return _print(); };
 
 
+    virtual Node* clone() const = 0;
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
     virtual void accept(Visitor* _v) const = 0;
     virtual void _print () const;
-    virtual Node* clone() const = 0;
     virtual std::ostream& print (std::ostream& rhs) const;
     Node *l,*r;
 };
@@ -95,7 +95,7 @@ class elementaryNode : public terminalNode{
 class intNode : public elementaryNode<int> {
   public:
     intNode(int value);
-    terminalNode* clone() const;
+    virtual terminalNode* clone() const;
   private:
     virtual void accept(Visitor* _v) const;
     virtual void _print() const;
@@ -126,9 +126,7 @@ std::ostream &operator<<(std::ostream &os, intNode const *rhs);
 class doubleNode : public elementaryNode<double> {
   public:
     doubleNode(double value);
-
-    terminalNode* clone() const;
-
+    virtual terminalNode* clone() const;
   private:
     virtual void accept(Visitor* _v) const;
     virtual void _print() const;

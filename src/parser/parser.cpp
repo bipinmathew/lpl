@@ -59,27 +59,3 @@ Node* parse(const char* commandLine) {
 }
 
 
-void evalHelper(const Node *root, evalVisitor *v){
-  if(root->getLeft()!=NULL)
-    evalHelper(root->getLeft(),v);
-  if(root->getRight()!=NULL)
-    evalHelper(root->getRight(),v);
-  root->acceptVisitor(v);
-}
-
-const terminalNode* eval(const Node *root){
-	const terminalNode* r;
-	evalVisitor *v = new evalVisitor();
-  try{
-	  evalHelper(root,v);
-  }
-  catch(std::exception &e){
-    v->cleanup();
-    delete v;
-    throw;
-  }
-	r = v->getTop();
-  // v->cleanup();
-	// delete v;
-	return r;
-}

@@ -3,33 +3,37 @@
 #include "parser/parser.h"
 #include "parser/nodes/node.h"
 #include "gtest/gtest.h"
+#include "parser/nodes/visitors.h"
 
 
 bool check(const char *str,double _value){
   const Node *root=NULL;
   const terminalNode *result=NULL;
+  evalVisitor *v = new evalVisitor();
 	bool r=0;
   int retval;
   doubleNode *value;
 
-  //printf("Trying: %s\n",str);
+  printf("Trying: %s\n",str);
 
 	try{
     value = new doubleNode(_value);
     root=parse(str);
-		result = eval(root);
+		v->eval(root);
+    result = v->getTop();
 	}
 	catch(std::exception &e){
 		std::cerr << e.what() << std::endl;
     if (root!=NULL)  delete root;
 		delete value;
+    delete v;
     throw;
 	}
 
   r= ((*result)==(*value));
 	delete root;
-	delete result;
 	delete value;
+  delete v;
   return r;
 }
 

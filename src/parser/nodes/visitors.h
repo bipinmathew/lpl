@@ -15,6 +15,7 @@ class Visitor {
 
 class evalVisitor : public Visitor {
   public:
+    void eval(const Node *root);
     virtual void visit(const Node *_elm);
     virtual void visit(const intNode *_elm);
     virtual void visit(const doubleNode *_elm);
@@ -23,6 +24,7 @@ class evalVisitor : public Visitor {
     virtual void visit(const divNode *_elm);
     virtual void visit(const multNode *_elm);
     const terminalNode* getTop() const;
+    virtual ~evalVisitor();
     void cleanup();
   private:
     std::stack <const terminalNode*> S;

@@ -2,6 +2,11 @@
 #include "visitors.h"
 
 const terminalNode* evalVisitor::getTop() const {return S.top();}
+
+evalVisitor::~evalVisitor(){
+  cleanup();
+}
+
 void evalVisitor::cleanup(){
   const Node *l;
   dbg("Unwinding stack...\n");
@@ -18,6 +23,15 @@ void evalVisitor::cleanup(){
     delete l;
   }
 }
+
+void evalVisitor::eval(const Node *root){
+  if(root->getLeft()!=NULL)
+    eval(root->getLeft());
+  if(root->getRight()!=NULL)
+    eval(root->getRight());
+  root->acceptVisitor(this);
+}
+
 void evalVisitor::visit(const Node *_elm){dbg("Visited a generic."<<std::endl);}
 void evalVisitor::visit(const doubleNode *_elm){dbg("Visited a double."<<std::endl); S.push(_elm->clone());}
 void evalVisitor::visit(const intNode *_elm){dbg("Visited a int."<<std::endl); S.push(_elm->clone());}
