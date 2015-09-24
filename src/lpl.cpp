@@ -10,8 +10,6 @@ int main() {
   evalVisitor *v = new evalVisitor();
   Node *result;
 
-  fp = fopen("errors.log","w");
-  ParseTrace(fp,"err: ");
 
   while (scanf("%s",commandLine)) {
     try{
@@ -23,6 +21,5 @@ int main() {
     }
     v->cleanup();
   }
-  fclose(fp);
   return 0;
 }

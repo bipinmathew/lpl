@@ -30,7 +30,9 @@ start ::= expr(B) .
 
 /* Assignment */
 expr(A) ::= NUMBER(B). {*result = A = new intNode(atoi(B));}
+expr(A) ::= SUB NUMBER(B). {*result = A = new intNode(-atoi(B));}
 expr(A) ::= FLOAT(B).  {*result = A = new doubleNode(atof(B));}
+expr(A) ::= SUB FLOAT(B). {*result = A = new doubleNode(-atof(B));}
 expr(A) ::= LPARENS expr(B) RPARENS. {*result=A=B;}
 /* End Assignment */
 

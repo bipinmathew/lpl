@@ -5,7 +5,7 @@
 void* ParseAlloc(void* (*allocProc)(size_t));
 void Parse(void* parser, int token, const char* tokenInfo, Node** result);
 void ParseFree(void* parser, void(*freeProc)(void*));
-void ParseTrace(FILE *stream, char *zPrefix);
+void ParseTrace(FILE *stream, const char *zPrefix);
 
 Node* parse(const char* commandLine) {
     /*  Set up the scanner */
@@ -23,6 +23,10 @@ Node* parse(const char* commandLine) {
     /*  Set up the parser */
     shellParser = ParseAlloc(malloc);
 
+		FILE *fp;
+		fp = fopen("errors.log","w");
+		ParseTrace(fp,"");
+
     do {
         lexCode = yylex(scanner);
         dbg("Token: " << yyget_text(scanner) << std::endl );
@@ -31,6 +35,8 @@ Node* parse(const char* commandLine) {
         }
         catch(syntaxError &e){
           if(result != NULL) delete result;
+					ParseTrace(NULL,"");
+					fclose(fp);
           yy_delete_buffer(bufferState, scanner);
           yylex_destroy(scanner);
           ParseFree(shellParser, free);
@@ -38,6 +44,8 @@ Node* parse(const char* commandLine) {
         }
         catch(std::exception &e){
           if(result != NULL) delete result;
+					ParseTrace(NULL,"");
+					fclose(fp);
           yy_delete_buffer(bufferState, scanner);
           yylex_destroy(scanner);
           ParseFree(shellParser, free);
@@ -52,6 +60,8 @@ Node* parse(const char* commandLine) {
     }
 
     /*  Cleanup the scanner and parser */
+		ParseTrace(NULL,"");
+		fclose(fp);
     yy_delete_buffer(bufferState, scanner);
     yylex_destroy(scanner);
     ParseFree(shellParser, free);
