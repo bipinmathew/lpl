@@ -87,7 +87,7 @@ class elementaryNode : public terminalNode{
   public:
     T getValue() const {return value;};
     void setValue(T _value) {value = _value;};
-    elementaryNode(T _v) {setValue(_v);};
+    elementaryNode(T _v) : value(_v) {};
   private:
     T value;
 };
