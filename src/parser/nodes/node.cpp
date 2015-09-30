@@ -1,23 +1,17 @@
 #include "node.h"
 #include <iostream>
+#include <vector>
 #include "debug.h"
 
-Node::Node(){dbg("Node constructor."<<std::endl;);l=NULL;r=NULL;}
+Node::Node(){dbg("Node constructor."<<std::endl;)}
 Node::~Node(){
-  dbg("  Node base destructor."<<std::endl;);
-  if(getLeft()!=NULL){
-    delete getLeft();
-  }
-  if(getRight()!=NULL){
-    delete getRight();
+  for(std::vector<Node*>::const_iterator it = children.begin(); it!=children.end();++it){
+    if((*it)!=NULL){
+      delete *it;
+    }
   }
 }
-void Node::setLeft(Node *_l){l = _l;}
-void Node::setRight(Node *_r){r = _r;}
-
-Node* Node::getLeft() const {return l;}
-Node* Node::getRight() const {return r;}
-
+void Node::addChild(Node *_c){children.push_back(_c);}
 
 void Node::_print() const {dbg("I am a generic node."<<std::endl);}
 

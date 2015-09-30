@@ -37,10 +37,11 @@ bool evalVisitor::getDyadicArgs(const terminalNode** l, const terminalNode** r){
 }
 
 void evalVisitor::eval(const Node *root){
-  if(root->getLeft()!=NULL)
-    eval(root->getLeft());
-  if(root->getRight()!=NULL)
-    eval(root->getRight());
+  for(std::vector<Node*>::const_iterator it = root->children.begin(); it!=root->children.end();++it){
+    if((*it)!=NULL){
+      eval(*it);
+    }
+  }
   root->acceptVisitor(this);
 }
 

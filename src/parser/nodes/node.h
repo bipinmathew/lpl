@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <vector>
 
 class Node;
 class terminalNode;
@@ -22,10 +23,7 @@ class Node{
   public:
     Node();
     virtual ~Node();
-    void setLeft(Node *_l);
-    void setRight(Node *_r);
-    Node* getLeft() const;
-    Node* getRight() const;
+    void addChild(Node *_c);
 
     void acceptVisitor(Visitor* _v) const { return accept(_v); };
 
@@ -34,13 +32,13 @@ class Node{
 
 
     virtual Node* clone() const = 0;
+    std::vector<Node*> children;
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
   private:
     virtual void accept(Visitor* _v) const = 0;
     virtual void _print () const;
     virtual std::ostream& print (std::ostream& rhs) const;
-    Node *l,*r;
 };
 
 std::ostream &operator<<(std::ostream &os, Node const *rhs);

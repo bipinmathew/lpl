@@ -11,8 +11,8 @@ int main(){
 
   d.setValue(3.8);
   i.setValue(8);
-  a.setLeft(&d);
-  a.setRight(&i);
+  a.addChild(&d);
+  a.addChild(&i);
 
   v.visit(&a);
 

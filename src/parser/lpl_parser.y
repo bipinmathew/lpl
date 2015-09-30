@@ -45,6 +45,7 @@ expr(A) ::= LPARENS expr(B) RPARENS. {*result=A=B;}
 not setting the node type correctly. We should automatically promote from the
 leaf nodes. */
 
+/* expr(C) ::= SUB expr(A).         {*result = C = new negNode(A);} */
 expr(C) ::= expr(A) ADD expr(B). {*result = C = new addNode(A,B);} 
 expr(C) ::= expr(A) SUB expr(B). {*result = C = new subNode(A,B);} 
 expr(C) ::= expr(A) DIV expr(B). {*result = C = new divNode(A,B);} 
