@@ -11,6 +11,7 @@ class Visitor {
     virtual void visit(const subNode *_elm)=0;
     virtual void visit(const divNode *_elm)=0;
     virtual void visit(const multNode *_elm)=0;
+    virtual void visit(const negNode *_elm)=0;
 };
 
 class evalVisitor : public Visitor {
@@ -23,11 +24,13 @@ class evalVisitor : public Visitor {
     virtual void visit(const subNode *_elm);
     virtual void visit(const divNode *_elm);
     virtual void visit(const multNode *_elm);
+    virtual void visit(const negNode *_elm);
     const terminalNode* getTop() const;
     virtual ~evalVisitor();
     void cleanup();
   private:
     bool getDyadicArgs(const terminalNode** l,const terminalNode** r);
+    bool getMonadicArgs(const terminalNode** l);
     std::stack <const terminalNode*> S;
     std::stack <const terminalNode*> T;
 };

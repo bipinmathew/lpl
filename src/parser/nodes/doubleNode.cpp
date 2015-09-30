@@ -70,6 +70,11 @@ terminalNode* doubleNode::mult( const intNode& r ) const {
   return new doubleNode(getValue()*r.getValue());
 }
 
+terminalNode* doubleNode::neg() const {
+  dbg("double class doing int multiplication"<<std::endl);
+  return new doubleNode(-getValue());
+}
+
 bool doubleNode::eq(  const terminalNode& r) const {
       dbg("double node comparing generic node"<<std::endl);
       return r.eq(*this);

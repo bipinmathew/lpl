@@ -32,6 +32,11 @@ terminalNode* operator*( const terminalNode& l,  const terminalNode& r ) {
     return l.mult(r);
 }
 
+terminalNode* negate( const terminalNode& l) {
+    return l.neg();
+}
+
+
 bool operator==( const terminalNode& l, const terminalNode& r) {
     return l.eq(r);
 }

@@ -74,6 +74,11 @@ terminalNode* intNode::mult( const intNode& r ) const {
   return new intNode(getValue()*r.getValue());
 }
 
+terminalNode* intNode::neg() const {
+  dbg("int class doing int multiplication"<<std::endl);
+  return new intNode(-getValue());
+}
+
 bool intNode::eq(   const terminalNode& r) const {
   dbg("  Determining RHS Type:"<<std::endl);
   return r.eq(*this);

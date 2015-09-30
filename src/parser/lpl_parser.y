@@ -30,9 +30,7 @@ start ::= expr(B) .
 
 /* Assignment */
 expr(A) ::= NUMBER(B). {*result = A = new intNode(atoi(B));}
-expr(A) ::= SUB NUMBER(B). {*result = A = new intNode(-atoi(B));}
 expr(A) ::= FLOAT(B).  {*result = A = new doubleNode(atof(B));}
-expr(A) ::= SUB FLOAT(B). {*result = A = new doubleNode(-atof(B));}
 expr(A) ::= LPARENS expr(B) RPARENS. {*result=A=B;}
 /* End Assignment */
 
@@ -45,7 +43,7 @@ expr(A) ::= LPARENS expr(B) RPARENS. {*result=A=B;}
 not setting the node type correctly. We should automatically promote from the
 leaf nodes. */
 
-/* expr(C) ::= SUB expr(A).         {*result = C = new negNode(A);} */
+expr(C) ::= SUB expr(A).         {*result = C = new negNode(A);}
 expr(C) ::= expr(A) ADD expr(B). {*result = C = new addNode(A,B);} 
 expr(C) ::= expr(A) SUB expr(B). {*result = C = new subNode(A,B);} 
 expr(C) ::= expr(A) DIV expr(B). {*result = C = new divNode(A,B);} 

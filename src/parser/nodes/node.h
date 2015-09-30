@@ -13,6 +13,7 @@ class addNode;
 class subNode;
 class divNode;
 class multNode;
+class negNode;
 
 #include "node_errors.h"
 #include "visitors.h"
@@ -53,6 +54,9 @@ class terminalNode : public Node {
     friend terminalNode* operator-( const terminalNode& l, const terminalNode& r );
     friend terminalNode* operator/( const terminalNode& l, const terminalNode& r );
     friend terminalNode* operator*( const terminalNode& l, const terminalNode& r );
+
+    friend terminalNode* negate( const terminalNode& l);
+
     friend bool operator==( const terminalNode& l, const terminalNode& r);
 
   private:
@@ -72,6 +76,8 @@ class terminalNode : public Node {
     virtual terminalNode* mult( const terminalNode& r) const = 0;
     virtual terminalNode* mult( const intNode& r) const = 0;
     virtual terminalNode* mult( const doubleNode& r) const = 0;
+
+    virtual terminalNode* neg() const = 0;
 
     virtual bool eq( const terminalNode& r) const = 0;
     virtual bool eq( const intNode& r) const = 0;
@@ -114,6 +120,8 @@ class intNode : public elementaryNode<int> {
     virtual terminalNode* mult( const intNode& r) const;
     virtual terminalNode* mult( const doubleNode& r) const;
 
+    virtual terminalNode* neg() const;
+
     virtual bool eq( const terminalNode& r) const;
     virtual bool eq( const intNode& r) const;
     virtual bool eq( const doubleNode& r) const;
@@ -144,6 +152,8 @@ class doubleNode : public elementaryNode<double> {
     virtual terminalNode* mult( const terminalNode& r) const;
     virtual terminalNode* mult( const intNode& r) const;
     virtual terminalNode* mult( const doubleNode& r) const;
+
+    virtual terminalNode* neg() const;
 
     virtual bool eq( const terminalNode& r) const;
     virtual bool eq( const intNode& r) const;
@@ -181,6 +191,7 @@ class divNode : public Node {
     virtual void _print() const;
 };
 
+
 class multNode : public Node {
   public:
     multNode(Node *_l, Node *_r);
@@ -189,5 +200,17 @@ class multNode : public Node {
     virtual void accept(Visitor* _v) const;
     virtual void _print() const;
 };
+
+
+
+class negNode : public Node {
+  public:
+    negNode(Node *_l);
+    Node* clone() const;
+  private:
+    virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
+};
+
 
 #endif

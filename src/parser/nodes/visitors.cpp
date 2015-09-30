@@ -36,6 +36,18 @@ bool evalVisitor::getDyadicArgs(const terminalNode** l, const terminalNode** r){
   return 0;
 }
 
+
+bool evalVisitor::getMonadicArgs(const terminalNode** l){
+  if(S.size() < 1){
+    throw unexpectedNumArgsError();
+  }
+  T.push(*l = S.top());
+  S.pop();
+
+  return 0;
+}
+
+
 void evalVisitor::eval(const Node *root){
   for(std::vector<Node*>::const_iterator it = root->children.begin(); it!=root->children.end();++it){
     if((*it)!=NULL){
@@ -81,3 +93,10 @@ void evalVisitor::visit(const multNode *_elm){
   S.push((*l)*(*r));
 }
 
+void evalVisitor::visit(const negNode *_elm){
+  dbg("Visit negNode." << std::endl);
+  const terminalNode *l;
+  getMonadicArgs(&l);
+
+  S.push(negate(*l));
+}
