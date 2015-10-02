@@ -49,7 +49,7 @@ bool evalVisitor::getMonadicArgs(const terminalNode** l){
 
 
 void evalVisitor::eval(const Node *root){
-  for(std::vector<Node*>::const_iterator it = root->children.begin(); it!=root->children.end();++it){
+  for(std::vector<Node*>::const_iterator it = root->getChildren().begin(); it!=root->getChildren().end();++it){
     if((*it)!=NULL){
       eval(*it);
     }

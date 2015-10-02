@@ -3,7 +3,6 @@
 #include <vector>
 #include "debug.h"
 
-Node::Node(){dbg("Node constructor."<<std::endl;);}
 Node::~Node(){
   for(std::vector<Node*>::const_iterator it = children.begin(); it!=children.end();++it){
     if((*it)!=NULL){

@@ -22,21 +22,19 @@ class negNode;
 
 class Node{
   public:
-    Node();
     virtual ~Node();
-    void addChild(Node *_c);
-
     void acceptVisitor(Visitor* _v) const { return accept(_v); };
 
-
     void print() const { return _print(); };
-
-
     virtual Node* clone() const = 0;
-    std::vector<Node*> children;
+
+    const std::vector<Node*>& getChildren() const {return children;};
+    void addChild(Node *_c);
 
     friend std::ostream& operator<< (std::ostream& os, const Node& rhs){ return rhs.print(os); }
+
   private:
+    std::vector<Node*> children;
     virtual void accept(Visitor* _v) const = 0;
     virtual void _print () const;
     virtual std::ostream& print (std::ostream& rhs) const;

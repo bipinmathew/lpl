@@ -72,6 +72,17 @@ TEST(LPL,Arithmetic){
   EXPECT_TRUE(check("-1--1",0));
   EXPECT_TRUE(check("1--0.5",1.5));
   EXPECT_TRUE(check("5.0--6",11.0));
+
+
+  EXPECT_TRUE(check("-(1--1/-2)",-0.5));
+  EXPECT_TRUE(check("-(1--1/2)",-1.5));
+  EXPECT_TRUE(check("-1/-2",0.5));
+  EXPECT_TRUE(check("-(1+3/4.0)",-1.75));
+  EXPECT_TRUE(check("-5.0/6",-5.0/6));
+  EXPECT_TRUE(check("-(-1--1)",0));
+  EXPECT_TRUE(check("-(1--0.5)",-1.5));
+  EXPECT_TRUE(check("-(5.0--6)",-11.0));
+
 }
 
 
