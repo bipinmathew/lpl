@@ -15,6 +15,8 @@ class divNode;
 class multNode;
 class negNode;
 
+class bangNode;
+
 #include "node_errors.h"
 #include "visitors.h"
 #include "debug.h"
@@ -54,6 +56,7 @@ class terminalNode : public Node {
     friend terminalNode* operator*( const terminalNode& l, const terminalNode& r );
 
     friend terminalNode* negate( const terminalNode& l);
+    friend terminalNode* bang( const terminalNode& l);
 
     friend bool operator==( const terminalNode& l, const terminalNode& r);
 
@@ -209,6 +212,18 @@ class negNode : public Node {
     virtual void accept(Visitor* _v) const;
     virtual void _print() const;
 };
+
+
+class bangNode : public Node {
+  public:
+    bangNode(Node *_l);
+    Node* clone() const;
+  private:
+    virtual void accept(Visitor* _v) const;
+    virtual void _print() const;
+};
+
+
 
 
 #endif

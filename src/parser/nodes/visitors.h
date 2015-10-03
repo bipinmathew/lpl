@@ -12,6 +12,7 @@ class Visitor {
     virtual void visit(const divNode *_elm)=0;
     virtual void visit(const multNode *_elm)=0;
     virtual void visit(const negNode *_elm)=0;
+    virtual void visit(const bangNode *_elm)=0;
 };
 
 class evalVisitor : public Visitor {
@@ -25,6 +26,7 @@ class evalVisitor : public Visitor {
     virtual void visit(const divNode *_elm);
     virtual void visit(const multNode *_elm);
     virtual void visit(const negNode *_elm);
+    virtual void visit(const bangNode *_elm);
     const terminalNode* getTop() const;
     virtual ~evalVisitor();
     void cleanup();

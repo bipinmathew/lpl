@@ -100,3 +100,11 @@ void evalVisitor::visit(const negNode *_elm){
 
   S.push(negate(*l));
 }
+
+void evalVisitor::visit(const bangNode *_elm){
+  dbg("Visit bangNode." << std::endl);
+  const terminalNode *l;
+  getMonadicArgs(&l);
+
+  S.push(bang(*l));
+}

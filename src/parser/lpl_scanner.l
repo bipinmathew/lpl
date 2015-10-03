@@ -14,6 +14,9 @@
 "/" {return DIV;}
 "(" {return LPARENS;}
 ")" {return RPARENS;}
+
+
+"!" {return BANG;}
 [ \t]* {}
 %%
 

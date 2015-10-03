@@ -23,9 +23,9 @@ Node* parse(const char* commandLine) {
     /*  Set up the parser */
     shellParser = ParseAlloc(malloc);
 
-		FILE *fp;
-		fp = fopen("errors.log","w");
-		ParseTrace(fp,"");
+		// FILE *fp;
+		// fp = fopen("errors.log","w");
+		// ParseTrace(fp,"");
 
     do {
         lexCode = yylex(scanner);
@@ -35,8 +35,8 @@ Node* parse(const char* commandLine) {
         }
         catch(syntaxError &e){
           if(result != NULL) delete result;
-					ParseTrace(NULL,"");
-					fclose(fp);
+					// ParseTrace(NULL,"");
+					// fclose(fp);
           yy_delete_buffer(bufferState, scanner);
           yylex_destroy(scanner);
           ParseFree(shellParser, free);
@@ -44,8 +44,8 @@ Node* parse(const char* commandLine) {
         }
         catch(std::exception &e){
           if(result != NULL) delete result;
-					ParseTrace(NULL,"");
-					fclose(fp);
+					// ParseTrace(NULL,"");
+					// fclose(fp);
           yy_delete_buffer(bufferState, scanner);
           yylex_destroy(scanner);
           ParseFree(shellParser, free);
@@ -60,8 +60,8 @@ Node* parse(const char* commandLine) {
     }
 
     /*  Cleanup the scanner and parser */
-		ParseTrace(NULL,"");
-		fclose(fp);
+		// ParseTrace(NULL,"");
+		// fclose(fp);
     yy_delete_buffer(bufferState, scanner);
     yylex_destroy(scanner);
     ParseFree(shellParser, free);

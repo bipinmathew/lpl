@@ -36,6 +36,11 @@ terminalNode* negate( const terminalNode& l) {
 }
 
 
+terminalNode* bang( const terminalNode& l) {
+    return l.neg();
+}
+
+
 bool operator==( const terminalNode& l, const terminalNode& r) {
     return l.eq(r);
 }
