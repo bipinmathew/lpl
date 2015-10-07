@@ -1,18 +1,19 @@
 all: export CXXFLAGS = -std=c++11 -pedantic-errors -O3
-all: lpl docs
+all: lpl tests
 
 
 debug: export CXXFLAGS +=  -std=c++11 -pedantic-errors -g3 -DDEBUG
-debug: lpl docs
+debug: lpl tests
 
-lpl: libparser tests
+lpl: libparser
 	$(CXX)  $(CXXFLAGS) -static lpl.cpp -L parser -lparser -o lpl
+
+tests: libparser
+	$(MAKE) -C test all 
 
 libparser:
 	$(MAKE) -C parser libparser 
 
-tests:
-	$(MAKE) -C test all 
 
 .PHONY: docs
 docs:
