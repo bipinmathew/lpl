@@ -55,10 +55,10 @@ class terminalNode : public Node {
     friend terminalNode* operator/( const terminalNode& l, const terminalNode& r );
     friend terminalNode* operator*( const terminalNode& l, const terminalNode& r );
 
-    friend terminalNode* negate( const terminalNode& l);
-    friend terminalNode* bang( const terminalNode& l);
-
     friend bool operator==( const terminalNode& l, const terminalNode& r);
+
+    terminalNode* negate() const {return _negate();};
+    terminalNode* bang() const {return _bang();};
 
   private:
 
@@ -78,7 +78,9 @@ class terminalNode : public Node {
     virtual terminalNode* mult( const intNode& r) const = 0;
     virtual terminalNode* mult( const doubleNode& r) const = 0;
 
-    virtual terminalNode* neg() const = 0;
+    virtual terminalNode* _negate() const = 0;
+    virtual terminalNode* _bang() const = 0;
+
 
     virtual bool eq( const terminalNode& r) const = 0;
     virtual bool eq( const intNode& r) const = 0;
@@ -121,7 +123,8 @@ class intNode : public elementaryNode<int> {
     virtual terminalNode* mult( const intNode& r) const;
     virtual terminalNode* mult( const doubleNode& r) const;
 
-    virtual terminalNode* neg() const;
+    virtual terminalNode* _negate() const;
+    virtual terminalNode* _bang() const;
 
     virtual bool eq( const terminalNode& r) const;
     virtual bool eq( const intNode& r) const;
@@ -154,7 +157,8 @@ class doubleNode : public elementaryNode<double> {
     virtual terminalNode* mult( const intNode& r) const;
     virtual terminalNode* mult( const doubleNode& r) const;
 
-    virtual terminalNode* neg() const;
+    virtual terminalNode* _negate() const;
+    virtual terminalNode* _bang() const;
 
     virtual bool eq( const terminalNode& r) const;
     virtual bool eq( const intNode& r) const;

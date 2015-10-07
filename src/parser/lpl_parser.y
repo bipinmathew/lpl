@@ -19,7 +19,6 @@
 }
 
 %type expr {Node*}
-%type intArray {Node*}
 %type start {Node*}
 %extra_argument {Node **result}
 

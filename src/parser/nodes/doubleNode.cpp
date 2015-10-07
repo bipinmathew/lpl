@@ -70,8 +70,13 @@ terminalNode* doubleNode::mult( const intNode& r ) const {
   return new doubleNode(getValue()*r.getValue());
 }
 
-terminalNode* doubleNode::neg() const {
-  dbg("double class doing int multiplication"<<std::endl);
+terminalNode* doubleNode::_negate() const {
+  dbg("int class doing negation"<<std::endl);
+  return new doubleNode(-getValue());
+}
+
+terminalNode* doubleNode::_bang() const {
+  dbg("int class doing negation"<<std::endl);
   return new doubleNode(-getValue());
 }
 

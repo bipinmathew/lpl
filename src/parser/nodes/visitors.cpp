@@ -98,7 +98,7 @@ void evalVisitor::visit(const negNode *_elm){
   const terminalNode *l;
   getMonadicArgs(&l);
 
-  S.push(negate(*l));
+  S.push(l->negate());
 }
 
 void evalVisitor::visit(const bangNode *_elm){
@@ -106,5 +106,5 @@ void evalVisitor::visit(const bangNode *_elm){
   const terminalNode *l;
   getMonadicArgs(&l);
 
-  S.push(bang(*l));
+  S.push(l->bang());
 }
