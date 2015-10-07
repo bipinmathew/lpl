@@ -81,8 +81,11 @@ terminalNode* intNode::_negate() const {
 
 
 terminalNode* intNode::_bang() const {
-  dbg("int class doing negation"<<std::endl);
-  return new intNode(-getValue());
+  dbg("int class doing bang"<<std::endl);
+  int numElements;
+  int v(getValue());
+  numElements = 1+(v>=0 ? v : -v);
+  return new intArrayNode(new int[numElements]);
 }
 
 

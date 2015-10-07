@@ -13,9 +13,12 @@ class addNode;
 class subNode;
 class divNode;
 class multNode;
-class negNode;
 
+class negNode;
 class bangNode;
+
+class intArrayNode;
+class doubleArrayNode;
 
 #include "node_errors.h"
 #include "visitors.h"
@@ -164,6 +167,14 @@ class doubleNode : public elementaryNode<double> {
     virtual bool eq( const intNode& r) const;
     virtual bool eq( const doubleNode& r) const;
 };
+
+class intArrayNode : public elementaryNode<int*> {
+};
+
+
+class doubleArrayNode : public elementaryNode<double*> {
+};
+
 
 
 std::ostream &operator<<(std::ostream &os, doubleNode const *rhs);
