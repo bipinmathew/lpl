@@ -15,45 +15,45 @@ std::ostream& intNode::print(std::ostream& os) const {
 
 terminalNode* intNode::clone() const {return new intNode(*this);}
 
-terminalNode* intNode::add( const terminalNode& r) const {
+terminalNode* intNode::_add( const terminalNode& r) const {
   dbg("  Determining RHS Type:"<<std::endl);
-  return r.add(*this);
+  return r._add(*this);
 }
-terminalNode* intNode::add( const doubleNode& r) const{
+terminalNode* intNode::_add( const doubleNode& r) const{
   dbg("int class doing double addition"<<std::endl);
   return new doubleNode(getValue()+r.getValue());
 }
-terminalNode* intNode::add( const intNode& r) const{
+terminalNode* intNode::_add( const intNode& r) const{
   dbg("int class doing int addition"<<std::endl);
   return new intNode(getValue()+r.getValue());
 }
 
 
-terminalNode* intNode::sub( const terminalNode& r) const {
+terminalNode* intNode::_sub( const terminalNode& r) const {
   dbg("  Determining RHS Type:"<<std::endl);
-  return r.sub(*this);
+  return r._sub(*this);
 }
-terminalNode* intNode::sub( const doubleNode& r) const{
+terminalNode* intNode::_sub( const doubleNode& r) const{
   dbg("intNode+doubleNode: ("<<getValue()<< " - "<<r.getValue()<<" = )"<<std::endl);
   return new doubleNode(getValue()-r.getValue());
 }
-terminalNode* intNode::sub( const intNode& r) const{
+terminalNode* intNode::_sub( const intNode& r) const{
   dbg("intNode+intNode: ("<<getValue()<< " - "<<r.getValue()<<" = )"<<std::endl);
   return new intNode(getValue()-r.getValue());
 }
 
-terminalNode* intNode::div( const terminalNode& r ) const {
+terminalNode* intNode::_div( const terminalNode& r ) const {
   dbg("  Determining RHS Type:"<<std::endl);
-  return r.div(*this);
+  return r._div(*this);
 }
-terminalNode* intNode::div( const doubleNode& r ) const {
+terminalNode* intNode::_div( const doubleNode& r ) const {
   dbg("int class doing double division"<<std::endl);
   if(r.getValue()==0)
       throw divByZeroError();
   else
     return new doubleNode(getValue()/r.getValue());
 }
-terminalNode* intNode::div( const intNode& r ) const {
+terminalNode* intNode::_div( const intNode& r ) const {
   dbg("int class doing int division"<<std::endl);
   if(r.getValue()==0)
       throw divByZeroError();
@@ -61,15 +61,15 @@ terminalNode* intNode::div( const intNode& r ) const {
       return new doubleNode(((double)getValue())/((double)r.getValue()));
 }
 
-terminalNode* intNode::mult( const terminalNode& r ) const {
+terminalNode* intNode::_mult( const terminalNode& r ) const {
   dbg("  Determining RHS Type:"<<std::endl);
-  return r.mult(*this);
+  return r._mult(*this);
 }
-terminalNode* intNode::mult( const doubleNode& r ) const {
+terminalNode* intNode::_mult( const doubleNode& r ) const {
   dbg("int class doing double multiplication"<<std::endl);
   return new doubleNode(getValue()*r.getValue());
 }
-terminalNode* intNode::mult( const intNode& r ) const {
+terminalNode* intNode::_mult( const intNode& r ) const {
   dbg("int class doing int multiplication"<<std::endl);
   return new intNode(getValue()*r.getValue());
 }

@@ -16,19 +16,19 @@ void Node::_print() const {dbg("I am a generic node."<<std::endl);}
 
 terminalNode* operator+( const terminalNode& l,  const terminalNode& r ) {
     dbg("Dispatching add function..."<<std::endl;);
-    return l.add(r);
+    return l._add(r);
 }
 
 terminalNode* operator-( const terminalNode& l,  const terminalNode& r ) {
-    return l.sub(r);
+    return l._sub(r);
 }
 
 terminalNode* operator/( const terminalNode& l,  const terminalNode& r ) {
-    return l.div(r);
+    return l._div(r);
 }
 
 terminalNode* operator*( const terminalNode& l,  const terminalNode& r ) {
-    return l.mult(r);
+    return l._mult(r);
 }
 
 

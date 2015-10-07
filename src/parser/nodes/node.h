@@ -62,21 +62,21 @@ class terminalNode : public Node {
 
   private:
 
-    virtual terminalNode* add( const terminalNode& r) const = 0;
-    virtual terminalNode* add( const intNode& r) const = 0;
-    virtual terminalNode* add( const doubleNode& r) const = 0;
+    virtual terminalNode* _add( const terminalNode& r) const = 0;
+    virtual terminalNode* _add( const intNode& r) const = 0;
+    virtual terminalNode* _add( const doubleNode& r) const = 0;
 
-    virtual terminalNode* sub( const terminalNode& r) const = 0;
-    virtual terminalNode* sub( const intNode& r) const = 0;
-    virtual terminalNode* sub( const doubleNode& r) const = 0;
+    virtual terminalNode* _sub( const terminalNode& r) const = 0;
+    virtual terminalNode* _sub( const intNode& r) const = 0;
+    virtual terminalNode* _sub( const doubleNode& r) const = 0;
 
-    virtual terminalNode* div( const terminalNode& r) const = 0;
-    virtual terminalNode* div( const intNode& r) const = 0;
-    virtual terminalNode* div( const doubleNode& r) const = 0;
+    virtual terminalNode* _div( const terminalNode& r) const = 0;
+    virtual terminalNode* _div( const intNode& r) const = 0;
+    virtual terminalNode* _div( const doubleNode& r) const = 0;
 
-    virtual terminalNode* mult( const terminalNode& r) const = 0;
-    virtual terminalNode* mult( const intNode& r) const = 0;
-    virtual terminalNode* mult( const doubleNode& r) const = 0;
+    virtual terminalNode* _mult( const terminalNode& r) const = 0;
+    virtual terminalNode* _mult( const intNode& r) const = 0;
+    virtual terminalNode* _mult( const doubleNode& r) const = 0;
 
     virtual terminalNode* _negate() const = 0;
     virtual terminalNode* _bang() const = 0;
@@ -107,21 +107,21 @@ class intNode : public elementaryNode<int> {
     virtual void accept(Visitor* _v) const;
     virtual void _print() const;
     virtual std::ostream& print(std::ostream& os) const;
-    virtual terminalNode* add( const terminalNode& r) const;
-    virtual terminalNode* add( const intNode& r) const;
-    virtual terminalNode* add( const doubleNode& r) const;
+    virtual terminalNode* _add( const terminalNode& r) const;
+    virtual terminalNode* _add( const intNode& r) const;
+    virtual terminalNode* _add( const doubleNode& r) const;
 
-    virtual terminalNode* sub( const terminalNode& r) const;
-    virtual terminalNode* sub( const intNode& r) const;
-    virtual terminalNode* sub( const doubleNode& r) const;
+    virtual terminalNode* _sub( const terminalNode& r) const;
+    virtual terminalNode* _sub( const intNode& r) const;
+    virtual terminalNode* _sub( const doubleNode& r) const;
 
-    virtual terminalNode* div( const terminalNode& r) const;
-    virtual terminalNode* div( const intNode& r) const;
-    virtual terminalNode* div( const doubleNode& r) const;
+    virtual terminalNode* _div( const terminalNode& r) const;
+    virtual terminalNode* _div( const intNode& r) const;
+    virtual terminalNode* _div( const doubleNode& r) const;
 
-    virtual terminalNode* mult( const terminalNode& r) const;
-    virtual terminalNode* mult( const intNode& r) const;
-    virtual terminalNode* mult( const doubleNode& r) const;
+    virtual terminalNode* _mult( const terminalNode& r) const;
+    virtual terminalNode* _mult( const intNode& r) const;
+    virtual terminalNode* _mult( const doubleNode& r) const;
 
     virtual terminalNode* _negate() const;
     virtual terminalNode* _bang() const;
@@ -141,21 +141,21 @@ class doubleNode : public elementaryNode<double> {
     virtual void accept(Visitor* _v) const;
     virtual void _print() const;
     std::ostream& print(std::ostream& os) const;
-    virtual terminalNode* add( const terminalNode& r) const;
-    virtual terminalNode* add( const intNode& r) const;
-    virtual terminalNode* add( const doubleNode& r) const;
+    virtual terminalNode* _add( const terminalNode& r) const;
+    virtual terminalNode* _add( const intNode& r) const;
+    virtual terminalNode* _add( const doubleNode& r) const;
 
-    virtual terminalNode* sub( const terminalNode& r) const;
-    virtual terminalNode* sub( const intNode& r) const;
-    virtual terminalNode* sub( const doubleNode& r) const;
+    virtual terminalNode* _sub( const terminalNode& r) const;
+    virtual terminalNode* _sub( const intNode& r) const;
+    virtual terminalNode* _sub( const doubleNode& r) const;
 
-    virtual terminalNode* div( const terminalNode& r) const;
-    virtual terminalNode* div( const intNode& r) const;
-    virtual terminalNode* div( const doubleNode& r) const;
+    virtual terminalNode* _div( const terminalNode& r) const;
+    virtual terminalNode* _div( const intNode& r) const;
+    virtual terminalNode* _div( const doubleNode& r) const;
 
-    virtual terminalNode* mult( const terminalNode& r) const;
-    virtual terminalNode* mult( const intNode& r) const;
-    virtual terminalNode* mult( const doubleNode& r) const;
+    virtual terminalNode* _mult( const terminalNode& r) const;
+    virtual terminalNode* _mult( const intNode& r) const;
+    virtual terminalNode* _mult( const doubleNode& r) const;
 
     virtual terminalNode* _negate() const;
     virtual terminalNode* _bang() const;
