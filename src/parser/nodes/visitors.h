@@ -28,9 +28,6 @@ class evalVisitor : public Visitor {
     virtual void visit(const negNode *_elm);
     virtual void visit(const bangNode *_elm);
 
-
-    virtual void visit(const intArrayNode *_elm);
-
     const terminalNode* getTop() const;
     virtual ~evalVisitor();
     void cleanup();

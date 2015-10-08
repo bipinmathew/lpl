@@ -85,7 +85,10 @@ terminalNode* intNode::_bang() const {
   int numElements;
   int v(getValue());
   numElements = 1+(v>=0 ? v : -v);
-  return new intArrayNode(new int[numElements]);
+  int *p = new int[numElements];
+  for(int i=0;i<numElements;i++)
+    p[i]=i;
+  return new intArrayNode(p);
 }
 
 

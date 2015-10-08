@@ -173,6 +173,8 @@ class intArrayNode : public elementaryNode<int*> {
     intArrayNode(int *p);
 
   private:
+    virtual void _print() const;
+    virtual std::ostream& print(std::ostream& os) const;
     virtual void accept(Visitor* _v) const;
 };
 
