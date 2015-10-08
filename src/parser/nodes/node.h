@@ -65,29 +65,29 @@ class terminalNode : public Node {
 
   private:
 
-    virtual terminalNode* _add( const terminalNode& r) const = 0;
-    virtual terminalNode* _add( const intNode& r) const = 0;
-    virtual terminalNode* _add( const doubleNode& r) const = 0;
+    virtual terminalNode* _add( const terminalNode& r) const {throw syntaxError();};
+    virtual terminalNode* _add( const intNode& r) const {throw syntaxError();};
+    virtual terminalNode* _add( const doubleNode& r) const {throw syntaxError();};
 
-    virtual terminalNode* _sub( const terminalNode& r) const = 0;
-    virtual terminalNode* _sub( const intNode& r) const = 0;
-    virtual terminalNode* _sub( const doubleNode& r) const = 0;
+    virtual terminalNode* _sub( const terminalNode& r) const {throw syntaxError();};
+    virtual terminalNode* _sub( const intNode& r) const {throw syntaxError();};
+    virtual terminalNode* _sub( const doubleNode& r) const {throw syntaxError();};
 
-    virtual terminalNode* _div( const terminalNode& r) const = 0;
-    virtual terminalNode* _div( const intNode& r) const = 0;
-    virtual terminalNode* _div( const doubleNode& r) const = 0;
+    virtual terminalNode* _div( const terminalNode& r) const {throw syntaxError();};
+    virtual terminalNode* _div( const intNode& r) const {throw syntaxError();};
+    virtual terminalNode* _div( const doubleNode& r) const {throw syntaxError();};
 
-    virtual terminalNode* _mult( const terminalNode& r) const = 0;
-    virtual terminalNode* _mult( const intNode& r) const = 0;
-    virtual terminalNode* _mult( const doubleNode& r) const = 0;
+    virtual terminalNode* _mult( const terminalNode& r) const {throw syntaxError();};
+    virtual terminalNode* _mult( const intNode& r) const {throw syntaxError();};
+    virtual terminalNode* _mult( const doubleNode& r) const {throw syntaxError();};
 
-    virtual terminalNode* _negate() const = 0;
-    virtual terminalNode* _bang() const = 0;
+    virtual terminalNode* _negate() const {throw syntaxError();};
+    virtual terminalNode* _bang() const {throw syntaxError();};
 
 
-    virtual bool eq( const terminalNode& r) const = 0;
-    virtual bool eq( const intNode& r) const = 0;
-    virtual bool eq( const doubleNode& r) const = 0;
+    virtual bool eq( const terminalNode& r) const {throw syntaxError();};
+    virtual bool eq( const intNode& r) const {throw syntaxError();};
+    virtual bool eq( const doubleNode& r) const {throw syntaxError();};
 
 };
 
