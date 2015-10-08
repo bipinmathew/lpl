@@ -32,13 +32,17 @@ negNode.o: node.h negNode.cpp
 bangNode.o: node.h bangNode.cpp
 	$(CXX) $(CXXFLAGS)   -c -o bangNode.o bangNode.cpp
 
+
+intArrayNode.o: node.h intArrayNode.cpp
+	$(CXX) $(CXXFLAGS)   -c -o intArrayNode.o intArrayNode.cpp
+
 visitors.o: visitors.h node.h visitors.cpp
 	$(CXX) $(CXXFLAGS)   -c -o visitors.o visitors.cpp
 
 node_errors.o: node_errors.h node_errors.cpp
 	$(CXX) $(CXXFLAGS)   -c -o node_errors.o node_errors.cpp
 
-all: node.o intNode.o doubleNode.o addNode.o subNode.o divNode.o multNode.o negNode.o bangNode.o visitors.o node_errors.o
+all: node.o intNode.o doubleNode.o addNode.o subNode.o divNode.o multNode.o negNode.o bangNode.o intArrayNode.o visitors.o node_errors.o
 
 clean:
 	rm -rf *.o

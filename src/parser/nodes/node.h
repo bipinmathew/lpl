@@ -31,7 +31,7 @@ class Node{
     void acceptVisitor(Visitor* _v) const { return accept(_v); };
 
     void print() const { return _print(); };
-    virtual Node* clone() const = 0;
+    virtual Node* clone() const {throw cloneError();};
 
     const std::vector<Node*>& getChildren() const {return children;};
     void addChild(Node *_c);
@@ -169,6 +169,11 @@ class doubleNode : public elementaryNode<double> {
 };
 
 class intArrayNode : public elementaryNode<int*> {
+  public:
+    intArrayNode(int *p);
+
+  private:
+    virtual void accept(Visitor* _v) const;
 };
 
 
