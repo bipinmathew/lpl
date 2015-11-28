@@ -1,5 +1,7 @@
+CFLAGS = -Werror -pedantic-errors
+
 node.o: node.h node.c
-	gcc -Werror  -pedantic-errors -c -o node.o node.c
+	$(CC) $(CFLAGS) -c -o node.o node.c
 
 all: node.o
 

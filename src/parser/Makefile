@@ -1,11 +1,13 @@
+CFLAGS = -Werror -pedantic-errors
+
 parser.o: lpl_parser.y 
 	lemon lpl_parser.y -s -p
-	gcc -Werror  -pedantic-errors -c -o lpl_parser.o lpl_parser.c
+	$(CC) $(CFLAGS) -c -o lpl_parser.o lpl_parser.c
 
 
 scanner.o: lpl_scanner.l
 	flex --outfile=lpl_scanner.c --header-file=lpl_scanner.h lpl_scanner.l
-	gcc -Werror  -pedantic-errors -c -o lpl_scanner.o lpl_scanner.c
+	$(CC) $(CFLAGS) -c -o lpl_scanner.o lpl_scanner.c
 
 node.o:
 	$(MAKE) -C nodes 
@@ -19,6 +21,7 @@ liblpl: parser.o scanner.o node.o
 all: liblpl
 
 clean: 
+	$(MAKE) -C nodes clean 
 	rm -rf lpl_scanner.c lpl_scanner.h 
 	rm -rf lpl_parser.c lpl_parser.h 
 	rm -rf lpl_scanner.o lpl_parser.o  
