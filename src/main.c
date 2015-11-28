@@ -41,36 +41,6 @@ node* parse(const char* commandLine) {
     return result;
 }
 
-int check(const char *str,double value){
-  node *result;
-  int retval;
-  printf("Trying: %s\n",str);
-
-  result=parse(str);
-
-  switch(result->type){
-    case tint:
-      retval=value!=result->value.i;
-    break;
-    case tdouble:
-      retval=value!=result->value.d;
-    break;
-    default:
-      retval=1;
-    break;
-
-  }
-  if(retval){
-    printf("Test failed on expression: %s \n",str);
-  }
-
-  printf(" = ");
-  printNode(result);
-  printf("\n");
-
-  freeNode(result);
-  return retval;
-}
 
 int main() {
     FILE *fp;
@@ -80,48 +50,12 @@ int main() {
     fp = fopen("errors.log","w");
     ParseTrace(fp,"err: ");
 
-    if(check("1+2*3",7)){
-      printf("FAIL!\n");
-    }
-
-    if(check("(1+2)*(3+4)",21)){
-      printf("FAIL!\n");
-    }
-
-    if(check("(1*2)+(3*4)",14)){
-      printf("FAIL!\n");
-    }
-
-    if(check("9+(1+2)/0",10)){
-      printf("FAIL!\n");
-    }
-/*    while (scanf("%s",commandLine)) {
+    while (scanf("%s",commandLine)) {
       result=parse(commandLine);
       printNode(result);
       printf("\n");
-    } */
+    }
 
-/*  check("1+2",3);
-  check("1+2+3",6);
-  check("3+4.0",7);
-  check("5.0+6",11);
-
-  check("1-2",-1);
-  check("1-2-3",-4);
-  check("3-4.0",-1);
-  check("5.0-6",-1);
-
-  check("1*2",2);
-  check("1*2*3",6);
-  check("3*4.0",12);
-  check("5.0*6",30);
-
-
-  check("1/2",0.5);
-  check("3/4.0",0.75);
-  check("5.0/6",5.0/6); */
-
-/*  } */
     fclose(fp);
     return 0;
 }

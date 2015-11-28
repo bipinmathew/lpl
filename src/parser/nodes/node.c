@@ -21,33 +21,18 @@ node* newNode(const char *str,types type, node* const l, node* const r){
   n->r = r;
   n->type = type;
 
+
+  /* TODO Need to do some input checking here to make sure we are getting valid
+   * types. */
+
+
   switch(n->type){
-    case top:
-      if(0==strcmp("+",str)){
-        n->value.op = add;
-         printf("  created add node.\n");
-      }
-      else if(0==strcmp("-",str)){
-        n->value.op = minus;
-         printf("  created minus node.\n");
-      }
-      else if(0==strcmp("*",str)){
-        n->value.op = mult;
-         printf("  created mult node.\n");
-      }
-      else if(0==strcmp("/",str)){
-        n->value.op = odiv;
-         printf("  created mult node.\n");
-      }
-    break;
     case tint:
       n->value.i = atoi(str);
     break;
     case tdouble:
       n->value.d = atof(str);
     break;
-    default:
-      printf("error creating node.");
   }
 
   return n;
@@ -91,31 +76,25 @@ node* _copyError(const node *in){
 
 void printNode(node* n){
   switch(n->type){
-    case top:
-      switch(n->value.op){
-        case add:
-          printNode(n->l);
-          printf("+");
-          printNode(n->r);
-        break;
-        case minus:
-          printNode(n->l);
-          printf("-");
-          printNode(n->r);
-        break;
-        case mult:
-          printNode(n->l);
-          printf("*");
-          printNode(n->r);
-        break;
-        case odiv:
-          printNode(n->l);
-          printf("/");
-          printNode(n->r);
-        break;
-        default:
-          printf("Error evaluating expression.");
-      }
+    case tadd:
+      printNode(n->l);
+      printf("+");
+      printNode(n->r);
+    break;
+    case tminus:
+      printNode(n->l);
+      printf("-");
+      printNode(n->r);
+    break;
+    case tmult:
+      printNode(n->l);
+      printf("*");
+      printNode(n->r);
+    break;
+    case tdiv:
+      printNode(n->l);
+      printf("/");
+      printNode(n->r);
     break;
     case tint:
         printf("%d",n->value.i);
@@ -127,7 +106,7 @@ void printNode(node* n){
         printf("%s",n->value.s);
     break;
     default:
-      printf("Bad!");
+      printf("Error evaluating expression.");
   }
 }
 
@@ -281,7 +260,7 @@ node* _div(const node* l, const node* r){
           }
           else{
             out->type = tdouble;
-            out->value.d = l->value.d/r->value.i;
+            out->value.d = ((double)l->value.i)/((double)r->value.i);
           }
         break;
         case tdouble:
@@ -337,31 +316,25 @@ node* evalNode(const node* n){
   node *out;
   node *l,*r;
   switch(n->type){
-    case top:
-      switch(n->value.op){
-        case add:
-          printf("Evaluating add.\n");
-          out = _add(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l); freeNode(r);
-        break;
-        case minus:
-          printf("Evaluating minus.\n");
-          out = _minus(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l); freeNode(r);
-        break;
-        case mult:
-          printf("Evaluating mult.\n");
-          out = _mult(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l); freeNode(r);
-        break;
-        case odiv:
-          printf("Evaluating div.\n");
-          out = _div(l=evalNode(n->l),r=evalNode(n->r));
-          freeNode(l); freeNode(r);
-        break;
-        default:
-          printf("Error evaluating expression.");
-      }
+    case tadd:
+      printf("Evaluating add.\n");
+      out = _add(l=evalNode(n->l),r=evalNode(n->r));
+      freeNode(l); freeNode(r);
+    break;
+    case tminus:
+      printf("Evaluating minus.\n");
+      out = _minus(l=evalNode(n->l),r=evalNode(n->r));
+      freeNode(l); freeNode(r);
+    break;
+    case tmult:
+      printf("Evaluating mult.\n");
+      out = _mult(l=evalNode(n->l),r=evalNode(n->r));
+      freeNode(l); freeNode(r);
+    break;
+    case tdiv:
+      printf("Evaluating div.\n");
+      out = _div(l=evalNode(n->l),r=evalNode(n->r));
+      freeNode(l); freeNode(r);
     break;
     case tint:
        printf("Evaluating int.\n");
@@ -378,7 +351,7 @@ node* evalNode(const node* n){
        n = out;
     break;
     default:
-      printf("Bad!");
+      printf("Error evaluating expression.");
   }
   return out;
 

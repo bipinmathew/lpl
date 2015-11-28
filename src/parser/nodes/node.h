@@ -2,16 +2,13 @@
 #define NODE_H
 
 
-typedef enum { tnull, tint, tdouble, tchar, top, terror, tarray  } types;
-
-typedef enum { add, minus, mult, odiv } ops;
+typedef enum { tnull, tint, tdouble, tchar, terror, tarray, tadd, tminus, tmult, tdiv } types;
 
 typedef union {
   int i;
   double d;
   char c;
   char *s;
-  ops op;
 } uvalue;
 
 

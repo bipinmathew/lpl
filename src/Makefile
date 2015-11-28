@@ -1,20 +1,20 @@
 main: main.o parser.o scanner.o node.o
-	gcc -I./node -Werror  -pedantic-errors -g parse/lpl_parser.o parse/lpl_scanner.o node/node.o main.o -o main
+	gcc -I./node -Werror  -pedantic-errors parser/lpl_parser.o parser/lpl_scanner.o parser/nodes/node.o main.o -o main
 
 main.o: main.c parser.o scanner.o 
-	gcc -I./node -I./parse -Werror  -pedantic-errors -g -c main.c -o main.o
+	gcc -I./parser/nodes -I./parser -Werror  -pedantic-errors -c main.c -o main.o
 
 parser.o:
-	$(MAKE) -C parse parser.o
+	$(MAKE) -C parser parser.o
 
 scanner.o:
-	$(MAKE) -C parse scanner.o
+	$(MAKE) -C parser scanner.o
 
 node.o:
-	$(MAKE) -C node 
+	$(MAKE) -C parser/nodes 
 
 clean:
-	$(MAKE) -C parse clean
-	$(MAKE) -C node clean
+	$(MAKE) -C parser clean
+	$(MAKE) -C parser/nodes clean
 	$(MAKE) -C tip  clean
 	rm main.o main

@@ -9,7 +9,7 @@
   #include <stdlib.h>
   #include <assert.h>
   #include <string.h>
-  #include "../node/node.h"
+  #include "nodes/node.h"
 }
 
 %syntax_error
@@ -46,8 +46,8 @@ expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 not setting the node type correctly. We should automatically promote from the
 leaf nodes. */
 
-expr(C) ::= expr(A) ADD expr(B). {C = newNode("+",top,A,B);} 
-expr(C) ::= expr(A) SUB expr(B). {C = newNode("-",top,A,B);} 
-expr(C) ::= expr(A) DIV expr(B). {C = newNode("/",top,A,B);} 
-expr(C) ::= expr(A) MULT expr(B). {C = newNode("*",top,A,B);} 
+expr(C) ::= expr(A) ADD expr(B). {C = newNode("+",tadd,A,B);} 
+expr(C) ::= expr(A) SUB expr(B). {C = newNode("-",tminus,A,B);} 
+expr(C) ::= expr(A) DIV expr(B). {C = newNode("/",tdiv,A,B);} 
+expr(C) ::= expr(A) MULT expr(B). {C = newNode("*",tmult,A,B);} 
 
