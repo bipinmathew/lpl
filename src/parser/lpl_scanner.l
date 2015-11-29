@@ -1,4 +1,5 @@
 %{
+    int fileno(FILE *stream);
     #include "lpl_parser.h"
 %}
 

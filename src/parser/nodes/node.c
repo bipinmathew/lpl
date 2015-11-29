@@ -1,4 +1,5 @@
 #include "node.h"
+#include "debug.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -106,7 +107,7 @@ void printNode(node* n){
         printf("%s",n->value.s);
     break;
     default:
-      printf("Error evaluating expression.");
+      dbg("%s","Error evaluating expression.");
   }
 }
 
@@ -317,41 +318,41 @@ node* evalNode(const node* n){
   node *l,*r;
   switch(n->type){
     case tadd:
-      printf("Evaluating add.\n");
+      dbg("%s","Evaluating add.\n");
       out = _add(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case tminus:
-      printf("Evaluating minus.\n");
+      dbg("%s","Evaluating minus.\n");
       out = _minus(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case tmult:
-      printf("Evaluating mult.\n");
+      dbg("%s","Evaluating mult.\n");
       out = _mult(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case tdiv:
-      printf("Evaluating div.\n");
+      dbg("%s","Evaluating div.\n");
       out = _div(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case tint:
-       printf("Evaluating int.\n");
+       dbg("%s","Evaluating int.\n");
        initNode(&out);
        memcpy(out,n,sizeof(node));
     break;
     case tdouble:
-       printf("Evaluating double.\n");
+       dbg("%s","Evaluating double.\n");
        initNode(&out);
        memcpy(out,n,sizeof(node));
     break;
     case terror:
-       printf("Evaluating error.\n");
+       dbg("%s","Evaluating error.\n");
        n = out;
     break;
     default:
-      printf("Error evaluating expression.");
+      dbg("%s","Error evaluating expression.");
   }
   return out;
 

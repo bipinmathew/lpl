@@ -1,5 +1,3 @@
-CFLAGS = -Werror -pedantic-errors
-
 parser.o: lpl_parser.y 
 	lemon lpl_parser.y -s -p
 	$(CC) $(CFLAGS) -c -o lpl_parser.o lpl_parser.c

@@ -1,5 +1,3 @@
-CFLAGS = -Werror -pedantic-errors
-
 node.o: node.h node.c
 	$(CC) $(CFLAGS) -c -o node.o node.c
 
