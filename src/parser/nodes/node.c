@@ -50,6 +50,15 @@ int freeNode(node *n){
   free(n);
 }
 
+int isEqual(node* n, node *m){
+  if((n->type==tint)||(n->type==tdouble)){
+    if((m->type==tint)||(m->type==tdouble)){
+      return ((n->type==tint ? n->value.i : n->value.d) == (m->type==tint ? m->value.i : m->value.d));
+    }
+  }
+  return 0;
+}
+
 int _hasError(const node* n){
   return (n->type==terror);
 }
