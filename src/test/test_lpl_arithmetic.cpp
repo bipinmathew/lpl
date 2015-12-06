@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "parser/nodes/node.h"
 #include "gtest/gtest.h"
-
-
+extern "C" {
+  #include "parser.h"
+};
 bool check(const char *str,double _value){
-    node n;
+    node n,*result;
     n.type = tdouble;
     n.value.d = _value;
-    return 0;
+
+    result=parse(str);
+    return isEqual(&n,result);
 }
 
 

@@ -22,7 +22,7 @@ node* parse(const char* commandLine) {
         lexCode = yylex(scanner);
         Parse(shellParser, lexCode, yyget_text(scanner), result);
     }
-    while (lexCode > 0 && result->type!=terror);
+    while ( lexCode > 0 );
 
     if (-1 == lexCode) {
         fprintf(stderr,"The scanner encountered an error.\n");

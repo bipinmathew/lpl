@@ -16,7 +16,6 @@ node.o:
 
 liblpl: lpl_parser.o lpl_scanner.o node.o parser.o
 	ar rc liblpl.a lpl_parser.o lpl_scanner.o nodes/node.o parser.o
-	ranlib liblpl.a
 
 
 all: liblpl

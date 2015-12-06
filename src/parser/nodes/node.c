@@ -14,27 +14,92 @@ int initNode(node **p){
   return(0);
 }
 
-node* newNode(const char *str,types type, node* const l, node* const r){
+
+
+node* intNode(const char *str){
+  node *n;
+  initNode(&n);
+
+  n->l = NULL;
+  n->r = NULL;
+  n->type = tint;
+
+  n->value.i = atoi(str);
+
+  return n;
+}
+
+
+
+node* doubleNode(const char *str){
+  node *n;
+  initNode(&n);
+
+  n->l = NULL;
+  n->r = NULL;
+  n->type = tdouble;
+
+  n->value.d = atof(str);
+
+  return n;
+}
+
+
+node* addNode(node* const l, node* const r){
   node *n;
   initNode(&n);
 
   n->l = l;
   n->r = r;
-  n->type = type;
+  n->type = tadd;
+
+  return n;
+}
 
 
-  /* TODO Need to do some input checking here to make sure we are getting valid
-   * types. */
+node* minusNode(node* const l, node* const r){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = r;
+  n->type = tminus;
+
+  return n;
+}
+
+node* divNode(node* const l, node* const r){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = r;
+  n->type = tdiv;
+
+  return n;
+}
 
 
-  switch(n->type){
-    case tint:
-      n->value.i = atoi(str);
-    break;
-    case tdouble:
-      n->value.d = atof(str);
-    break;
-  }
+
+node* multNode(node* const l, node* const r){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = r;
+  n->type = tmult;
+
+  return n;
+}
+
+
+node* negNode(node* const l){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = NULL;
+  n->type = tneg;
 
   return n;
 }
@@ -48,15 +113,6 @@ int freeNode(node *n){
     free(n->value.s);
   }
   free(n);
-}
-
-int isEqual(node* n, node *m){
-  if((n->type==tint)||(n->type==tdouble)){
-    if((m->type==tint)||(m->type==tdouble)){
-      return ((n->type==tint ? n->value.i : n->value.d) == (m->type==tint ? m->value.i : m->value.d));
-    }
-  }
-  return 0;
 }
 
 int _hasError(const node* n){
@@ -162,6 +218,28 @@ node* _add(const node* l, const node* r){
   return(out);
 }
 
+node* _neg(const node* l){
+  node *out;
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  initNode(&out);
+  if(l->type==tint){
+      dbg("%s\n","Negate on int.");
+      out->type=l->type;
+      out->value.i = -l->value.i;
+  }
+  else if(l->type==tdouble){
+      dbg("%s\n","Negate on double.");
+      out->type=l->type;
+      out->value.d = -l->value.d;
+  }
+  else{
+      out->type=terror;
+  }
+
+  return(out);
+}
+
+
 
 node* _minus(const node* l, const node* r){
   node *out;
@@ -252,6 +330,52 @@ node* _mult(const node* l, const node* r){
   return(out);
 }
 
+
+node* _equal(const node* l, const node* r){
+  node *out;
+
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _hasError(r)) {out = _copyError(r); return out;}
+
+  initNode(&out);
+  switch(l->type){
+    case tint:
+      switch(r->type){
+        case tint:
+          out->type = tboolean;
+          out->value.b = l->value.i==r->value.i;
+        break;
+        case tdouble:
+          out->type = tboolean;
+          out->value.b = l->value.i==r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+    case tdouble:
+      switch(r->type){
+        case tint:
+          out->type = tboolean;
+          out->value.b = l->value.d==r->value.i;
+        break;
+        case tdouble:
+          out->type = tboolean;
+          out->value.b = l->value.d==r->value.d;
+        break;
+        default:
+          out->type=terror;
+        break;
+
+      }
+    break;
+  }
+  return(out);
+}
+
+
 node* _div(const node* l, const node* r){
   node *out;
   if( _hasError(l)) { out = _copyError(l); return out; };
@@ -280,7 +404,7 @@ node* _div(const node* l, const node* r){
           }
           else {
             out->type = tdouble;
-            out->value.d = l->value.d/r->value.d;
+            out->value.d = l->value.i/r->value.d;
           }
         break;
         default:
@@ -326,6 +450,11 @@ node* evalNode(const node* n){
   node *out;
   node *l,*r;
   switch(n->type){
+    case tneg:
+      dbg("%s","Evaluating add.\n");
+      out = _neg(l=evalNode(n->l));
+      freeNode(l); 
+    break;
     case tadd:
       dbg("%s","Evaluating add.\n");
       out = _add(l=evalNode(n->l),r=evalNode(n->r));
@@ -366,3 +495,12 @@ node* evalNode(const node* n){
   return out;
 
 }
+
+int isEqual(node* n, node *m){
+  node *c;
+  if((c = _equal(n,m))->type==tboolean){
+    return c->value.b;
+  }
+  return 0;
+}
+

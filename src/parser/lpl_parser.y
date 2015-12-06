@@ -32,8 +32,8 @@ start ::= expr(B) .
 
 
 /* Assignment */
-expr(A) ::= NUMBER(B). {A = newNode(B,tint,NULL,NULL);}
-expr(A) ::= FLOAT(B).  {A = newNode(B,tdouble,NULL,NULL);}
+expr(A) ::= NUMBER(B). {A = intNode(B);}
+expr(A) ::= FLOAT(B).  {A = doubleNode(B);}
 expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* End Assignment */
 
@@ -46,8 +46,9 @@ expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 not setting the node type correctly. We should automatically promote from the
 leaf nodes. */
 
-expr(C) ::= expr(A) ADD expr(B). {C = newNode("+",tadd,A,B);} 
-expr(C) ::= expr(A) SUB expr(B). {C = newNode("-",tminus,A,B);} 
-expr(C) ::= expr(A) DIV expr(B). {C = newNode("/",tdiv,A,B);} 
-expr(C) ::= expr(A) MULT expr(B). {C = newNode("*",tmult,A,B);} 
+expr(C) ::= SUB expr(A).         {C = negNode(A);} 
+expr(C) ::= expr(A) ADD expr(B). {C = addNode(A,B);} 
+expr(C) ::= expr(A) SUB expr(B). {C = minusNode(A,B);} 
+expr(C) ::= expr(A) DIV expr(B). {C = divNode(A,B);} 
+expr(C) ::= expr(A) MULT expr(B). {C = multNode(A,B);} 
 

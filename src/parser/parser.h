@@ -11,5 +11,4 @@ void ParseTrace(FILE *stream, char *zPrefix);
 
 node* parse(const char* commandLine);
 
-
 #endif
