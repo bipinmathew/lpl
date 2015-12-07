@@ -1,40 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "parser/parser.h"
-#include "parser/nodes/node.h"
-#include "parser/nodes/visitors.h"
-
+extern "C" {
+  #include "parser.h"
+};
 
 bool check(const char *str,double _value){
-  const Node *root=NULL;
-  const terminalNode *result=NULL;
-  evalVisitor *v = new evalVisitor();
-	bool r=0;
-  int retval;
-  doubleNode *value;
+    node n,*result;
+    int val;
+    n.type = tdouble;
+    n.value.d = _value;
 
-  printf("Trying: %s\n",str);
+    printf("Trying %s \n",str);
 
-	try{
-    value = new doubleNode(_value);
-    root=parse(str);
-		v->eval(root);
-    result = v->getTop();
-	}
-	catch(std::exception &e){
-		std::cerr << e.what() << std::endl;
-    if (root!=NULL)  delete root;
-		delete value;
-    delete v;
-    return false;
-	}
-
-  r= ((*result)==(*value));
-	delete root;
-	delete value;
-  delete v;
-  return r;
+    result=parse(str);
+    val=isEqual(&n,result);
+    freeNode(result);
+    return val;
 }
+
 
 int main(int argc, char **argv) {
   check("1+2",3);
@@ -66,5 +49,6 @@ int main(int argc, char **argv) {
 
   check("5.0/0",1.0);
   check("1/0",1);
+  check("1.0/0",1);
 }
 

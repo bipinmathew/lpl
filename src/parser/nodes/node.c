@@ -1,4 +1,5 @@
 #include "node.h"
+#include "../lpl_errors.h"
 #include "debug.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -104,14 +105,26 @@ node* negNode(node* const l){
   return n;
 }
 
+
+
+
+int _error(node **n, int errorcode) {
+  (*n)->type = terror;
+  return (*n)->value.i = errorcode;
+}
+
+
+node* errorNode(int errorcode){
+  node *n;
+  initNode(&n);
+  _error(&n,errorcode);
+}
+
 int freeNode(node *n){
   if(n->l != NULL)
     freeNode(n->l);
   if(n->r != NULL)
     freeNode(n->r);
-  if(n->type==terror){
-    free(n->value.s);
-  }
   free(n);
 }
 
@@ -120,23 +133,11 @@ int _hasError(const node* n){
 }
 
 
-char* _getString(const char *s){
-  char *out;
-  unsigned long slength;
-  slength = strlen(s);
-  out = (char *)malloc(sizeof(char)*(1+slength));
-  out[slength]='\0';
-  strncpy(out,s,1+slength);
-  return out;
-}
-
-
 node* _copyError(const node *in){
   node *out;
   initNode(&out);
   out->type = terror;
-  out->value.s = _getString(in->value.s);
-  strcpy(out->value.s,in->value.s);
+  out->value.i = in->value.i;
   return out;
 }
 
@@ -169,12 +170,13 @@ void printNode(node* n){
         printf("%f",n->value.d);
     break;
     case terror:
-        printf("%s",n->value.s);
+        printf("error: %s\n",lpl_error[n->value.i]);
     break;
     default:
       dbg("%s","Error evaluating expression.");
   }
 }
+
 
 node* _add(const node* l, const node* r){
   node *out;
@@ -193,7 +195,7 @@ node* _add(const node* l, const node* r){
           out->value.d = l->value.i+r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -209,7 +211,7 @@ node* _add(const node* l, const node* r){
           out->value.d = l->value.d+r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -233,7 +235,7 @@ node* _neg(const node* l){
       out->value.d = -l->value.d;
   }
   else{
-      out->type=terror;
+      _error(&out,LPL_INVALIDARGS_ERROR);
   }
 
   return(out);
@@ -259,7 +261,7 @@ node* _minus(const node* l, const node* r){
           out->value.d = l->value.i-r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -275,7 +277,7 @@ node* _minus(const node* l, const node* r){
           out->value.d = l->value.d-r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -305,7 +307,7 @@ node* _mult(const node* l, const node* r){
           out->value.d = l->value.i*r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -321,7 +323,7 @@ node* _mult(const node* l, const node* r){
           out->value.d = l->value.d*r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -350,7 +352,7 @@ node* _equal(const node* l, const node* r){
           out->value.b = l->value.i==r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -366,7 +368,7 @@ node* _equal(const node* l, const node* r){
           out->value.b = l->value.d==r->value.d;
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -387,10 +389,7 @@ node* _div(const node* l, const node* r){
       switch(r->type){
         case tint:
           if(r->value.i==0){
-            out->type = terror;
-            out->value.s = _getString("Divide by zero error.");
-            printf("PRINTING ERROR:\n");
-            printf("%s",out->value.s);
+            _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else{
             out->type = tdouble;
@@ -399,8 +398,7 @@ node* _div(const node* l, const node* r){
         break;
         case tdouble:
           if(r->value.d==0.0){
-            out->type = terror;
-            out->value.s = _getString("Divide by zero error.");
+            _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else {
             out->type = tdouble;
@@ -408,7 +406,7 @@ node* _div(const node* l, const node* r){
           }
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -417,8 +415,7 @@ node* _div(const node* l, const node* r){
       switch(r->type){
         case tint:
           if(r->value.i==0){
-            out->type = terror;
-            out->value.s = _getString("Divide by zero error.");
+            _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else{
             out->type = tdouble;
@@ -427,8 +424,7 @@ node* _div(const node* l, const node* r){
         break;
         case tdouble:
           if(r->value.d==0.0){
-            out->type = terror;
-            out->value.s = _getString("Divide by zero error.");
+            _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else {
             out->type = tdouble;
@@ -436,7 +432,7 @@ node* _div(const node* l, const node* r){
           }
         break;
         default:
-          out->type=terror;
+          _error(&out,LPL_INVALIDARGS_ERROR);
         break;
 
       }
@@ -498,9 +494,13 @@ node* evalNode(const node* n){
 
 int isEqual(node* n, node *m){
   node *c;
+  int val;
+
+  val = 0;
   if((c = _equal(n,m))->type==tboolean){
-    return c->value.b;
+    val = c->value.b;
   }
-  return 0;
+  freeNode(c);
+  return val;
 }
 

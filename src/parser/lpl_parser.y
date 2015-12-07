@@ -9,12 +9,14 @@
   #include <stdlib.h>
   #include <assert.h>
   #include <string.h>
+  #include "lpl_errors.h"
   #include "nodes/node.h"
 }
 
 %syntax_error
 {
   result->type = terror;
+  result->value.i = LPL_SYNTAX_ERROR;
 }
 
 %type expr {node*}
