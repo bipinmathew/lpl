@@ -2,7 +2,22 @@
 #define NODE_H
 
 
-typedef enum { tnull, tboolean, tint, tdouble, tchar, terror, tarray, tneg, tadd, tminus, tmult, tdiv } types;
+typedef enum {
+    tnull,
+    tboolean,
+    tint,
+    tdouble,
+    tchar,
+    terror,
+    tarray,
+    tneg,
+    tadd,
+    tminus,
+    tmult,
+    tdiv,
+    /* Array types */
+    tdraw
+} types;
 
 typedef union {
   int i;
@@ -30,6 +45,7 @@ node* addNode(node* const l, node* const r);
 node* minusNode(node* const l, node* const r);
 node* divNode(node* const l, node* const r);
 node* multNode(node* const l, node* const r);
+node* drawNode(node* const l, node* const r);
 node* negNode(node* const l);
 
 node* evalNode(const node* root);

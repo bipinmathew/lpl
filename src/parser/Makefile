@@ -8,7 +8,7 @@ lpl_scanner.o: lpl_parser.o lpl_scanner.l
 	$(CC) $(CFLAGS) -c -o lpl_scanner.o lpl_scanner.c
 
 parser.o: lpl_parser.o lpl_scanner.o parser.c parser.h
-	gcc -c parser.c -o parser.o
+	$(CC) $(CFLAGS) -c parser.c -o parser.o
 
 node.o:
 	$(MAKE) -C nodes 

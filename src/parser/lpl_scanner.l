@@ -7,6 +7,9 @@
 %option noyywrap
 
 %%
+
+[ \t] {}
+
 [0-9]*\.[0-9]+ {return FLOAT;}
 [0-9]+ {return NUMBER;}
 "+" {return ADD;}
@@ -15,6 +18,11 @@
 "/" {return DIV;}
 "(" {return LPARENS;}
 ")" {return RPARENS;}
-[ \t]* {}
+
+
+_draw {return DRAW;}
+
+
+
 %%
 

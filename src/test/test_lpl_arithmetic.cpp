@@ -16,6 +16,7 @@ bool check(const char *str,double _value){
 
 TEST(LPL,Arithmetic){
   EXPECT_TRUE(check("1+2",3));
+  EXPECT_TRUE(check("1 + 2",3));
   EXPECT_TRUE(check("1+2*3",7));
   EXPECT_TRUE(check("1+2*3.0",7));
   EXPECT_TRUE(check("(1+2)*(3+4)",21));

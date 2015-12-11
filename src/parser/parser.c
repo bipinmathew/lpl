@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
+#include "nodes/debug.h"
 
 node* parse(const char* commandLine) {
     /*  Set up the scanner */
+
+    dbg("Parsing: %s \n",commandLine);
     yyscan_t scanner;
     YY_BUFFER_STATE bufferState;
     void* shellParser;

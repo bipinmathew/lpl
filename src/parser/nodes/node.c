@@ -106,6 +106,16 @@ node* negNode(node* const l){
 }
 
 
+node* drawNode(node* const l, node* const r){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = r;
+  n->type = tdraw;
+
+  return n;
+}
 
 
 int _error(node **n, int errorcode) {
@@ -332,6 +342,33 @@ node* _mult(const node* l, const node* r){
   return(out);
 }
 
+node* _draw(const node* l, const node* r){
+  node *out;
+
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _hasError(r)) {out = _copyError(r); return out;}
+
+
+  initNode(&out);
+  switch(l->type){
+    case tint:
+      switch(r->type){
+        case tint:
+          out->type = tint;
+          out->value.i = l->value.i*r->value.i;
+        break;
+        default:
+          _error(&out,LPL_INVALIDARGS_ERROR);
+        break;
+
+      }
+    break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
+    break;
+  }
+  return(out);
+}
 
 node* _equal(const node* l, const node* r){
   node *out;
@@ -480,6 +517,11 @@ node* evalNode(const node* n){
        dbg("%s","Evaluating double.\n");
        initNode(&out);
        memcpy(out,n,sizeof(node));
+    break;
+    case tdraw:
+      dbg("%s","Evaluating draw.\n");
+      out = _draw(l=evalNode(n->l),r=evalNode(n->r));
+      freeNode(l); freeNode(r);
     break;
     case terror:
        dbg("%s","Evaluating error.\n");
