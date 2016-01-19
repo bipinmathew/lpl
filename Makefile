@@ -12,15 +12,15 @@ export CFLAGS
 
 
 lpl: liblpl
-	$(CC) $(CFLAGS) lpl.c -I./parser -I./parser/nodes -L./parser -llpl -o lpl
+	$(CC) $(CFLAGS) src/lpl.c -I./libparser -I./libparser/nodes -L./libparser -llpl -o lpl
 
 tests: liblpl
 	$(MAKE) -C test all
 
 liblpl:
-	$(MAKE) -C parser liblpl
+	$(MAKE) -C libparser liblpl
 
 clean:
-	$(MAKE) -C parser clean
+	$(MAKE) -C libparser clean
 	$(MAKE) -C tip  clean
 	rm lpl.o lpl
