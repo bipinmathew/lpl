@@ -1,3 +1,6 @@
 [submodule "src/tip"]
 	path = src/tip
 	url = http://www.nerdsofgotham.com/git/tip.git
+[submodule "libcol"]
+	path = libcol
+	url = ../libcol
