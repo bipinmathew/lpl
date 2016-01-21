@@ -1,6 +1,6 @@
 #ifndef __PARSER_H__
 #define __PARSER_H__
-#include "nodes/node.h"
+#include "node.h"
 #include "lpl_parser.h"
 #include "lpl_scanner.h"
 

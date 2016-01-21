@@ -1,5 +1,5 @@
 #include "node.h"
-#include "../lpl_errors.h"
+#include "lpl_errors.h"
 #include "debug.h"
 #include <stdio.h>
 #include <stdlib.h>

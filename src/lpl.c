@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
-#include "nodes/debug.h"
+#include "debug.h"
 
 int main() {
     FILE *fp;

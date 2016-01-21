@@ -11,8 +11,8 @@
   #include <assert.h>
   #include <string.h>
   #include "lpl_errors.h"
-  #include "nodes/node.h"
-  #include "nodes/debug.h"
+  #include "node.h"
+  #include "debug.h"
 }
 
 %syntax_error
