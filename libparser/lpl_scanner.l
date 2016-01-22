@@ -1,4 +1,5 @@
 %{
+    int fileno(FILE *stream);
     #include "lpl_parser.h"
 %}
 
@@ -6,6 +7,9 @@
 %option noyywrap
 
 %%
+
+[ \t] {}
+
 [0-9]*\.[0-9]+ {return FLOAT;}
 [0-9]+ {return NUMBER;}
 "+" {return ADD;}
@@ -16,7 +20,9 @@
 ")" {return RPARENS;}
 
 
-"!" {return BANG;}
-[ \t]* {}
+_draw {return DRAW;}
+
+
+
 %%
 
