@@ -18,7 +18,9 @@ typedef enum {
     tmult,
     tdiv,
     /* Array types */
-    tdraw
+    tdraw,
+    tci,
+    tcui
 } types;
 
 typedef union {
@@ -27,8 +29,8 @@ typedef union {
   char c;
   char b;
   char *s;
-  col_int *c_i;
-  col_uint *c_ui;
+  col_int *ci;
+  col_uint *cui;
 } uvalue;
 
 

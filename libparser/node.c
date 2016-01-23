@@ -179,6 +179,9 @@ void printNode(node* n){
     case tdouble:
         printf("%f",n->value.d);
     break;
+    case tci:
+        col_int_disp(n->value.ci);
+    break;
     case terror:
         printf("error: %s\n",lpl_error[n->value.i]);
     break;
@@ -354,8 +357,9 @@ node* _draw(const node* l, const node* r){
     case tint:
       switch(r->type){
         case tint:
-          out->type = tint;
-          out->value.i = l->value.i*r->value.i;
+          out->type = tci;
+          col_int_init(&out->value.ci);
+          col_int_rand(out->value.ci,NULL,0,r->value.i,l->value.i);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
