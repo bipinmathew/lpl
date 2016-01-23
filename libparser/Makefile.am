@@ -1,6 +1,9 @@
 noinst_LIBRARIES = liblpl.a
 liblpl_a_SOURCES =  lpl_scanner.l lpl_parser.y parser.c node.c
-#liblpl_a_CPPFLAGS = -g -Werror -Wall -Wextra -std=c99 -pedantic -Wmissing-prototypes -Wstrict-prototypes -Wold-style-definition
+liblpl_a_CPPFLAGS = -I./libcol
+liblpl_a_LIBADD = ./libcol/libcol.a
+
+SUBDIRS = libcol
 
 
 lpl_parser.o: lpl_parser.y 

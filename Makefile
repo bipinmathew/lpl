@@ -283,7 +283,7 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-SUBDIRS = libcol libparser src
+SUBDIRS = libparser src
 all: all-recursive
 
 .SUFFIXES:

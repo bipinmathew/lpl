@@ -1,3 +1,2 @@
-SUBDIRS = libcol
-SUBDIRS += libparser
+SUBDIRS = libparser
 SUBDIRS += src

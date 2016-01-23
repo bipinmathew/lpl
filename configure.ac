@@ -15,7 +15,6 @@ AM_PROG_AR
 AC_CONFIG_FILES([Makefile
 src/Makefile
 libparser/Makefile
-libcol/Makefile
 ])
 
 AC_OUTPUT

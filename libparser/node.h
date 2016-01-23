@@ -1,6 +1,8 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "libcol/col.h"
+
 
 typedef enum {
     tnull,
@@ -25,6 +27,8 @@ typedef union {
   char c;
   char b;
   char *s;
+  col_int *c_i;
+  col_uint *c_ui;
 } uvalue;
 
 
