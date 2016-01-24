@@ -106,6 +106,20 @@ node* negNode(node* const l){
 }
 
 
+node* sumOverNode(node* const l){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = NULL;
+  n->type = tsumover;
+
+  return n;
+}
+
+
+
+
 node* drawNode(node* const l, node* const r){
   node *n;
   initNode(&n);
@@ -135,6 +149,9 @@ int freeNode(node *n){
     freeNode(n->l);
   if(n->r != NULL)
     freeNode(n->r);
+  if(n->type == tci){
+    col_int_free(n->value.ci);
+  }
   free(n);
 }
 
@@ -374,6 +391,42 @@ node* _draw(const node* l, const node* r){
   return(out);
 }
 
+
+node* _sumover(const node* l){
+  node *out;
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  initNode(&out);
+  switch(l->type){
+    case tint:
+      dbg("%s\n","sumover on int.");
+      out->type=l->type;
+      out->value.i = l->value.i;
+    break;
+    case tdouble:
+      dbg("%s\n","sumover on double.");
+      out->type=l->type;
+      out->value.d = l->value.d;
+    break;
+    case tci:
+      dbg("%s\n","sumover on signed integer array.");
+      out->type=tint;
+      col_int_init(&out->value.ci);
+      col_int_sum(l->value.ci,&out->value.i);
+    break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
+    break;
+  }
+  return(out);
+}
+
+
+
+
+
+
+
+
 node* _equal(const node* l, const node* r){
   node *out;
 
@@ -526,6 +579,11 @@ node* evalNode(const node* n){
       dbg("%s","Evaluating draw.\n");
       out = _draw(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
+    break;
+    case tsumover:
+      dbg("%s","Evaluating sum over.\n");
+      out = _sumover(l=evalNode(n->l));
+      freeNode(l);
     break;
     case terror:
        dbg("%s","Evaluating error.\n");

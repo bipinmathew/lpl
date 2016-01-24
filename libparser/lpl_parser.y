@@ -1,6 +1,8 @@
-%nonassoc DRAW.
 %left ADD SUB.
 %left MULT DIV.
+%right SUMOVER.
+%nonassoc DRAW.
+
 
 %token_type {const char*}
 
@@ -48,6 +50,7 @@ expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* Arrays */
 
 expr(C) ::= expr(A) DRAW expr(B). {C = drawNode(A,B);}
+expr(B) ::= SUMOVER expr(A). {B = sumOverNode(A);}
 
 /* End Arrays */
 

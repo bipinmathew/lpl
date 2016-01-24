@@ -19,6 +19,7 @@ typedef enum {
     tdiv,
     /* Array types */
     tdraw,
+    tsumover,
     tci,
     tcui
 } types;
@@ -52,6 +53,7 @@ node* minusNode(node* const l, node* const r);
 node* divNode(node* const l, node* const r);
 node* multNode(node* const l, node* const r);
 node* drawNode(node* const l, node* const r);
+node* sumOverNode(node* const r);
 node* negNode(node* const l);
 
 node* evalNode(const node* root);

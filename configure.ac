@@ -12,6 +12,16 @@ AC_PROG_RANLIB
 
 AM_PROG_AR
 
+# borrowed from a check for gnome in GNU gretl: def. a check for quantlib-config
+AC_DEFUN([AC_PROG_LEMONPARSER], [AC_CHECK_PROG(LEMONPARSER,lemon,yes,no)])
+AC_PROG_LEMONPARSER
+if test "${LEMONPARSER}" == "no" ; then
+  AC_MSG_ERROR([Please install lemon parser before trying to build lpllib.])
+fi
+
+AC_SUBST([YACC],lemon)
+
+
 AC_CONFIG_FILES([Makefile
 src/Makefile
 libparser/Makefile

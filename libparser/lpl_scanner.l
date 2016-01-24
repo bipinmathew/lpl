@@ -12,6 +12,8 @@
 
 [0-9]*\.[0-9]+ {return FLOAT;}
 [0-9]+ {return NUMBER;}
+
+
 "+" {return ADD;}
 "-" {return SUB;}
 "*" {return MULT;}
@@ -21,8 +23,7 @@
 
 
 _draw {return DRAW;}
-
-
+"+/" {return SUMOVER;}
 
 %%
 
