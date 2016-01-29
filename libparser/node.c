@@ -375,7 +375,8 @@ node* _draw(const node* l, const node* r){
       switch(r->type){
         case tint:
           out->type = tci;
-          col_int_init(&out->value.ci);
+          if(NO_ERROR!=col_int_init(&out->value.ci)){
+          }
           col_int_rand(out->value.ci,NULL,0,r->value.i,l->value.i);
         break;
         default:
@@ -410,7 +411,8 @@ node* _sumover(const node* l){
     case tci:
       dbg("%s\n","sumover on signed integer array.");
       out->type=tint;
-      col_int_init(&out->value.ci);
+      if(NO_ERROR!=col_int_init(&out->value.ci)){
+      }
       col_int_sum(l->value.ci,&out->value.i);
     break;
     default:
