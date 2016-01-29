@@ -134,7 +134,9 @@ node* drawNode(node* const l, node* const r){
 
 int _error(node **n, int errorcode) {
   (*n)->type = terror;
-  return (*n)->value.i = errorcode;
+  (*n)->value.e.error_code = errorcode;
+  (*n)->value.e.error_string = "Hello world.";
+  return 0;
 }
 
 
@@ -164,7 +166,8 @@ node* _copyError(const node *in){
   node *out;
   initNode(&out);
   out->type = terror;
-  out->value.i = in->value.i;
+  out->value.e.error_code = in->value.e.error_code;
+  out->value.e.error_string = in->value.e.error_string;
   return out;
 }
 
@@ -200,7 +203,12 @@ void printNode(node* n){
         col_int_disp(n->value.ci);
     break;
     case terror:
-        printf("error: %s\n",lpl_error[n->value.i]);
+        if(n->value.e.error_code == LPL_CUSTOM_ERROR){
+          printf("%s\n",n->value.e.error_string);
+        }
+        else{
+          printf("%s\n",lpl_error_strings[n->value.e.error_code]);
+        }
     break;
     default:
       dbg("%s","Error evaluating expression.");
@@ -364,6 +372,7 @@ node* _mult(const node* l, const node* r){
 
 node* _draw(const node* l, const node* r){
   node *out;
+  col_error e;
 
   if( _hasError(l)) {out = _copyError(l); return out;}
   if( _hasError(r)) {out = _copyError(r); return out;}
@@ -375,9 +384,14 @@ node* _draw(const node* l, const node* r){
       switch(r->type){
         case tint:
           out->type = tci;
-          if(NO_ERROR!=col_int_init(&out->value.ci)){
+          if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
+            _error(&out,LPL_CUSTOM_ERROR);
           }
-          col_int_rand(out->value.ci,NULL,0,r->value.i,l->value.i);
+          else{
+            if(NO_ERROR!=(e=col_int_rand(out->value.ci,NULL,0,r->value.i,l->value.i))){
+              _error(&out,LPL_CUSTOM_ERROR);
+            }
+          }
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -395,6 +409,7 @@ node* _draw(const node* l, const node* r){
 
 node* _sumover(const node* l){
   node *out;
+  col_error e;
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
   switch(l->type){
@@ -411,9 +426,12 @@ node* _sumover(const node* l){
     case tci:
       dbg("%s\n","sumover on signed integer array.");
       out->type=tint;
-      if(NO_ERROR!=col_int_init(&out->value.ci)){
+      if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
+        _error(&out,LPL_CUSTOM_ERROR);
       }
-      col_int_sum(l->value.ci,&out->value.i);
+      else{
+        col_int_sum(l->value.ci,&out->value.i);
+      }
     break;
     default:
       _error(&out,LPL_INVALIDARGS_ERROR);

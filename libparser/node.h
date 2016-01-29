@@ -24,15 +24,23 @@ typedef enum {
     tcui
 } types;
 
+typedef struct _error_value {
+  int error_code;
+  const char *error_string;
+} error_value;
+
 typedef union {
   int i;
   double d;
   char c;
   char b;
   char *s;
+  error_value e;
+
   col_int *ci;
   col_uint *cui;
 } uvalue;
+
 
 
 typedef struct _node {

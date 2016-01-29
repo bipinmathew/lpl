@@ -19,20 +19,9 @@
 
 
 #define X(a,b) b,
-static const char* lpl_error[] = {LIBLPL_ERRORS "Unspecified custom error."};
+static const char* lpl_error_strings[] = {LIBLPL_ERRORS "Unspecified custom error."};
 #undef X
 
 
-
-
-/* #define LPL_SYNTAX_ERROR 0
-#define LPL_DIVBYZERO_ERROR 1
-#define LPL_INVALIDARGS_ERROR 2
-static const char* lpl_error[] =
-{
-    "Syntax error.",
-    "Divide by zero.",
-    "Invalid arguments."
-}; */
 
 #endif
