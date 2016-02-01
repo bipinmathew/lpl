@@ -119,6 +119,21 @@ node* sumOverNode(node* const l){
 
 
 
+node* bangNode(node* const l){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = NULL;
+  n->type = tbang;
+
+  return n;
+}
+
+
+
+
+
 
 node* drawNode(node* const l, node* const r){
   node *n;
@@ -211,7 +226,7 @@ void printNode(node* n){
         }
     break;
     default:
-      dbg("%s","Error evaluating expression.");
+      dbg("%s","Error printing expression.");
   }
 }
 
@@ -413,25 +428,10 @@ node* _sumover(const node* l){
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
   switch(l->type){
-    case tint:
-      dbg("%s\n","sumover on int.");
-      out->type=l->type;
-      out->value.i = l->value.i;
-    break;
-    case tdouble:
-      dbg("%s\n","sumover on double.");
-      out->type=l->type;
-      out->value.d = l->value.d;
-    break;
     case tci:
       dbg("%s\n","sumover on signed integer array.");
       out->type=tint;
-      if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
-        _error(&out,LPL_CUSTOM_ERROR);
-      }
-      else{
-        col_int_sum(l->value.ci,&out->value.i);
-      }
+      col_int_sum(l->value.ci,&out->value.i);
     break;
     default:
       _error(&out,LPL_INVALIDARGS_ERROR);
@@ -441,10 +441,30 @@ node* _sumover(const node* l){
 }
 
 
-
-
-
-
+node* _bang(const node* l){
+  node *out;
+  col_error e;
+  if( _hasError(l)) {out = _copyError(l); return out;}
+  initNode(&out);
+  switch(l->type){
+    case tint:
+      dbg("%s\n","bang on integer.");
+      out->type=tci;
+      if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
+        _error(&out,LPL_CUSTOM_ERROR);
+      }
+      else{
+        if(NO_ERROR!=(e=col_int_range(out->value.ci,0,l->value.i, (l->value.i > 0) ? 1 : -1 ))){
+          _error(&out,LPL_CUSTOM_ERROR);
+        }
+      }
+    break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
+    break;
+  }
+  return(out);
+}
 
 
 node* _equal(const node* l, const node* r){
@@ -603,6 +623,11 @@ node* evalNode(const node* n){
     case tsumover:
       dbg("%s","Evaluating sum over.\n");
       out = _sumover(l=evalNode(n->l));
+      freeNode(l);
+    break;
+    case tbang:
+      dbg("%s","Evaluating bang.\n");
+      out = _bang(l=evalNode(n->l));
       freeNode(l);
     break;
     case terror:

@@ -23,7 +23,10 @@
 
 
 _draw {return DRAW;}
-"+/" {return SUMOVER;}
+"!"   {return BANG;}
+"+/"  {return SUMOVER;}
+
+"\\" {return EXIT;}
 
 %%
 

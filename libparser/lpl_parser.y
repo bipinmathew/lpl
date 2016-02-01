@@ -1,7 +1,8 @@
+%right BANG SUMOVER.
+%nonassoc DRAW.
+
 %left ADD SUB.
 %left MULT DIV.
-%right SUMOVER.
-%nonassoc DRAW.
 
 
 %token_type {const char*}
@@ -28,6 +29,7 @@
 
 %type expr {node*}
 %type start {node*}
+
 %extra_argument {node *result}
 
 
@@ -39,6 +41,11 @@ start ::= expr(B) .
       freeNode(B);
     }
 
+/* System functions */
+expr ::= EXIT.{exit(0);}
+
+
+/* End System functions */
 
 /* Assignment */
 expr(A) ::= NUMBER(B). {A = intNode(B);}
@@ -51,6 +58,7 @@ expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 
 expr(C) ::= expr(A) DRAW expr(B). {C = drawNode(A,B);}
 expr(B) ::= SUMOVER expr(A). {B = sumOverNode(A);}
+expr(B) ::= BANG    expr(A). {B = bangNode(A);}
 
 /* End Arrays */
 

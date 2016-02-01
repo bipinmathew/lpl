@@ -5,6 +5,7 @@
 
 
 typedef enum {
+    /* Scalar types */
     tnull,
     tboolean,
     tint,
@@ -17,9 +18,11 @@ typedef enum {
     tminus,
     tmult,
     tdiv,
-    /* Array types */
+    /* Array functions */
     tdraw,
     tsumover,
+    tbang,
+    /* Array types */
     tci,
     tcui
 } types;
@@ -62,6 +65,7 @@ node* divNode(node* const l, node* const r);
 node* multNode(node* const l, node* const r);
 node* drawNode(node* const l, node* const r);
 node* sumOverNode(node* const r);
+node* bangNode(node* const l);
 node* negNode(node* const l);
 
 node* evalNode(const node* root);
