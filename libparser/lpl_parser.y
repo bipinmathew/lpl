@@ -72,4 +72,5 @@ expr(C) ::= expr(A) ADD expr(B). {C = addNode(A,B);}
 expr(C) ::= expr(A) SUB expr(B). {C = minusNode(A,B);}
 expr(C) ::= expr(A) DIV expr(B). {C = divNode(A,B);}
 expr(C) ::= expr(A) MULT expr(B). {C = multNode(A,B);}
+expr(C) ::= expr(A) EQ expr(B). {C = eqNode(A,B);}
 

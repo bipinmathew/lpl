@@ -22,6 +22,7 @@ typedef enum {
     tdraw,
     tsumover,
     tbang,
+    teq,
     /* Array types */
     tci,
     tcui
@@ -55,7 +56,6 @@ typedef struct _node {
 
 int initNode(node **p);
 int freeNode(node *n);
-int isEqual(node* n, node *m);
 
 node* intNode(const char *str);
 node* doubleNode(const char *str);
@@ -64,6 +64,7 @@ node* minusNode(node* const l, node* const r);
 node* divNode(node* const l, node* const r);
 node* multNode(node* const l, node* const r);
 node* drawNode(node* const l, node* const r);
+node* eqNode(node* const l, node* const r);
 node* sumOverNode(node* const r);
 node* bangNode(node* const l);
 node* negNode(node* const l);

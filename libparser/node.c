@@ -80,8 +80,6 @@ node* divNode(node* const l, node* const r){
   return n;
 }
 
-
-
 node* multNode(node* const l, node* const r){
   node *n;
   initNode(&n);
@@ -93,6 +91,16 @@ node* multNode(node* const l, node* const r){
   return n;
 }
 
+node* eqNode(node* const l, node* const r){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = r;
+  n->type = teq;
+
+  return n;
+}
 
 node* negNode(node* const l){
   node *n;
@@ -213,6 +221,9 @@ void printNode(node* n){
     break;
     case tdouble:
         printf("%f",n->value.d);
+    break;
+    case tboolean:
+        printf("%d",n->value.b);
     break;
     case tci:
         col_int_disp(n->value.ci);
@@ -467,7 +478,7 @@ node* _bang(const node* l){
 }
 
 
-node* _equal(const node* l, const node* r){
+node* _eq(const node* l, const node* r){
   node *out;
 
   if( _hasError(l)) {out = _copyError(l); return out;}
@@ -605,6 +616,11 @@ node* evalNode(const node* n){
       out = _div(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
+    case teq:
+      dbg("%s","Evaluating eq.\n");
+      out = _eq(l=evalNode(n->l),r=evalNode(n->r));
+      freeNode(l); freeNode(r);
+    break;
     case tint:
        dbg("%s","Evaluating int.\n");
        initNode(&out);
@@ -639,17 +655,5 @@ node* evalNode(const node* n){
   }
   return out;
 
-}
-
-int isEqual(node* n, node *m){
-  node *c;
-  int val;
-
-  val = 0;
-  if((c = _equal(n,m))->type==tboolean){
-    val = c->value.b;
-  }
-  freeNode(c);
-  return val;
 }
 

@@ -25,6 +25,7 @@
 _draw {return DRAW;}
 "!"   {return BANG;}
 "+/"  {return SUMOVER;}
+"="  {return EQ;}
 
 "\\" {return EXIT;}
 
