@@ -12,6 +12,9 @@ typedef enum {
     scalar_double_node,
     scalar_char_node,
     scalar_error_node,
+    /* Array types */
+    vector_int_node,
+    vector_uint_node,
     /* Functions */
     neg_node,
     add_node,
@@ -22,10 +25,7 @@ typedef enum {
     draw_node,
     sumover_node,
     bang_node,
-    eq_node,
-    /* Array types */
-    vector_scalar_int_node,
-    tcui
+    eq_node
 } types;
 
 typedef struct _error_value {
@@ -41,8 +41,8 @@ typedef union {
   char *s;
   error_value e;
 
-  col_int *ci;
-  col_uint *cui;
+  col_int *vector_int;
+  col_uint *vector_uint;
 } uvalue;
 
 

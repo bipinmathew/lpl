@@ -174,8 +174,8 @@ int freeNode(node *n){
     freeNode(n->l);
   if(n->r != NULL)
     freeNode(n->r);
-  if(n->type == vector_scalar_int_node){
-    col_int_free(n->value.ci);
+  if(n->type == vector_int_node){
+    col_int_free(n->value.vector_int);
   }
   free(n);
 }
@@ -225,8 +225,8 @@ void printNode(node* n){
     case scalar_boolean_node:
         printf("%d",n->value.b);
     break;
-    case vector_scalar_int_node:
-        col_int_disp(n->value.ci);
+    case vector_int_node:
+        col_int_disp(n->value.vector_int);
     break;
     case scalar_error_node:
         if(n->value.e.error_code == LPL_CUSTOM_ERROR){
@@ -242,7 +242,7 @@ void printNode(node* n){
 }
 
 
-node* _add(const node* l, const node* r){
+node* eval_add_node(const node* l, const node* r){
   node *out;
   if( _hasError(l)) {out = _copyError(l); return out;}
   if( _hasError(r)) {out = _copyError(r); return out;}
@@ -284,7 +284,7 @@ node* _add(const node* l, const node* r){
   return(out);
 }
 
-node* _neg(const node* l){
+node* eval_neg_node(const node* l){
   node *out;
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
@@ -307,7 +307,7 @@ node* _neg(const node* l){
 
 
 
-node* _minus(const node* l, const node* r){
+node* eval_minus_node(const node* l, const node* r){
   node *out;
   if( _hasError(l)) {out = _copyError(l); return out;}
   if( _hasError(r)) {out = _copyError(r); return out;}
@@ -351,7 +351,7 @@ node* _minus(const node* l, const node* r){
 }
 
 
-node* _mult(const node* l, const node* r){
+node* eval_mult_node(const node* l, const node* r){
   node *out;
 
   if( _hasError(l)) {out = _copyError(l); return out;}
@@ -396,7 +396,7 @@ node* _mult(const node* l, const node* r){
   return(out);
 }
 
-node* _draw(const node* l, const node* r){
+node* eval_draw_node(const node* l, const node* r){
   node *out;
   col_error e;
 
@@ -409,12 +409,12 @@ node* _draw(const node* l, const node* r){
     case scalar_int_node:
       switch(r->type){
         case scalar_int_node:
-          out->type = vector_scalar_int_node;
-          if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
+          out->type = vector_int_node;
+          if(NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
             _error(&out,LPL_CUSTOM_ERROR);
           }
           else{
-            if(NO_ERROR!=(e=col_int_rand(out->value.ci,NULL,0,r->value.i,l->value.i))){
+            if(NO_ERROR!=(e=col_int_rand(out->value.vector_int,NULL,0,r->value.i,l->value.i))){
               _error(&out,LPL_CUSTOM_ERROR);
             }
           }
@@ -433,16 +433,16 @@ node* _draw(const node* l, const node* r){
 }
 
 
-node* _sumover(const node* l){
+node* eval_sumover_node(const node* l){
   node *out;
   col_error e;
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
   switch(l->type){
-    case vector_scalar_int_node:
+    case vector_int_node:
       dbg("%s\n","sumover on signed integer array.");
       out->type=scalar_int_node;
-      col_int_sum(l->value.ci,&out->value.i);
+      col_int_sum(l->value.vector_int,&out->value.i);
     break;
     default:
       _error(&out,LPL_INVALIDARGS_ERROR);
@@ -452,7 +452,7 @@ node* _sumover(const node* l){
 }
 
 
-node* _bang(const node* l){
+node* eval_bang_node(const node* l){
   node *out;
   col_error e;
   if( _hasError(l)) {out = _copyError(l); return out;}
@@ -460,12 +460,12 @@ node* _bang(const node* l){
   switch(l->type){
     case scalar_int_node:
       dbg("%s\n","bang on integer.");
-      out->type=vector_scalar_int_node;
-      if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
+      out->type=vector_int_node;
+      if(NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
         _error(&out,LPL_CUSTOM_ERROR);
       }
       else{
-        if(NO_ERROR!=(e=col_int_range(out->value.ci,0,l->value.i, (l->value.i > 0) ? 1 : -1 ))){
+        if(NO_ERROR!=(e=col_int_range(out->value.vector_int,0,l->value.i, (l->value.i > 0) ? 1 : -1 ))){
           _error(&out,LPL_CUSTOM_ERROR);
         }
       }
@@ -478,7 +478,7 @@ node* _bang(const node* l){
 }
 
 
-node* _eq(const node* l, const node* r){
+node* eval_eq_node(const node* l, const node* r){
   node *out;
 
   if( _hasError(l)) {out = _copyError(l); return out;}
@@ -523,7 +523,7 @@ node* _eq(const node* l, const node* r){
 }
 
 
-node* _div(const node* l, const node* r){
+node* eval_div_node(const node* l, const node* r){
   node *out;
   if( _hasError(l)) { out = _copyError(l); return out; };
   if( _hasError(r)) { out = _copyError(r); return out; };
@@ -593,32 +593,32 @@ node* evalNode(const node* n){
   switch(n->type){
     case neg_node:
       dbg("%s","Evaluating add.\n");
-      out = _neg(l=evalNode(n->l));
+      out = eval_neg_node(l=evalNode(n->l));
       freeNode(l); 
     break;
     case add_node:
       dbg("%s","Evaluating add.\n");
-      out = _add(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_add_node(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case minus_node:
       dbg("%s","Evaluating minus.\n");
-      out = _minus(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_minus_node(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case mult_node:
       dbg("%s","Evaluating mult.\n");
-      out = _mult(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_mult_node(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case div_node:
       dbg("%s","Evaluating div.\n");
-      out = _div(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_div_node(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case eq_node:
       dbg("%s","Evaluating eq.\n");
-      out = _eq(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_eq_node(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case scalar_int_node:
@@ -633,17 +633,17 @@ node* evalNode(const node* n){
     break;
     case draw_node:
       dbg("%s","Evaluating draw.\n");
-      out = _draw(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_draw_node(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
     case sumover_node:
       dbg("%s","Evaluating sum over.\n");
-      out = _sumover(l=evalNode(n->l));
+      out = eval_sumover_node(l=evalNode(n->l));
       freeNode(l);
     break;
     case bang_node:
       dbg("%s","Evaluating bang.\n");
-      out = _bang(l=evalNode(n->l));
+      out = eval_bang_node(l=evalNode(n->l));
       freeNode(l);
     break;
     case scalar_error_node:
