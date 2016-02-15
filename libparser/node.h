@@ -6,25 +6,25 @@
 
 typedef enum {
     /* Scalar types */
-    tnull,
-    tboolean,
-    tint,
-    tdouble,
-    tchar,
-    terror,
-    tarray,
-    tneg,
-    tadd,
-    tminus,
-    tmult,
-    tdiv,
+    scalar_null_node,
+    scalar_boolean_node,
+    scalar_int_node,
+    scalar_double_node,
+    scalar_char_node,
+    scalar_error_node,
+    /* Functions */
+    neg_node,
+    add_node,
+    minus_node,
+    mult_node,
+    div_node,
     /* Array functions */
-    tdraw,
-    tsumover,
-    tbang,
-    teq,
+    draw_node,
+    sumover_node,
+    bang_node,
+    eq_node,
     /* Array types */
-    tci,
+    vector_scalar_int_node,
     tcui
 } types;
 

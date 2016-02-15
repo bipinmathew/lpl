@@ -21,7 +21,7 @@
 %syntax_error
 {
   dbg("%s\n","Got Syntax Error.");
-  result->type = terror;
+  result->type = scalar_error_node;
   result->value.i = LPL_SYNTAX_ERROR;
 }
 

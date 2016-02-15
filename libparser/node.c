@@ -11,7 +11,7 @@ int initNode(node **p){
   }
   (*p)->l = NULL;
   (*p)->r = NULL;
-  (*p)->type = tnull;
+  (*p)->type = scalar_null_node;
   return(0);
 }
 
@@ -23,7 +23,7 @@ node* intNode(const char *str){
 
   n->l = NULL;
   n->r = NULL;
-  n->type = tint;
+  n->type = scalar_int_node;
 
   n->value.i = atoi(str);
 
@@ -38,7 +38,7 @@ node* doubleNode(const char *str){
 
   n->l = NULL;
   n->r = NULL;
-  n->type = tdouble;
+  n->type = scalar_double_node;
 
   n->value.d = atof(str);
 
@@ -52,7 +52,7 @@ node* addNode(node* const l, node* const r){
 
   n->l = l;
   n->r = r;
-  n->type = tadd;
+  n->type = add_node;
 
   return n;
 }
@@ -64,7 +64,7 @@ node* minusNode(node* const l, node* const r){
 
   n->l = l;
   n->r = r;
-  n->type = tminus;
+  n->type = minus_node;
 
   return n;
 }
@@ -75,7 +75,7 @@ node* divNode(node* const l, node* const r){
 
   n->l = l;
   n->r = r;
-  n->type = tdiv;
+  n->type = div_node;
 
   return n;
 }
@@ -86,7 +86,7 @@ node* multNode(node* const l, node* const r){
 
   n->l = l;
   n->r = r;
-  n->type = tmult;
+  n->type = mult_node;
 
   return n;
 }
@@ -97,7 +97,7 @@ node* eqNode(node* const l, node* const r){
 
   n->l = l;
   n->r = r;
-  n->type = teq;
+  n->type = eq_node;
 
   return n;
 }
@@ -108,7 +108,7 @@ node* negNode(node* const l){
 
   n->l = l;
   n->r = NULL;
-  n->type = tneg;
+  n->type = neg_node;
 
   return n;
 }
@@ -120,7 +120,7 @@ node* sumOverNode(node* const l){
 
   n->l = l;
   n->r = NULL;
-  n->type = tsumover;
+  n->type = sumover_node;
 
   return n;
 }
@@ -133,7 +133,7 @@ node* bangNode(node* const l){
 
   n->l = l;
   n->r = NULL;
-  n->type = tbang;
+  n->type = bang_node;
 
   return n;
 }
@@ -149,14 +149,14 @@ node* drawNode(node* const l, node* const r){
 
   n->l = l;
   n->r = r;
-  n->type = tdraw;
+  n->type = draw_node;
 
   return n;
 }
 
 
 int _error(node **n, int errorcode) {
-  (*n)->type = terror;
+  (*n)->type = scalar_error_node;
   (*n)->value.e.error_code = errorcode;
   (*n)->value.e.error_string = "Hello world.";
   return 0;
@@ -174,21 +174,21 @@ int freeNode(node *n){
     freeNode(n->l);
   if(n->r != NULL)
     freeNode(n->r);
-  if(n->type == tci){
+  if(n->type == vector_scalar_int_node){
     col_int_free(n->value.ci);
   }
   free(n);
 }
 
 int _hasError(const node* n){
-  return (n->type==terror);
+  return (n->type==scalar_error_node);
 }
 
 
 node* _copyError(const node *in){
   node *out;
   initNode(&out);
-  out->type = terror;
+  out->type = scalar_error_node;
   out->value.e.error_code = in->value.e.error_code;
   out->value.e.error_string = in->value.e.error_string;
   return out;
@@ -196,39 +196,39 @@ node* _copyError(const node *in){
 
 void printNode(node* n){
   switch(n->type){
-    case tadd:
+    case add_node:
       printNode(n->l);
       printf("+");
       printNode(n->r);
     break;
-    case tminus:
+    case minus_node:
       printNode(n->l);
       printf("-");
       printNode(n->r);
     break;
-    case tmult:
+    case mult_node:
       printNode(n->l);
       printf("*");
       printNode(n->r);
     break;
-    case tdiv:
+    case div_node:
       printNode(n->l);
       printf("/");
       printNode(n->r);
     break;
-    case tint:
+    case scalar_int_node:
         printf("%d",n->value.i);
     break;
-    case tdouble:
+    case scalar_double_node:
         printf("%f",n->value.d);
     break;
-    case tboolean:
+    case scalar_boolean_node:
         printf("%d",n->value.b);
     break;
-    case tci:
+    case vector_scalar_int_node:
         col_int_disp(n->value.ci);
     break;
-    case terror:
+    case scalar_error_node:
         if(n->value.e.error_code == LPL_CUSTOM_ERROR){
           printf("%s\n",n->value.e.error_string);
         }
@@ -248,14 +248,14 @@ node* _add(const node* l, const node* r){
   if( _hasError(r)) {out = _copyError(r); return out;}
   initNode(&out);
   switch(l->type){
-    case tint:
+    case scalar_int_node:
       switch(r->type){
-        case tint:
-          out->type = tint;
+        case scalar_int_node:
+          out->type = scalar_int_node;
           out->value.i = l->value.i+r->value.i;
         break;
-        case tdouble:
-          out->type = tdouble;
+        case scalar_double_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.i+r->value.d;
         break;
         default:
@@ -264,14 +264,14 @@ node* _add(const node* l, const node* r){
 
       }
     break;
-    case tdouble:
+    case scalar_double_node:
       switch(r->type){
-        case tint:
-          out->type = tdouble;
+        case scalar_int_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.d+r->value.i;
         break;
-        case tdouble:
-          out->type = tdouble;
+        case scalar_double_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.d+r->value.d;
         break;
         default:
@@ -288,12 +288,12 @@ node* _neg(const node* l){
   node *out;
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
-  if(l->type==tint){
+  if(l->type==scalar_int_node){
       dbg("%s\n","Negate on int.");
       out->type=l->type;
       out->value.i = -l->value.i;
   }
-  else if(l->type==tdouble){
+  else if(l->type==scalar_double_node){
       dbg("%s\n","Negate on double.");
       out->type=l->type;
       out->value.d = -l->value.d;
@@ -314,14 +314,14 @@ node* _minus(const node* l, const node* r){
 
   initNode(&out);
   switch(l->type){
-    case tint:
+    case scalar_int_node:
       switch(r->type){
-        case tint:
-          out->type = tint;
+        case scalar_int_node:
+          out->type = scalar_int_node;
           out->value.i = l->value.i-r->value.i;
         break;
-        case tdouble:
-          out->type = tdouble;
+        case scalar_double_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.i-r->value.d;
         break;
         default:
@@ -330,14 +330,14 @@ node* _minus(const node* l, const node* r){
 
       }
     break;
-    case tdouble:
+    case scalar_double_node:
       switch(r->type){
-        case tint:
-          out->type = tdouble;
+        case scalar_int_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.d-r->value.i;
         break;
-        case tdouble:
-          out->type = tdouble;
+        case scalar_double_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.d-r->value.d;
         break;
         default:
@@ -360,14 +360,14 @@ node* _mult(const node* l, const node* r){
 
   initNode(&out);
   switch(l->type){
-    case tint:
+    case scalar_int_node:
       switch(r->type){
-        case tint:
-          out->type = tint;
+        case scalar_int_node:
+          out->type = scalar_int_node;
           out->value.i = l->value.i*r->value.i;
         break;
-        case tdouble:
-          out->type = tdouble;
+        case scalar_double_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.i*r->value.d;
         break;
         default:
@@ -376,14 +376,14 @@ node* _mult(const node* l, const node* r){
 
       }
     break;
-    case tdouble:
+    case scalar_double_node:
       switch(r->type){
-        case tint:
-          out->type = tdouble;
+        case scalar_int_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.d*r->value.i;
         break;
-        case tdouble:
-          out->type = tdouble;
+        case scalar_double_node:
+          out->type = scalar_double_node;
           out->value.d = l->value.d*r->value.d;
         break;
         default:
@@ -406,10 +406,10 @@ node* _draw(const node* l, const node* r){
 
   initNode(&out);
   switch(l->type){
-    case tint:
+    case scalar_int_node:
       switch(r->type){
-        case tint:
-          out->type = tci;
+        case scalar_int_node:
+          out->type = vector_scalar_int_node;
           if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
             _error(&out,LPL_CUSTOM_ERROR);
           }
@@ -439,9 +439,9 @@ node* _sumover(const node* l){
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
   switch(l->type){
-    case tci:
+    case vector_scalar_int_node:
       dbg("%s\n","sumover on signed integer array.");
-      out->type=tint;
+      out->type=scalar_int_node;
       col_int_sum(l->value.ci,&out->value.i);
     break;
     default:
@@ -458,9 +458,9 @@ node* _bang(const node* l){
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
   switch(l->type){
-    case tint:
+    case scalar_int_node:
       dbg("%s\n","bang on integer.");
-      out->type=tci;
+      out->type=vector_scalar_int_node;
       if(NO_ERROR!=(e=col_int_init(&out->value.ci))){
         _error(&out,LPL_CUSTOM_ERROR);
       }
@@ -486,14 +486,14 @@ node* _eq(const node* l, const node* r){
 
   initNode(&out);
   switch(l->type){
-    case tint:
+    case scalar_int_node:
       switch(r->type){
-        case tint:
-          out->type = tboolean;
+        case scalar_int_node:
+          out->type = scalar_boolean_node;
           out->value.b = l->value.i==r->value.i;
         break;
-        case tdouble:
-          out->type = tboolean;
+        case scalar_double_node:
+          out->type = scalar_boolean_node;
           out->value.b = l->value.i==r->value.d;
         break;
         default:
@@ -502,14 +502,14 @@ node* _eq(const node* l, const node* r){
 
       }
     break;
-    case tdouble:
+    case scalar_double_node:
       switch(r->type){
-        case tint:
-          out->type = tboolean;
+        case scalar_int_node:
+          out->type = scalar_boolean_node;
           out->value.b = l->value.d==r->value.i;
         break;
-        case tdouble:
-          out->type = tboolean;
+        case scalar_double_node:
+          out->type = scalar_boolean_node;
           out->value.b = l->value.d==r->value.d;
         break;
         default:
@@ -530,23 +530,23 @@ node* _div(const node* l, const node* r){
 
   initNode(&out);
   switch(l->type){
-    case tint:
+    case scalar_int_node:
       switch(r->type){
-        case tint:
+        case scalar_int_node:
           if(r->value.i==0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else{
-            out->type = tdouble;
+            out->type = scalar_double_node;
             out->value.d = ((double)l->value.i)/((double)r->value.i);
           }
         break;
-        case tdouble:
+        case scalar_double_node:
           if(r->value.d==0.0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else {
-            out->type = tdouble;
+            out->type = scalar_double_node;
             out->value.d = l->value.i/r->value.d;
           }
         break;
@@ -556,23 +556,23 @@ node* _div(const node* l, const node* r){
 
       }
     break;
-    case tdouble:
+    case scalar_double_node:
       switch(r->type){
-        case tint:
+        case scalar_int_node:
           if(r->value.i==0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else{
-            out->type = tdouble;
+            out->type = scalar_double_node;
             out->value.d = l->value.d/r->value.i;
           }
         break;
-        case tdouble:
+        case scalar_double_node:
           if(r->value.d==0.0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else {
-            out->type = tdouble;
+            out->type = scalar_double_node;
             out->value.d = l->value.d/r->value.d;
           }
         break;
@@ -591,62 +591,62 @@ node* evalNode(const node* n){
   node *out;
   node *l,*r;
   switch(n->type){
-    case tneg:
+    case neg_node:
       dbg("%s","Evaluating add.\n");
       out = _neg(l=evalNode(n->l));
       freeNode(l); 
     break;
-    case tadd:
+    case add_node:
       dbg("%s","Evaluating add.\n");
       out = _add(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
-    case tminus:
+    case minus_node:
       dbg("%s","Evaluating minus.\n");
       out = _minus(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
-    case tmult:
+    case mult_node:
       dbg("%s","Evaluating mult.\n");
       out = _mult(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
-    case tdiv:
+    case div_node:
       dbg("%s","Evaluating div.\n");
       out = _div(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
-    case teq:
+    case eq_node:
       dbg("%s","Evaluating eq.\n");
       out = _eq(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
-    case tint:
+    case scalar_int_node:
        dbg("%s","Evaluating int.\n");
        initNode(&out);
        memcpy(out,n,sizeof(node));
     break;
-    case tdouble:
+    case scalar_double_node:
        dbg("%s","Evaluating double.\n");
        initNode(&out);
        memcpy(out,n,sizeof(node));
     break;
-    case tdraw:
+    case draw_node:
       dbg("%s","Evaluating draw.\n");
       out = _draw(l=evalNode(n->l),r=evalNode(n->r));
       freeNode(l); freeNode(r);
     break;
-    case tsumover:
+    case sumover_node:
       dbg("%s","Evaluating sum over.\n");
       out = _sumover(l=evalNode(n->l));
       freeNode(l);
     break;
-    case tbang:
+    case bang_node:
       dbg("%s","Evaluating bang.\n");
       out = _bang(l=evalNode(n->l));
       freeNode(l);
     break;
-    case terror:
+    case scalar_error_node:
        dbg("%s","Evaluating error.\n");
        n = out;
     break;
