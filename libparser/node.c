@@ -5,6 +5,21 @@
 #include <stdlib.h>
 #include <string.h>
 
+static int _error(node **n, int errorcode);
+static int _hasError(const node* n);
+static node* _copyError(const node *in);
+
+static node* eval_add_node(const node* l, const node* r);
+static node* eval_neg_node(const node* l);
+static node* eval_minus_node(const node* l, const node* r);
+static node* eval_mult_node(const node* l, const node* r);
+static node* eval_draw_node(const node* l, const node* r);
+static node* eval_sumover_node(const node* l);
+static node* eval_bang_node(const node* l);
+static node* eval_eq_node(const node* l, const node* r);
+static node* eval_div_node(const node* l, const node* r);
+
+
 int initNode(node **p){
   if((*p = (node *) malloc(sizeof(node)))==NULL){
     return(1);
@@ -163,11 +178,6 @@ int _error(node **n, int errorcode) {
 }
 
 
-node* errorNode(int errorcode){
-  node *n;
-  initNode(&n);
-  _error(&n,errorcode);
-}
 
 int freeNode(node *n){
   if(n->l != NULL)
@@ -178,6 +188,7 @@ int freeNode(node *n){
     col_int_free(n->value.vector_int);
   }
   free(n);
+  return(0);
 }
 
 int _hasError(const node* n){
@@ -261,7 +272,6 @@ node* eval_add_node(const node* l, const node* r){
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
         break;
-
       }
     break;
     case scalar_double_node:
@@ -280,6 +290,10 @@ node* eval_add_node(const node* l, const node* r){
 
       }
     break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
+    break;
+
   }
   return(out);
 }
@@ -346,6 +360,9 @@ node* eval_minus_node(const node* l, const node* r){
 
       }
     break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
+    break;
   }
   return(out);
 }
@@ -392,6 +409,9 @@ node* eval_mult_node(const node* l, const node* r){
 
       }
     break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
+    break;
   }
   return(out);
 }
@@ -435,7 +455,6 @@ node* eval_draw_node(const node* l, const node* r){
 
 node* eval_sumover_node(const node* l){
   node *out;
-  col_error e;
   if( _hasError(l)) {out = _copyError(l); return out;}
   initNode(&out);
   switch(l->type){
@@ -518,6 +537,9 @@ node* eval_eq_node(const node* l, const node* r){
 
       }
     break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
+    break;
   }
   return(out);
 }
@@ -581,6 +603,9 @@ node* eval_div_node(const node* l, const node* r){
         break;
 
       }
+    break;
+    default:
+      _error(&out,LPL_INVALIDARGS_ERROR);
     break;
   }
   return(out);

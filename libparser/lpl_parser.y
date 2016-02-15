@@ -14,7 +14,7 @@
   #include <assert.h>
   #include <string.h>
   #include "lpl_errors.h"
-  #include "node.h"
+  #include "parser.h"
   #include "debug.h"
 }
 
