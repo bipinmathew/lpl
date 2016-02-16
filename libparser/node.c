@@ -239,6 +239,9 @@ void printNode(node* n){
     case vector_int_node:
         col_int_disp(n->value.vector_int);
     break;
+    case vector_uint_node:
+        col_uint_disp(n->value.vector_uint);
+    break;
     case scalar_error_node:
         if(n->value.e.error_code == LPL_CUSTOM_ERROR){
           printf("%s\n",n->value.e.error_string);
@@ -499,6 +502,7 @@ node* eval_bang_node(const node* l){
 
 node* eval_eq_node(const node* l, const node* r){
   node *out;
+  col_error e;
 
   if( _hasError(l)) {out = _copyError(l); return out;}
   if( _hasError(r)) {out = _copyError(r); return out;}
@@ -514,6 +518,14 @@ node* eval_eq_node(const node* l, const node* r){
         case scalar_double_node:
           out->type = scalar_boolean_node;
           out->value.b = l->value.i==r->value.d;
+        break;
+        case vector_int_node:
+          out->type = vector_uint_node;
+          if(NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
+            _error(&out,LPL_CUSTOM_ERROR);
+          }
+          col_int_disp(r->value.vector_int);
+          col_int_select_scalar (r->value.vector_int, out->value.vector_uint , l->value.i);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -534,7 +546,21 @@ node* eval_eq_node(const node* l, const node* r){
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
         break;
-
+      }
+    break;
+    case vector_int_node:
+      switch(r->type){
+        case scalar_int_node:
+          out->type = vector_uint_node;
+          if(NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
+            _error(&out,LPL_CUSTOM_ERROR);
+          }
+          col_int_disp(l->value.vector_int);
+          col_int_select_scalar (l->value.vector_int, out->value.vector_uint , r->value.i);
+        break;
+        default:
+          _error(&out,LPL_INVALIDARGS_ERROR);
+        break;
       }
     break;
     default:

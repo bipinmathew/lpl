@@ -27,7 +27,8 @@
 
 
 
-%type expr {node*}
+%type expr  {node*}
+%type array {node*}
 %type start {node*}
 
 %extra_argument {node *result}

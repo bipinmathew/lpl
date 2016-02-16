@@ -27,6 +27,7 @@ _draw {return DRAW;}
 "+/"  {return SUMOVER;}
 "="  {return EQ;}
 
+
 "\\" {return EXIT;}
 
 %%
