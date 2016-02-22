@@ -5,10 +5,10 @@
 #include "lpl_scanner.h"
 
 void* ParseAlloc(void* (*allocProc)(size_t));
-void Parse(void* parser, int token, const char* tokenInfo, node* result);
+void Parse(void* parser, int token, const char* tokenInfo, node** result);
 void ParseFree(void* parser, void(*freeProc)(void*));
 void ParseTrace(FILE *stream, const char *zPrefix);
 
-node* parse(const char* commandLine);
+int parse(const char* commandLine, node** result );
 
 #endif

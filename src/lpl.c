@@ -1,17 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <libcalg-1.0/libcalg/trie.h>
+
 #include "parser.h"
 #include "debug.h"
 
 int main() {
     FILE *fp;
     char commandLine[1024];
-    node *result;
+    node *result,*eval;
     clock_t start, diff;
     time_t wstart;
     double wtime;
     int msec;
+
+
+    Trie *scope;
+    scope = trie_new();
 
 
     struct timespec now, tmstart;
@@ -19,14 +25,15 @@ int main() {
 
     while (fgets(commandLine,1024,stdin)) {
 #ifdef DEBUG
-      /* fp = fopen("errors.log","w");
-      ParseTrace(fp,"err: "); */
+      fp = fopen("errors.log","w");
+      ParseTrace(fp,"err: ");
 #endif
 
       clock_gettime(CLOCK_REALTIME, &tmstart);
 
         start = clock();
-          result=parse(commandLine);
+          parse(commandLine,&result);
+          result = evalNode(result,scope);
           printNode(result);
           printf("\n");
         diff = clock()-start;
@@ -40,7 +47,7 @@ int main() {
 
       printf("%s, walltime: %f, cputime: %d ms\n",commandLine,wtime,msec);
 #ifdef DEBUG
-      /* fclose(fp); */
+      fclose(fp);
 #endif
     }
 

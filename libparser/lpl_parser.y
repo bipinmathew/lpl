@@ -5,6 +5,7 @@
 %left MULT DIV.
 
 
+
 %token_type {const char*}
 
 %include
@@ -13,6 +14,8 @@
   #include <stdlib.h>
   #include <assert.h>
   #include <string.h>
+  #include <libcalg-1.0/libcalg/trie.h>
+
   #include "lpl_errors.h"
   #include "parser.h"
   #include "debug.h"
@@ -21,29 +24,37 @@
 %syntax_error
 {
   dbg("%s\n","Got Syntax Error.");
-  result->type = scalar_error_node;
-  result->value.i = LPL_SYNTAX_ERROR;
+  (*result)->type = scalar_error_node;
+  (*result)->value.i = LPL_SYNTAX_ERROR;
 }
 
 
 
 %type expr  {node*}
-%type array {node*}
 %type start {node*}
 
-%extra_argument {node *result}
+%extra_argument {node **result}
 
 
 start ::= expr(B) . 
     {
-      node *temp;
-      memcpy(result,temp=evalNode(B),sizeof(node));
+      /* node *temp; 
+      Trie *scope;
+      scope = trie_new(); */
+      *result = B;
+      /*memcpy(result,temp=evalNode(B,scope),sizeof(node));
       free(temp);
-      freeNode(B);
+      freeNode(B);*/
     }
+start ::= IDENT(A) . {printf("Got an IDENT only.");}
 
 /* System functions */
 expr ::= EXIT.{exit(0);}
+
+
+expr(C) ::= IDENT(A) ASSN expr(B). {
+  C = assignNode(identNode(A),B);
+}
 
 
 /* End System functions */

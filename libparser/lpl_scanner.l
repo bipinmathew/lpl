@@ -10,10 +10,13 @@
 
 [ \t] {}
 
+
+
 [0-9]*\.[0-9]+ {return FLOAT;}
 [0-9]+ {return NUMBER;}
 
 
+":" {return ASSN;}
 "+" {return ADD;}
 "-" {return SUB;}
 "*" {return MULT;}
@@ -22,10 +25,16 @@
 ")" {return RPARENS;}
 
 
-_draw {return DRAW;}
 "!"   {return BANG;}
 "+/"  {return SUMOVER;}
 "="  {return EQ;}
+
+
+
+_draw {return DRAW;}
+
+
+[_a-zA-Z][_a-zA-Z0-9]*  {return IDENT;}
 
 
 "\\" {return EXIT;}

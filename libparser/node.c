@@ -4,11 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libcalg-1.0/libcalg/trie.h>
 
 static int _error(node **n, int errorcode);
-static int _hasError(const node* n);
-static node* _copyError(const node *in);
+static int _has_error(const node* n);
+static node* _copy_error(const node *in);
 
+static int _copy_node(node *dest, const node* const src);
+
+static node* eval_assign_node(const node* l, node* r,Trie *scope);
 static node* eval_add_node(const node* l, const node* r);
 static node* eval_neg_node(const node* l);
 static node* eval_minus_node(const node* l, const node* r);
@@ -30,6 +34,20 @@ int initNode(node **p){
   return(0);
 }
 
+int _copy_node(node *dest, const node* const src){
+  initNode(&dest);
+  memcpy(dest,src,sizeof(node));
+  switch(dest->type){
+  case vector_int_node:
+    break;
+  default:
+    printf("No copy..\n");
+
+
+  }
+
+}
+
 
 
 node* intNode(const char *str){
@@ -46,6 +64,22 @@ node* intNode(const char *str){
 }
 
 
+node* identNode(const char *str){
+  node *n;
+  initNode(&n);
+
+  n->l = NULL;
+  n->r = NULL;
+  n->type = ident_node;
+
+  n->value.s = (char *)malloc(sizeof(char)*strlen(str));
+  strcpy(n->value.s,str);
+
+  return n;
+}
+
+
+
 
 node* doubleNode(const char *str){
   node *n;
@@ -59,6 +93,21 @@ node* doubleNode(const char *str){
 
   return n;
 }
+
+
+
+node* assignNode(node* const l, node* const r){
+  node *n;
+  initNode(&n);
+
+  n->l = l;
+  n->r = r;
+  n->type = assign_node;
+
+  return n;
+}
+
+
 
 
 node* addNode(node* const l, node* const r){
@@ -184,19 +233,24 @@ int freeNode(node *n){
     freeNode(n->l);
   if(n->r != NULL)
     freeNode(n->r);
-  if(n->type == vector_int_node){
-    col_int_free(n->value.vector_int);
+  switch(n->type){
+    case vector_int_node:
+      col_int_free(n->value.vector_int);
+      break;
+    case ident_node:
+      free(n->value.s);
+      break;
   }
   free(n);
   return(0);
 }
 
-int _hasError(const node* n){
+int _has_error(const node* n){
   return (n->type==scalar_error_node);
 }
 
 
-node* _copyError(const node *in){
+node* _copy_error(const node *in){
   node *out;
   initNode(&out);
   out->type = scalar_error_node;
@@ -256,10 +310,19 @@ void printNode(node* n){
 }
 
 
+
+static node* eval_assign_node(const node* l, node* r, Trie *scope){
+  node *out;
+  trie_insert(scope,l->value.s,(TrieValue *)r);
+  _copy_node(out,r);
+  return r;
+}
+
+
 node* eval_add_node(const node* l, const node* r){
   node *out;
-  if( _hasError(l)) {out = _copyError(l); return out;}
-  if( _hasError(r)) {out = _copyError(r); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
+  if( _has_error(r)) {out = _copy_error(r); return out;}
   initNode(&out);
   switch(l->type){
     case scalar_int_node:
@@ -303,7 +366,7 @@ node* eval_add_node(const node* l, const node* r){
 
 node* eval_neg_node(const node* l){
   node *out;
-  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
   initNode(&out);
   if(l->type==scalar_int_node){
       dbg("%s\n","Negate on int.");
@@ -326,8 +389,8 @@ node* eval_neg_node(const node* l){
 
 node* eval_minus_node(const node* l, const node* r){
   node *out;
-  if( _hasError(l)) {out = _copyError(l); return out;}
-  if( _hasError(r)) {out = _copyError(r); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
+  if( _has_error(r)) {out = _copy_error(r); return out;}
 
   initNode(&out);
   switch(l->type){
@@ -374,8 +437,8 @@ node* eval_minus_node(const node* l, const node* r){
 node* eval_mult_node(const node* l, const node* r){
   node *out;
 
-  if( _hasError(l)) {out = _copyError(l); return out;}
-  if( _hasError(r)) {out = _copyError(r); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
+  if( _has_error(r)) {out = _copy_error(r); return out;}
 
 
   initNode(&out);
@@ -423,8 +486,8 @@ node* eval_draw_node(const node* l, const node* r){
   node *out;
   col_error e;
 
-  if( _hasError(l)) {out = _copyError(l); return out;}
-  if( _hasError(r)) {out = _copyError(r); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
+  if( _has_error(r)) {out = _copy_error(r); return out;}
 
 
   initNode(&out);
@@ -458,7 +521,7 @@ node* eval_draw_node(const node* l, const node* r){
 
 node* eval_sumover_node(const node* l){
   node *out;
-  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
   initNode(&out);
   switch(l->type){
     case vector_int_node:
@@ -477,7 +540,7 @@ node* eval_sumover_node(const node* l){
 node* eval_bang_node(const node* l){
   node *out;
   col_error e;
-  if( _hasError(l)) {out = _copyError(l); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
   initNode(&out);
   switch(l->type){
     case scalar_int_node:
@@ -504,8 +567,8 @@ node* eval_eq_node(const node* l, const node* r){
   node *out;
   col_error e;
 
-  if( _hasError(l)) {out = _copyError(l); return out;}
-  if( _hasError(r)) {out = _copyError(r); return out;}
+  if( _has_error(l)) {out = _copy_error(l); return out;}
+  if( _has_error(r)) {out = _copy_error(r); return out;}
 
   initNode(&out);
   switch(l->type){
@@ -573,8 +636,8 @@ node* eval_eq_node(const node* l, const node* r){
 
 node* eval_div_node(const node* l, const node* r){
   node *out;
-  if( _hasError(l)) { out = _copyError(l); return out; };
-  if( _hasError(r)) { out = _copyError(r); return out; };
+  if( _has_error(l)) { out = _copy_error(l); return out; };
+  if( _has_error(r)) { out = _copy_error(r); return out; };
 
   initNode(&out);
   switch(l->type){
@@ -638,38 +701,43 @@ node* eval_div_node(const node* l, const node* r){
 }
 
 
-node* evalNode(const node* n){
+node* evalNode(const node* n,Trie *scope){
   node *out;
   node *l,*r;
   switch(n->type){
+    case assign_node:
+      dbg("%s","Evaluating assign.\n");
+      out = eval_assign_node(n->l,r=evalNode(n->r,scope),scope);
+      freeNode(n->l); freeNode(r);
+    break;
     case neg_node:
       dbg("%s","Evaluating add.\n");
-      out = eval_neg_node(l=evalNode(n->l));
+      out = eval_neg_node(l=evalNode(n->l,scope));
       freeNode(l); 
     break;
     case add_node:
       dbg("%s","Evaluating add.\n");
-      out = eval_add_node(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_add_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
       freeNode(l); freeNode(r);
     break;
     case minus_node:
       dbg("%s","Evaluating minus.\n");
-      out = eval_minus_node(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_minus_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
       freeNode(l); freeNode(r);
     break;
     case mult_node:
       dbg("%s","Evaluating mult.\n");
-      out = eval_mult_node(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_mult_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
       freeNode(l); freeNode(r);
     break;
     case div_node:
       dbg("%s","Evaluating div.\n");
-      out = eval_div_node(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_div_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
       freeNode(l); freeNode(r);
     break;
     case eq_node:
       dbg("%s","Evaluating eq.\n");
-      out = eval_eq_node(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_eq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
       freeNode(l); freeNode(r);
     break;
     case scalar_int_node:
@@ -684,17 +752,17 @@ node* evalNode(const node* n){
     break;
     case draw_node:
       dbg("%s","Evaluating draw.\n");
-      out = eval_draw_node(l=evalNode(n->l),r=evalNode(n->r));
+      out = eval_draw_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
       freeNode(l); freeNode(r);
     break;
     case sumover_node:
       dbg("%s","Evaluating sum over.\n");
-      out = eval_sumover_node(l=evalNode(n->l));
+      out = eval_sumover_node(l=evalNode(n->l,scope));
       freeNode(l);
     break;
     case bang_node:
       dbg("%s","Evaluating bang.\n");
-      out = eval_bang_node(l=evalNode(n->l));
+      out = eval_bang_node(l=evalNode(n->l,scope));
       freeNode(l);
     break;
     case scalar_error_node:

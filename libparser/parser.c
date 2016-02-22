@@ -3,16 +3,19 @@
 #include "parser.h"
 #include "debug.h"
 
-node* parse(const char* commandLine) {
+int parse(const char* commandLine, node **result) {
     /*  Set up the scanner */
 
     dbg("Parsing: %s \n",commandLine);
     yyscan_t scanner;
+    int tok_len;
+    char *tok;
     YY_BUFFER_STATE bufferState;
     void* shellParser;
     int lexCode;
-    node *result;
-    initNode(&result);
+
+    initNode(result);
+    tok = (char *)malloc(strlen(commandLine)*sizeof(char));
 
     yylex_init(&scanner);
 
@@ -22,8 +25,14 @@ node* parse(const char* commandLine) {
     shellParser = ParseAlloc(malloc);
 
     do {
+
         lexCode = yylex(scanner);
-        Parse(shellParser, lexCode, yyget_text(scanner), result);
+        tok = strndup(yyget_text(scanner),tok_len=yyget_leng(scanner));
+
+        dbg("Got Token: %s, Token length: %d, Lex code: %d \n",tok,tok_len,lexCode);
+
+        Parse(shellParser, lexCode, tok, result);
+
     }
     while ( lexCode > 0 );
 
@@ -35,7 +44,8 @@ node* parse(const char* commandLine) {
     yy_delete_buffer(bufferState, scanner);
     yylex_destroy(scanner);
     ParseFree(shellParser, free);
-    return result;
+    free(tok);
+    return 0;
 }
 
 

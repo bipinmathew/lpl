@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include "libcol/col.h"
+#include <libcalg-1.0/libcalg/trie.h>
 
 
 typedef enum {
@@ -15,7 +16,10 @@ typedef enum {
     /* Array types */
     vector_int_node,
     vector_uint_node,
+    /* Identifier node */
+    ident_node,
     /* Functions */
+    assign_node,
     neg_node,
     add_node,
     minus_node,
@@ -69,7 +73,11 @@ node* sumOverNode(node* const r);
 node* bangNode(node* const l);
 node* negNode(node* const l);
 
-node* evalNode(const node* root);
+
+node* identNode(const char *str);
+node* assignNode(node* const l, node* const r);
+
+node* evalNode(const node* root,Trie *scope);
 void printNode(node* n);
 
 #endif

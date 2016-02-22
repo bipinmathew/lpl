@@ -23,6 +23,7 @@ fi
 AC_SUBST([YACC],lemon)
 
 # Checks for libraries.
+AC_CHECK_LIB(calg,trie_new)
 
 # Checks for header files.
 AC_CHECK_HEADERS([inttypes.h stdlib.h string.h unistd.h])

@@ -11,6 +11,10 @@ AC_PROG_RANLIB
 
 AM_PROG_AR
 
+
+# Checks for libraries.
+AC_CHECK_LIB(calg,trie_new)
+
 # borrowed from a check for gnome in GNU gretl: def. a check for quantlib-config
 AC_DEFUN([AC_PROG_LEMONPARSER], [AC_CHECK_PROG(LEMONPARSER,lemon,yes,no)])
 AC_PROG_LEMONPARSER
