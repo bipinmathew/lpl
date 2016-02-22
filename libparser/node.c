@@ -72,8 +72,7 @@ node* identNode(const char *str){
   n->r = NULL;
   n->type = ident_node;
 
-  n->value.s = (char *)malloc(sizeof(char)*strlen(str));
-  strcpy(n->value.s,str);
+  n->value.s=strndup(str,strlen(str));
 
   return n;
 }
@@ -229,6 +228,8 @@ int _error(node **n, int errorcode) {
 
 
 int freeNode(node *n){
+  /* Just return NB for debugging ONLY */
+  return 0;
   if(n->l != NULL)
     freeNode(n->l);
   if(n->r != NULL)
@@ -259,27 +260,38 @@ node* _copy_error(const node *in){
   return out;
 }
 
-void printNode(node* n){
+void printNode(node* n, Trie *scope){
+  TrieValue  sym_val;
   switch(n->type){
     case add_node:
-      printNode(n->l);
+      printNode(n->l,scope);
       printf("+");
-      printNode(n->r);
+      printNode(n->r,scope);
     break;
     case minus_node:
-      printNode(n->l);
+      printNode(n->l,scope);
       printf("-");
-      printNode(n->r);
+      printNode(n->r,scope);
     break;
     case mult_node:
-      printNode(n->l);
+      printNode(n->l,scope);
       printf("*");
-      printNode(n->r);
+      printNode(n->r,scope);
     break;
     case div_node:
-      printNode(n->l);
+      printNode(n->l,scope);
       printf("/");
-      printNode(n->r);
+      printNode(n->r,scope);
+    break;
+    case ident_node:
+      printf("identifier: %s",n->value.s);
+      if(TRIE_NULL==(sym_val=trie_lookup(scope,n->value.s))){
+        printf("no such variable: %s\n",n->value.s);
+      } else {
+        printf("Got a value!\n");
+        printf("type: %d\n",((node*)sym_val)->type);
+        printNode((node *)sym_val,scope);
+      }
     break;
     case scalar_int_node:
         printf("%d",n->value.i);
@@ -310,11 +322,10 @@ void printNode(node* n){
 }
 
 
-
 static node* eval_assign_node(const node* l, node* r, Trie *scope){
   node *out;
   trie_insert(scope,l->value.s,(TrieValue *)r);
-  _copy_node(out,r);
+  // _copy_node(out,r);
   return r;
 }
 
@@ -701,14 +712,19 @@ node* eval_div_node(const node* l, const node* r){
 }
 
 
-node* evalNode(const node* n,Trie *scope){
+node* evalNode(node* n,Trie *scope){
   node *out;
   node *l,*r;
   switch(n->type){
+
+    case ident_node:
+      dbg("%s","Evaluating ident_node.\n");
+      out = n;
+    break;
     case assign_node:
       dbg("%s","Evaluating assign.\n");
       out = eval_assign_node(n->l,r=evalNode(n->r,scope),scope);
-      freeNode(n->l); freeNode(r);
+      freeNode(n->l); // freeNode(r);
     break;
     case neg_node:
       dbg("%s","Evaluating add.\n");

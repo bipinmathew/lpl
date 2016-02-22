@@ -63,6 +63,7 @@ int freeNode(node *n);
 
 node* intNode(const char *str);
 node* doubleNode(const char *str);
+node* identNode(const char *str);
 node* addNode(node* const l, node* const r);
 node* minusNode(node* const l, node* const r);
 node* divNode(node* const l, node* const r);
@@ -77,7 +78,7 @@ node* negNode(node* const l);
 node* identNode(const char *str);
 node* assignNode(node* const l, node* const r);
 
-node* evalNode(const node* root,Trie *scope);
-void printNode(node* n);
+node* evalNode(node* root,Trie *scope);
+void printNode(node* n, Trie *scope);
 
 #endif

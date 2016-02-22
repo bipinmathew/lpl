@@ -34,8 +34,10 @@ int main() {
         start = clock();
           parse(commandLine,&result);
           result = evalNode(result,scope);
-          printNode(result);
+          printNode(result,scope);
           printf("\n");
+
+          freeNode(result);
         diff = clock()-start;
 
       clock_gettime(CLOCK_REALTIME, &now);
@@ -46,6 +48,7 @@ int main() {
       msec = diff*1000 / CLOCKS_PER_SEC;
 
       printf("%s, walltime: %f, cputime: %d ms\n",commandLine,wtime,msec);
+
 #ifdef DEBUG
       fclose(fp);
 #endif

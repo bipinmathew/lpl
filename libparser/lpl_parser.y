@@ -14,7 +14,6 @@
   #include <stdlib.h>
   #include <assert.h>
   #include <string.h>
-  #include <libcalg-1.0/libcalg/trie.h>
 
   #include "lpl_errors.h"
   #include "parser.h"
@@ -38,15 +37,9 @@
 
 start ::= expr(B) . 
     {
-      /* node *temp; 
-      Trie *scope;
-      scope = trie_new(); */
       *result = B;
-      /*memcpy(result,temp=evalNode(B,scope),sizeof(node));
-      free(temp);
-      freeNode(B);*/
     }
-start ::= IDENT(A) . {printf("Got an IDENT only.");}
+start ::= IDENT(A) . {*result = identNode(A); }
 
 /* System functions */
 expr ::= EXIT.{exit(0);}
