@@ -56,10 +56,12 @@ typedef struct _node {
   uvalue value;
   struct _node* l;
   struct _node* r;
+  int ref;
 } node;
 
 int initNode(node **p);
-int freeNode(node *n);
+int retainNode(node **p);
+int releaseNode(node *n);
 
 node* intNode(const char *str);
 node* doubleNode(const char *str);

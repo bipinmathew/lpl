@@ -13,7 +13,7 @@ static node* _copy_error(const node *in);
 static int _copy_node(node *dest, const node* const src);
 
 static node* eval_assign_node(const node* l, node* r,Trie *scope);
-static node* eval_add_node(const node* l, const node* r);
+static node* eval_add_node(const node* l, const node* r,Trie *scope);
 static node* eval_neg_node(const node* l);
 static node* eval_minus_node(const node* l, const node* r);
 static node* eval_mult_node(const node* l, const node* r);
@@ -28,9 +28,11 @@ int initNode(node **p){
   if((*p = (node *) malloc(sizeof(node)))==NULL){
     return(1);
   }
+  (*p)->ref = 0;
   (*p)->l = NULL;
   (*p)->r = NULL;
   (*p)->type = scalar_null_node;
+  retainNode(p);
   return(0);
 }
 
@@ -201,11 +203,6 @@ node* bangNode(node* const l){
   return n;
 }
 
-
-
-
-
-
 node* drawNode(node* const l, node* const r){
   node *n;
   initNode(&n);
@@ -217,7 +214,6 @@ node* drawNode(node* const l, node* const r){
   return n;
 }
 
-
 int _error(node **n, int errorcode) {
   (*n)->type = scalar_error_node;
   (*n)->value.e.error_code = errorcode;
@@ -225,24 +221,27 @@ int _error(node **n, int errorcode) {
   return 0;
 }
 
-
-
-int freeNode(node *n){
-  /* Just return NB for debugging ONLY */
+int retainNode(node **p){
+  ++(*p)->ref;
   return 0;
+}
+
+int releaseNode(node *n){
   if(n->l != NULL)
-    freeNode(n->l);
+    releaseNode(n->l);
   if(n->r != NULL)
-    freeNode(n->r);
-  switch(n->type){
-    case vector_int_node:
-      col_int_free(n->value.vector_int);
-      break;
-    case ident_node:
-      free(n->value.s);
-      break;
+    releaseNode(n->r);
+  if((--n->ref)==0){
+    switch(n->type){
+      case vector_int_node:
+        col_int_free(n->value.vector_int);
+        break;
+      case ident_node:
+        free(n->value.s);
+        break;
+    }
+    free(n);
   }
-  free(n);
   return(0);
 }
 
@@ -284,12 +283,9 @@ void printNode(node* n, Trie *scope){
       printNode(n->r,scope);
     break;
     case ident_node:
-      printf("identifier: %s",n->value.s);
       if(TRIE_NULL==(sym_val=trie_lookup(scope,n->value.s))){
-        printf("no such variable: %s\n",n->value.s);
+        printf("undefined variable %s\n",n->value.s);
       } else {
-        printf("Got a value!\n");
-        printf("type: %d\n",((node*)sym_val)->type);
         printNode((node *)sym_val,scope);
       }
     break;
@@ -325,26 +321,52 @@ void printNode(node* n, Trie *scope){
 static node* eval_assign_node(const node* l, node* r, Trie *scope){
   node *out;
   trie_insert(scope,l->value.s,(TrieValue *)r);
+  retainNode(&r);
   // _copy_node(out,r);
-  return r;
+  // return r;
 }
 
 
-node* eval_add_node(const node* l, const node* r){
+node* eval_add_node(const node* l, const node* r, Trie *scope){
+  TrieValue  sym_val;
   node *out;
+  const node *_l,*_r;
   if( _has_error(l)) {out = _copy_error(l); return out;}
   if( _has_error(r)) {out = _copy_error(r); return out;}
+
   initNode(&out);
-  switch(l->type){
+  _l = l;
+  if(l->type==ident_node){
+    if(TRIE_NULL==(sym_val=trie_lookup(scope,l->value.s))){
+        _error(&out,LPL_UNDEFINED_VAR_ERROR);
+        return out;
+    } else {
+      _l=(node *)sym_val;
+    }
+  }
+
+
+  _r = r;
+  if(r->type==ident_node){
+    if(TRIE_NULL==(sym_val=trie_lookup(scope,r->value.s))){
+        _error(&out,LPL_UNDEFINED_VAR_ERROR);
+        return out;
+    } else {
+      _r=(node *)sym_val;
+    }
+  }
+
+  
+  switch(_l->type){
     case scalar_int_node:
-      switch(r->type){
+      switch(_r->type){
         case scalar_int_node:
           out->type = scalar_int_node;
-          out->value.i = l->value.i+r->value.i;
+          out->value.i = _l->value.i+_r->value.i;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.i+r->value.d;
+          out->value.d = _l->value.i+_r->value.d;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -352,14 +374,14 @@ node* eval_add_node(const node* l, const node* r){
       }
     break;
     case scalar_double_node:
-      switch(r->type){
+      switch(_r->type){
         case scalar_int_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d+r->value.i;
+          out->value.d = _l->value.d+_r->value.i;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d+r->value.d;
+          out->value.d = _l->value.d+_r->value.d;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -723,38 +745,38 @@ node* evalNode(node* n,Trie *scope){
     break;
     case assign_node:
       dbg("%s","Evaluating assign.\n");
-      out = eval_assign_node(n->l,r=evalNode(n->r,scope),scope);
-      freeNode(n->l); // freeNode(r);
+      eval_assign_node(n->l,out=evalNode(n->r,scope),scope);
+      releaseNode(n->l); releaseNode(n->r);
     break;
     case neg_node:
       dbg("%s","Evaluating add.\n");
       out = eval_neg_node(l=evalNode(n->l,scope));
-      freeNode(l); 
+      releaseNode(l); 
     break;
     case add_node:
       dbg("%s","Evaluating add.\n");
-      out = eval_add_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
-      freeNode(l); freeNode(r);
+      out = eval_add_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope),scope);
+      releaseNode(l); releaseNode(r);
     break;
     case minus_node:
       dbg("%s","Evaluating minus.\n");
       out = eval_minus_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
-      freeNode(l); freeNode(r);
+      releaseNode(l); releaseNode(r);
     break;
     case mult_node:
       dbg("%s","Evaluating mult.\n");
       out = eval_mult_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
-      freeNode(l); freeNode(r);
+      releaseNode(l); releaseNode(r);
     break;
     case div_node:
       dbg("%s","Evaluating div.\n");
       out = eval_div_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
-      freeNode(l); freeNode(r);
+      releaseNode(l); releaseNode(r);
     break;
     case eq_node:
       dbg("%s","Evaluating eq.\n");
       out = eval_eq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
-      freeNode(l); freeNode(r);
+      releaseNode(l); releaseNode(r);
     break;
     case scalar_int_node:
        dbg("%s","Evaluating int.\n");
@@ -769,17 +791,17 @@ node* evalNode(node* n,Trie *scope){
     case draw_node:
       dbg("%s","Evaluating draw.\n");
       out = eval_draw_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope));
-      freeNode(l); freeNode(r);
+      releaseNode(l); releaseNode(r);
     break;
     case sumover_node:
       dbg("%s","Evaluating sum over.\n");
       out = eval_sumover_node(l=evalNode(n->l,scope));
-      freeNode(l);
+      releaseNode(l);
     break;
     case bang_node:
       dbg("%s","Evaluating bang.\n");
       out = eval_bang_node(l=evalNode(n->l,scope));
-      freeNode(l);
+      releaseNode(l);
     break;
     case scalar_error_node:
        dbg("%s","Evaluating error.\n");

@@ -37,7 +37,7 @@ int main() {
           printNode(result,scope);
           printf("\n");
 
-          freeNode(result);
+          releaseNode(result);
         diff = clock()-start;
 
       clock_gettime(CLOCK_REALTIME, &now);
