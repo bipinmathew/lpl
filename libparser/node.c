@@ -231,7 +231,7 @@ int releaseNode(node *n){
     releaseNode(n->l);
   if(n->r != NULL)
     releaseNode(n->r);
-  if((--n->ref)==0){
+  if((n->ref--)==0){
     switch(n->type){
       case vector_int_node:
         col_int_free(n->value.vector_int);
