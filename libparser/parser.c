@@ -15,7 +15,6 @@ int parse(const char* commandLine, node **result) {
     int lexCode;
 
     initNode(result);
-    tok = (char *)malloc(strlen(commandLine)*sizeof(char));
 
     yylex_init(&scanner);
 
