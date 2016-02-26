@@ -47,7 +47,7 @@ int main() {
 
       msec = diff*1000 / CLOCKS_PER_SEC;
 
-      printf("%s, walltime: %f, cputime: %d ms\n",commandLine,wtime,msec);
+      printf("walltime: %f, cputime: %d ms\n",wtime,msec);
 
 #ifdef DEBUG
       fclose(fp);

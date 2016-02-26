@@ -10,7 +10,6 @@ static int _error(node **n, int errorcode);
 static int _has_error(const node* n);
 static node* _copy_error(const node *in);
 
-static int _copy_node(node *dest, const node* const src);
 
 static node* eval_assign_node(const node* l, node* r, Trie *scope);
 static node* eval_add_node(const node* l, const node* r, Trie *scope);
@@ -37,21 +36,6 @@ int initNode(node **p){
   retainNode(p);
   return(0);
 }
-
-int _copy_node(node *dest, const node* const src){
-  initNode(&dest);
-  memcpy(dest,src,sizeof(node));
-  switch(dest->type){
-  case vector_int_node:
-    break;
-  default:
-    printf("No copy..\n");
-
-
-  }
-
-}
-
 
 
 node* intNode(const char *str){
@@ -265,24 +249,16 @@ void printNode(node* n, Trie *scope){
   TrieValue  sym_val;
   switch(n->type){
     case add_node:
-      printNode(n->l,scope);
       printf("+");
-      printNode(n->r,scope);
     break;
     case minus_node:
-      printNode(n->l,scope);
       printf("-");
-      printNode(n->r,scope);
     break;
     case mult_node:
-      printNode(n->l,scope);
       printf("*");
-      printNode(n->r,scope);
     break;
     case div_node:
-      printNode(n->l,scope);
       printf("/");
-      printNode(n->r,scope);
     break;
     case ident_node:
       if(TRIE_NULL==(sym_val=trie_lookup(scope,n->value.s))){
@@ -340,8 +316,6 @@ static node* eval_assign_node(const node* l, node* r, Trie *scope){
   node *out;
   trie_insert(scope,l->value.s,(TrieValue *)r);
   retainNode(&r);
-  // _copy_node(out,r);
-  // return r;
 }
 
 
@@ -701,7 +675,7 @@ node* eval_eq_node(const node* l, const node* r, Trie *scope){
           if(NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
             _error(&out,LPL_CUSTOM_ERROR);
           }
-          col_int_disp(r->value.vector_int);
+          //col_int_disp(r->value.vector_int);
           col_int_select_scalar (r->value.vector_int, out->value.vector_uint , l->value.i);
         break;
         default:
@@ -732,7 +706,7 @@ node* eval_eq_node(const node* l, const node* r, Trie *scope){
           if(NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
             _error(&out,LPL_CUSTOM_ERROR);
           }
-          col_int_disp(l->value.vector_int);
+          //col_int_disp(l->value.vector_int);
           col_int_select_scalar (l->value.vector_int, out->value.vector_uint , r->value.i);
         break;
         default:
