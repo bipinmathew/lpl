@@ -6,7 +6,7 @@
 
 
 
-%token_type {const char*}
+%token_type {char*}
 
 %include
 {
@@ -28,9 +28,13 @@
 }
 
 
+%default_destructor {releaseNode($$);}
+
 
 %type expr  {node*}
+
 %type start {node*}
+
 
 %extra_argument {node **result}
 
@@ -39,23 +43,27 @@ start ::= expr(B) .
     {
       *result = B;
     }
+
 start ::= IDENT(A) . {*result = identNode(A); }
 
 /* System functions */
-expr ::= EXIT.{exit(0);}
+
+expr(A) ::= EXIT.{free(A); exit(0);}
 
 
 expr(C) ::= IDENT(A) ASSN expr(B). {
   C = assignNode(identNode(A),B);
+  free(A);
 }
 
 
 /* End System functions */
 
 /* Assignment */
-expr(A) ::= NUMBER(B). {A = intNode(B);}
-expr(A) ::= FLOAT(B).  {A = doubleNode(B);}
-expr(A) ::= IDENT(B).  {A = identNode(B);}
+
+expr(A) ::= NUMBER(B). {A = intNode(B);free(B);}
+expr(A) ::= FLOAT(B).  {A = doubleNode(B);free(B);}
+expr(A) ::= IDENT(B).  {A = identNode(B);free(B);}
 expr(A) ::= LPARENS expr(B) RPARENS. {A=B;}
 /* End Assignment */
 
@@ -75,9 +83,6 @@ leaf nodes. */
 
 expr(C) ::= SUB expr(A).         {C = negNode(A);}
 expr(C) ::= expr(A) ADD expr(B). {C = addNode(A,B);}
-/* expr(C) ::= expr(A) ADD IDENT(B). {C = addNode(A,identNode(B));}
-expr(C) ::= IDENT(A) ADD expr(B). {C = addNode(identNode(A),B);}
-expr(C) ::= IDENT(A) ADD IDENT(B). {C = addNode(identNode(A),identNode(B));} */
 expr(C) ::= expr(A) SUB expr(B). {C = minusNode(A,B);}
 expr(C) ::= expr(A) DIV expr(B). {C = divNode(A,B);}
 expr(C) ::= expr(A) MULT expr(B). {C = multNode(A,B);}

@@ -23,6 +23,8 @@ static node* eval_bang_node(const node* l);
 static node* eval_eq_node(const node* l, const node* r);
 static node* eval_div_node(const node* l, const node* r);
 
+static int _expand_node(const node* in, const node** out, Trie *scope);
+
 
 int initNode(node **p){
   if((*p = (node *) malloc(sizeof(node)))==NULL){
@@ -318,6 +320,22 @@ void printNode(node* n, Trie *scope){
 }
 
 
+
+static int _expand_node(const node* in, const node** out, Trie *scope){
+  TrieValue  sym_val;
+  *out = in;
+  if(in->type==ident_node){
+    if(TRIE_NULL==(sym_val=trie_lookup(scope,in->value.s))){
+        return LPL_UNDEFINED_VAR_ERROR;
+    } else {
+      *out=(node *)sym_val;
+    }
+  }
+  return 0;
+}
+
+
+
 static node* eval_assign_node(const node* l, node* r, Trie *scope){
   node *out;
   trie_insert(scope,l->value.s,(TrieValue *)r);
@@ -327,35 +345,24 @@ static node* eval_assign_node(const node* l, node* r, Trie *scope){
 }
 
 
-node* eval_add_node(const node* l, const node* r, Trie *scope){
+node* eval_add_node(const node* _l, const node* _r, Trie *scope){
   TrieValue  sym_val;
   node *out;
-  const node *_l,*_r;
-  if( _has_error(l)) {out = _copy_error(l); return out;}
-  if( _has_error(r)) {out = _copy_error(r); return out;}
+  //const node *_l,*_r;
+  int result;
+  if( _has_error(_l)) {out = _copy_error(_l); return out;}
+  if( _has_error(_r)) {out = _copy_error(_r); return out;}
 
   initNode(&out);
-  _l = l;
-  if(l->type==ident_node){
-    if(TRIE_NULL==(sym_val=trie_lookup(scope,l->value.s))){
-        _error(&out,LPL_UNDEFINED_VAR_ERROR);
-        return out;
-    } else {
-      _l=(node *)sym_val;
-    }
+
+  if(result=_expand_node(_l,&_l,scope)){
+    _error(&out,result);
+    return out;
   }
-
-
-  _r = r;
-  if(r->type==ident_node){
-    if(TRIE_NULL==(sym_val=trie_lookup(scope,r->value.s))){
-        _error(&out,LPL_UNDEFINED_VAR_ERROR);
-        return out;
-    } else {
-      _r=(node *)sym_val;
-    }
+  if(result=_expand_node(_r,&_r,scope)){
+    _error(&out,result);
+    return out;
   }
-
   
   switch(_l->type){
     case scalar_int_node:

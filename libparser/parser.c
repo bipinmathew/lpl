@@ -43,7 +43,6 @@ int parse(const char* commandLine, node **result) {
     yy_delete_buffer(bufferState, scanner);
     yylex_destroy(scanner);
     ParseFree(shellParser, free);
-    free(tok);
     return 0;
 }
 
