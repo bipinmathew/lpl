@@ -271,11 +271,11 @@ static node* eval_assign_node(const node* l, node* r, Trie *scope){
   TrieValue  sym_val;
 
   if(TRIE_NULL!=(sym_val=trie_lookup(scope,l->value.s))){
-    dbg("Releasing Node %s which has %d references.",l->value.s,((node*)sym_val)->ref);
     releaseNode((node*)sym_val);
   }
 
   trie_insert(scope,l->value.s,(TrieValue *)r);
+  retainNode(&r);
   retainNode(&r);
   return r;
 }

@@ -45,6 +45,7 @@ int main() {
             printf("\n");
 
             releaseNode(result);
+            releaseNode(eval);
           diff = clock()-start;
 
         clock_gettime(CLOCK_REALTIME, &now);
