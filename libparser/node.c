@@ -275,6 +275,8 @@ static node* eval_assign_node(const node* l, node* r, Trie *scope){
   }
 
   trie_insert(scope,l->value.s,(TrieValue *)r);
+  /* We need to keep both one reference in the tree and 
+     one in the symbol table. */
   retainNode(&r);
   retainNode(&r);
   return r;
