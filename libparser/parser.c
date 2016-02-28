@@ -14,7 +14,7 @@ int parse(const char* commandLine, node **result) {
     void* shellParser;
     int lexCode;
 
-    initNode(result);
+    initNode(result,NULL,NULL,scalar_null_node);
 
     yylex_init(&scanner);
 
@@ -28,7 +28,7 @@ int parse(const char* commandLine, node **result) {
         lexCode = yylex(scanner);
         tok = strndup(yyget_text(scanner),tok_len=yyget_leng(scanner));
 
-        dbg("Got Token: %s, Token length: %d, Lex code: %d \n",tok,tok_len,lexCode);
+        dbg("Got Token: %s Token length: %d, Lex code: %d \n",tok,tok_len,lexCode);
 
         Parse(shellParser, lexCode, tok, result);
 
@@ -45,5 +45,3 @@ int parse(const char* commandLine, node **result) {
     ParseFree(shellParser, free);
     return 0;
 }
-
-

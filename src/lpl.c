@@ -24,34 +24,42 @@ int main() {
 
 
     while (fgets(commandLine,1024,stdin)) {
+      commandLine[strcspn(commandLine,"\r\n")]=0;
+      if(strlen(commandLine)>0){
 #ifdef DEBUG
-      fp = fopen("errors.log","w");
-      ParseTrace(fp,"err: ");
+        fp = fopen("errors.log","w");
+        ParseTrace(fp,"err: ");
 #endif
 
-      clock_gettime(CLOCK_REALTIME, &tmstart);
+        clock_gettime(CLOCK_REALTIME, &tmstart);
 
-        start = clock();
-          parse(commandLine,&result);
-          result = evalNode(result,scope);
-          printNode(result,scope);
-          printf("\n");
+          start = clock();
+            parse(commandLine,&result);
+            eval = evalNode(result,scope);
+            if(result->type==ident_node){
+              printNode(eval,scope);
+            }
+            else if(result->type!=assign_node){
+              printNode(eval,scope);
+            }
+            printf("\n");
 
-          releaseNode(result);
-        diff = clock()-start;
+            releaseNode(result);
+          diff = clock()-start;
 
-      clock_gettime(CLOCK_REALTIME, &now);
+        clock_gettime(CLOCK_REALTIME, &now);
 
-      wtime = 1000*((double)((now.tv_sec+now.tv_nsec*1e-9) - (double)(tmstart.tv_sec+tmstart.tv_nsec*1e-9)));
+        wtime = 1000*((double)((now.tv_sec+now.tv_nsec*1e-9) - (double)(tmstart.tv_sec+tmstart.tv_nsec*1e-9)));
 
 
-      msec = diff*1000 / CLOCKS_PER_SEC;
+        msec = diff*1000 / CLOCKS_PER_SEC;
 
-      printf("walltime: %f, cputime: %d ms\n",wtime,msec);
+        printf("walltime: %f, cputime: %d ms\n",wtime,msec);
 
 #ifdef DEBUG
-      fclose(fp);
+        fclose(fp);
 #endif
+      }
     }
 
     return 0;
