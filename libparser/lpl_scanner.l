@@ -27,8 +27,12 @@
 
 "!"   {return BANG;}
 "+/"  {return SUMOVER;}
-"="  {return EQ;}
 
+"=="  {return EQ;}
+"<"  {return LT;}
+">"  {return GT;}
+"<="  {return LTEQ;}
+">="  {return GTEQ;}
 
 
 _draw {return DRAW;}

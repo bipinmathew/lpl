@@ -107,12 +107,45 @@ node* multNode(node* const l, node* const r){
   return n;
 }
 
+/* Comparison Nodes */
+
 node* eqNode(node* const l, node* const r){
   node *n;
   initNode(&n, l, r, eq_node);
 
   return n;
 }
+
+node* ltNode(node* const l, node* const r){
+  node *n;
+  initNode(&n, l, r, lt_node);
+
+  return n;
+}
+
+node* gtNode(node* const l, node* const r){
+  node *n;
+  initNode(&n, l, r, gt_node);
+
+  return n;
+}
+
+
+node* lteqNode(node* const l, node* const r){
+  node *n;
+  initNode(&n, l, r, lteq_node);
+
+  return n;
+}
+
+node* gteqNode(node* const l, node* const r){
+  node *n;
+  initNode(&n, l, r, gteq_node);
+
+  return n;
+}
+
+/* End Comparison Nodes */
 
 node* negNode(node* const l){
   node *n;
@@ -603,8 +636,32 @@ node* eval_bang_node(const node* l, Trie *scope){
   return(out);
 }
 
+static int eval_eq(double l, double r){
+  return l==r;
+}
+static int eval_lt(double l, double r){
+  return l<r;
+}
+static int eval_gt(double l, double r){
+  return l>r;
+}
+static int eval_lteq(double l, double r){
+  return l<=r;
+}
+static int eval_gteq(double l, double r){
+  return l>=r;
+}
 
-node* eval_eq_node(const node* l, const node* r, Trie *scope){
+
+static node* 
+eval_cmp_node(
+  const node* l, 
+  const node* r, 
+  Trie *scope,
+  int (*scmp)(double l, double r),
+  col_error (*svcmp)(const col_int * arr, col_uint * idx, int value),
+  col_error (*vscmp)(const col_int * arr, col_uint * idx, int value)
+  ){
   node *out;
   int result;
   col_error e;
@@ -623,19 +680,16 @@ node* eval_eq_node(const node* l, const node* r, Trie *scope){
     return out;
   }
   
-
-
-
   switch(l->type){
     case scalar_int_node:
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_boolean_node;
-          out->value.b = l->value.i==r->value.i;
+          out->value.b = scmp(l->value.i,r->value.i);
         break;
         case scalar_double_node:
           out->type = scalar_boolean_node;
-          out->value.b = l->value.i==r->value.d;
+          out->value.b = scmp(l->value.i,r->value.d);
         break;
         case vector_int_node:
           out->type = vector_uint_node;
@@ -643,7 +697,7 @@ node* eval_eq_node(const node* l, const node* r, Trie *scope){
             _error(&out,LPL_CUSTOM_ERROR);
           }
           //col_int_disp(r->value.vector_int);
-          col_int_select_scalar (r->value.vector_int, out->value.vector_uint , l->value.i);
+          svcmp(r->value.vector_int, out->value.vector_uint , l->value.i);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -655,11 +709,11 @@ node* eval_eq_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_boolean_node;
-          out->value.b = l->value.d==r->value.i;
+          out->value.b = scmp(l->value.d,r->value.i);
         break;
         case scalar_double_node:
           out->type = scalar_boolean_node;
-          out->value.b = l->value.d==r->value.d;
+          out->value.b = scmp(l->value.d,r->value.d);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -674,7 +728,7 @@ node* eval_eq_node(const node* l, const node* r, Trie *scope){
             _error(&out,LPL_CUSTOM_ERROR);
           }
           //col_int_disp(l->value.vector_int);
-          col_int_select_scalar (l->value.vector_int, out->value.vector_uint , r->value.i);
+          vscmp(l->value.vector_int, out->value.vector_uint , r->value.i);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -686,6 +740,26 @@ node* eval_eq_node(const node* l, const node* r, Trie *scope){
     break;
   }
   return(out);
+}
+
+node* eval_eq_node(const node* l, const node* r, Trie *scope){
+  return eval_cmp_node(l,r,scope,eval_eq,col_int_eq_scalar,col_int_eq_scalar);
+}
+
+node* eval_lt_node(const node* l, const node* r, Trie *scope){
+  return eval_cmp_node(l,r,scope,eval_lt,col_int_gt_scalar,col_int_lt_scalar);
+}
+
+node* eval_gt_node(const node* l, const node* r, Trie *scope){
+  return eval_cmp_node(l,r,scope,eval_gt,col_int_lt_scalar,col_int_gt_scalar);
+}
+
+node* eval_lteq_node(const node* l, const node* r, Trie *scope){
+  return eval_cmp_node(l,r,scope,eval_lteq,col_int_gteq_scalar,col_int_lteq_scalar);
+}
+
+node* eval_gteq_node(const node* l, const node* r, Trie *scope){
+  return eval_cmp_node(l,r,scope,eval_gteq,col_int_lteq_scalar,col_int_gteq_scalar);
 }
 
 
@@ -812,11 +886,35 @@ node* evalNode(node* n,Trie *scope){
       out = eval_div_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
       releaseNode(l); releaseNode(r);
     break;
+
     case eq_node:
       dbg("%s","Evaluating eq.\n");
       out = eval_eq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
       releaseNode(l); releaseNode(r);
     break;
+    case lt_node:
+      dbg("%s","Evaluating eq.\n");
+      out = eval_lt_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      releaseNode(l); releaseNode(r);
+    break;
+    case gt_node:
+      dbg("%s","Evaluating eq.\n");
+      out = eval_gt_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      releaseNode(l); releaseNode(r);
+    break;
+    case lteq_node:
+      dbg("%s","Evaluating eq.\n");
+      out = eval_lteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      releaseNode(l); releaseNode(r);
+    break;
+    case gteq_node:
+      dbg("%s","Evaluating eq.\n");
+      out = eval_gteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      releaseNode(l); releaseNode(r);
+    break;
+
+
+
     case scalar_int_node:
        dbg("%s","Evaluating int.\n");
        out = n;

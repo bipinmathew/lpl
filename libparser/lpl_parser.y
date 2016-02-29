@@ -86,5 +86,11 @@ expr(C) ::= expr(A) ADD expr(B). {C = addNode(A,B);}
 expr(C) ::= expr(A) SUB expr(B). {C = minusNode(A,B);}
 expr(C) ::= expr(A) DIV expr(B). {C = divNode(A,B);}
 expr(C) ::= expr(A) MULT expr(B). {C = multNode(A,B);}
+
+
 expr(C) ::= expr(A) EQ expr(B). {C = eqNode(A,B);}
+expr(C) ::= expr(A) LT expr(B). {C = ltNode(A,B);}
+expr(C) ::= expr(A) GT expr(B). {C = gtNode(A,B);}
+expr(C) ::= expr(A) LTEQ expr(B). {C = lteqNode(A,B);}
+expr(C) ::= expr(A) GTEQ expr(B). {C = gteqNode(A,B);}
 

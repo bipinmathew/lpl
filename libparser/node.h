@@ -29,7 +29,12 @@ typedef enum {
     draw_node,
     sumover_node,
     bang_node,
-    eq_node
+    /* Comparison functions */
+    eq_node,
+    lt_node,
+    gt_node,
+    lteq_node,
+    gteq_node
 } types;
 
 typedef struct _error_value {
@@ -71,7 +76,14 @@ node* minusNode(node* const l, node* const r);
 node* divNode(node* const l, node* const r);
 node* multNode(node* const l, node* const r);
 node* drawNode(node* const l, node* const r);
+
 node* eqNode(node* const l, node* const r);
+node* ltNode(node* const l, node* const r);
+node* gtNode(node* const l, node* const r);
+node* lteqNode(node* const l, node* const r);
+node* gteqNode(node* const l, node* const r);
+
+
 node* sumOverNode(node* const r);
 node* bangNode(node* const l);
 node* negNode(node* const l);
