@@ -43,9 +43,8 @@ typedef struct _error_value {
 } error_value;
 
 typedef union {
-  int i;
-  double d;
-  char c;
+  int scalar_int;
+  double scalar_double;
   char b;
   char *s;
   error_value e;

@@ -42,7 +42,7 @@ node* intNode(const char *str){
   node *n;
   initNode(&n, NULL, NULL, scalar_int_node);
 
-  n->value.i = atoi(str);
+  n->value.scalar_int = atoi(str);
 
   return n;
 }
@@ -64,7 +64,7 @@ node* doubleNode(const char *str){
   node *n;
   initNode(&n, NULL, NULL, scalar_double_node);
 
-  n->value.d = atof(str);
+  n->value.scalar_double = atof(str);
 
   return n;
 }
@@ -256,10 +256,10 @@ void printNode(node* n, Trie *scope){
       }
     break;
     case scalar_int_node:
-        printf("%d",n->value.i);
+        printf("%d",n->value.scalar_int);
     break;
     case scalar_double_node:
-        printf("%f",n->value.d);
+        printf("%f",n->value.scalar_double);
     break;
     case scalar_boolean_node:
         printf("%d",n->value.b);
@@ -339,11 +339,11 @@ node* eval_add_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_int_node;
-          out->value.i = l->value.i+r->value.i;
+          out->value.scalar_int = l->value.scalar_int+r->value.scalar_int;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.i+r->value.d;
+          out->value.scalar_double = l->value.scalar_int+r->value.scalar_double;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -354,11 +354,11 @@ node* eval_add_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d+r->value.i;
+          out->value.scalar_double = l->value.scalar_double+r->value.scalar_int;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d+r->value.d;
+          out->value.scalar_double = l->value.scalar_double+r->value.scalar_double;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -387,12 +387,12 @@ node* eval_neg_node(const node* l, Trie *scope){
   if(l->type==scalar_int_node){
       dbg("%s\n","Negate on int.");
       out->type=l->type;
-      out->value.i = -l->value.i;
+      out->value.scalar_int = -l->value.scalar_int;
   }
   else if(l->type==scalar_double_node){
       dbg("%s\n","Negate on double.");
       out->type=l->type;
-      out->value.d = -l->value.d;
+      out->value.scalar_double = -l->value.scalar_double;
   }
   else{
       _error(&out,LPL_INVALIDARGS_ERROR);
@@ -430,11 +430,11 @@ node* eval_minus_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_int_node;
-          out->value.i = l->value.i-r->value.i;
+          out->value.scalar_int = l->value.scalar_int-r->value.scalar_int;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.i-r->value.d;
+          out->value.scalar_double = l->value.scalar_int-r->value.scalar_double;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -446,11 +446,11 @@ node* eval_minus_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d-r->value.i;
+          out->value.scalar_double = l->value.scalar_double-r->value.scalar_int;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d-r->value.d;
+          out->value.scalar_double = l->value.scalar_double-r->value.scalar_double;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -493,11 +493,11 @@ node* eval_mult_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_int_node;
-          out->value.i = l->value.i*r->value.i;
+          out->value.scalar_int = l->value.scalar_int*r->value.scalar_int;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.i*r->value.d;
+          out->value.scalar_double = l->value.scalar_int*r->value.scalar_double;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -509,11 +509,11 @@ node* eval_mult_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d*r->value.i;
+          out->value.scalar_double = l->value.scalar_double*r->value.scalar_int;
         break;
         case scalar_double_node:
           out->type = scalar_double_node;
-          out->value.d = l->value.d*r->value.d;
+          out->value.scalar_double = l->value.scalar_double*r->value.scalar_double;
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -557,7 +557,7 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
             _error(&out,LPL_CUSTOM_ERROR);
           }
           else{
-            if(NO_ERROR!=(e=col_int_rand(out->value.vector_int,NULL,0,r->value.i,l->value.i))){
+            if(NO_ERROR!=(e=col_int_rand(out->value.vector_int,NULL,0,r->value.scalar_int,l->value.scalar_int))){
               _error(&out,LPL_CUSTOM_ERROR);
             }
           }
@@ -593,7 +593,7 @@ node* eval_sumover_node(const node* l, Trie *scope){
     case vector_int_node:
       dbg("%s\n","sumover on signed integer array.");
       out->type=scalar_int_node;
-      col_int_sum(l->value.vector_int,&out->value.i);
+      col_int_sum(l->value.vector_int,&out->value.scalar_int);
     break;
     default:
       _error(&out,LPL_INVALIDARGS_ERROR);
@@ -624,7 +624,7 @@ node* eval_bang_node(const node* l, Trie *scope){
         _error(&out,LPL_CUSTOM_ERROR);
       }
       else{
-        if(NO_ERROR!=(e=col_int_range(out->value.vector_int,0,l->value.i, (l->value.i > 0) ? 1 : -1 ))){
+        if(NO_ERROR!=(e=col_int_range(out->value.vector_int,0,l->value.scalar_int, (l->value.scalar_int > 0) ? 1 : -1 ))){
           _error(&out,LPL_CUSTOM_ERROR);
         }
       }
@@ -685,11 +685,11 @@ eval_cmp_node(
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_boolean_node;
-          out->value.b = scmp(l->value.i,r->value.i);
+          out->value.b = scmp(l->value.scalar_int,r->value.scalar_int);
         break;
         case scalar_double_node:
           out->type = scalar_boolean_node;
-          out->value.b = scmp(l->value.i,r->value.d);
+          out->value.b = scmp(l->value.scalar_int,r->value.scalar_double);
         break;
         case vector_int_node:
           out->type = vector_uint_node;
@@ -697,7 +697,7 @@ eval_cmp_node(
             _error(&out,LPL_CUSTOM_ERROR);
           }
           //col_int_disp(r->value.vector_int);
-          svcmp(r->value.vector_int, out->value.vector_uint , l->value.i);
+          svcmp(r->value.vector_int, out->value.vector_uint , l->value.scalar_int);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -709,11 +709,11 @@ eval_cmp_node(
       switch(r->type){
         case scalar_int_node:
           out->type = scalar_boolean_node;
-          out->value.b = scmp(l->value.d,r->value.i);
+          out->value.b = scmp(l->value.scalar_double,r->value.scalar_int);
         break;
         case scalar_double_node:
           out->type = scalar_boolean_node;
-          out->value.b = scmp(l->value.d,r->value.d);
+          out->value.b = scmp(l->value.scalar_double,r->value.scalar_double);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -728,7 +728,7 @@ eval_cmp_node(
             _error(&out,LPL_CUSTOM_ERROR);
           }
           //col_int_disp(l->value.vector_int);
-          vscmp(l->value.vector_int, out->value.vector_uint , r->value.i);
+          vscmp(l->value.vector_int, out->value.vector_uint , r->value.scalar_int);
         break;
         default:
           _error(&out,LPL_INVALIDARGS_ERROR);
@@ -787,21 +787,21 @@ node* eval_div_node(const node* l, const node* r, Trie *scope){
     case scalar_int_node:
       switch(r->type){
         case scalar_int_node:
-          if(r->value.i==0){
+          if(r->value.scalar_int==0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else{
             out->type = scalar_double_node;
-            out->value.d = ((double)l->value.i)/((double)r->value.i);
+            out->value.scalar_double = ((double)l->value.scalar_int)/((double)r->value.scalar_int);
           }
         break;
         case scalar_double_node:
-          if(r->value.d==0.0){
+          if(r->value.scalar_double==0.0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else {
             out->type = scalar_double_node;
-            out->value.d = l->value.i/r->value.d;
+            out->value.scalar_double = l->value.scalar_int/r->value.scalar_double;
           }
         break;
         default:
@@ -813,21 +813,21 @@ node* eval_div_node(const node* l, const node* r, Trie *scope){
     case scalar_double_node:
       switch(r->type){
         case scalar_int_node:
-          if(r->value.i==0){
+          if(r->value.scalar_int==0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else{
             out->type = scalar_double_node;
-            out->value.d = l->value.d/r->value.i;
+            out->value.scalar_double = l->value.scalar_double/r->value.scalar_int;
           }
         break;
         case scalar_double_node:
-          if(r->value.d==0.0){
+          if(r->value.scalar_double==0.0){
             _error(&out,LPL_DIVBYZERO_ERROR);
           }
           else {
             out->type = scalar_double_node;
-            out->value.d = l->value.d/r->value.d;
+            out->value.scalar_double = l->value.scalar_double/r->value.scalar_double;
           }
         break;
         default:

@@ -14,7 +14,7 @@ int parse(const char* commandLine, node **result) {
     void* shellParser;
     int lexCode;
 
-    initNode(result,NULL,NULL,scalar_null_node);
+    //initNode(result,NULL,NULL,scalar_null_node);
 
     yylex_init(&scanner);
 
@@ -43,5 +43,6 @@ int parse(const char* commandLine, node **result) {
     yy_delete_buffer(bufferState, scanner);
     yylex_destroy(scanner);
     ParseFree(shellParser, free);
+    free(tok);
     return 0;
 }
