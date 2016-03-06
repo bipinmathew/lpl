@@ -40,9 +40,9 @@ int initNode(node **p, node *l, node *r, types node_type){
 
 node* intNode(const char *str){
   node *n;
-  initNode(&n, NULL, NULL, scalar_int_node);
+  initNode(&n, NULL, NULL, vector_int_node);
 
-  n->value.scalar_int = atoi(str);
+  col_int_init_scalar(&n->value.vector_int,atoi(str));
 
   return n;
 }
@@ -62,9 +62,9 @@ node* identNode(const char *str){
 
 node* doubleNode(const char *str){
   node *n;
-  initNode(&n, NULL, NULL, scalar_double_node);
+  initNode(&n, NULL, NULL, vector_double_node);
 
-  n->value.scalar_double = atof(str);
+  col_double_init_scalar(&n->value.vector_double,atof(str));
 
   return n;
 }
@@ -912,9 +912,6 @@ node* evalNode(node* n,Trie *scope){
       out = eval_gteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
       releaseNode(l); releaseNode(r);
     break;
-
-
-
     case scalar_int_node:
        dbg("%s","Evaluating int.\n");
        out = n;
@@ -922,6 +919,16 @@ node* evalNode(node* n,Trie *scope){
     break;
     case scalar_double_node:
        dbg("%s","Evaluating double.\n");
+       out = n;
+       retainNode(&out);
+    break;
+    case vector_int_node:
+       dbg("%s","Evaluating vector_int_node.\n");
+       out = n;
+       retainNode(&out);
+    break;
+    case vector_double_node:
+       dbg("%s","Evaluating vector_double_node.\n");
        out = n;
        retainNode(&out);
     break;

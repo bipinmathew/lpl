@@ -15,6 +15,7 @@ typedef enum {
     scalar_error_node,
     /* Array types */
     vector_int_node,
+    vector_double_node,
     vector_uint_node,
     /* Identifier node */
     ident_node,
@@ -50,6 +51,7 @@ typedef union {
   error_value e;
 
   col_int *vector_int;
+  col_double *vector_double;
   col_uint *vector_uint;
 } uvalue;
 
