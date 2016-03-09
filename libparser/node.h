@@ -96,4 +96,10 @@ node* assignNode(node* const l, node* const r);
 node* evalNode(node* root,Trie *scope);
 void printNode(node* n, Trie *scope);
 
+/* TODO Figure out a way to get rid of these functions.. */
+int _error(node **n, int errorcode);
+int _has_error(const node* n);
+node* _copy_error(const node *in);
+/* End crappy code.. */
+
 #endif

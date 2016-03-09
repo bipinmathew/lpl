@@ -6,21 +6,21 @@
 #include <string.h>
 #include <libcalg-1.0/libcalg/trie.h>
 
-static int _error(node **n, int errorcode);
-static int _has_error(const node* n);
-static node* _copy_error(const node *in);
 
 
 static node* eval_assign_node(const node* l, node* r, Trie *scope);
-static node* eval_add_node(const node* l, const node* r, Trie *scope);
 static node* eval_neg_node(const node* l, Trie *scope);
+
+static node* eval_add_node(const node* l, const node* r, Trie *scope);
 static node* eval_minus_node(const node* l, const node* r, Trie *scope);
 static node* eval_mult_node(const node* l, const node* r, Trie *scope);
+static node* eval_div_node(const node* l, const node* r, Trie *scope);
+
+
 static node* eval_draw_node(const node* l, const node* r, Trie *scope);
 static node* eval_sumover_node(const node* l, Trie *scope);
 static node* eval_bang_node(const node* l, Trie *scope);
 static node* eval_eq_node(const node* l, const node* r, Trie *scope);
-static node* eval_div_node(const node* l, const node* r, Trie *scope);
 
 static int _expand_node(const node* in, const node** out, Trie *scope);
 
@@ -316,61 +316,6 @@ static node* eval_assign_node(const node* l, node* r, Trie *scope){
 }
 
 
-node* eval_add_node(const node* l, const node* r, Trie *scope){
-  TrieValue  sym_val;
-  node *out;
-  int result;
-  if( _has_error(l)) {out = _copy_error(l); return out;}
-  if( _has_error(r)) {out = _copy_error(r); return out;}
-
-  initNode(&out, NULL, NULL, scalar_null_node);
-
-  if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
-    return out;
-  }
-  if(result=_expand_node(r,&r,scope)){
-    _error(&out,result);
-    return out;
-  }
-  
-  switch(l->type){
-    case scalar_int_node:
-      switch(r->type){
-        case scalar_int_node:
-          out->type = scalar_int_node;
-          out->value.scalar_int = l->value.scalar_int+r->value.scalar_int;
-        break;
-        case scalar_double_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_int+r->value.scalar_double;
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-      }
-    break;
-    case scalar_double_node:
-      switch(r->type){
-        case scalar_int_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_double+r->value.scalar_int;
-        break;
-        case scalar_double_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_double+r->value.scalar_double;
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-      }
-    break;
-    default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
-    break;
-  }
-  return(out);
-}
 
 node* eval_neg_node(const node* l, Trie *scope){
   node *out;
@@ -401,132 +346,6 @@ node* eval_neg_node(const node* l, Trie *scope){
   return(out);
 }
 
-
-
-node* eval_minus_node(const node* l, const node* r, Trie *scope){
-  node *out;
-  int result;
-  if( _has_error(l)) {out = _copy_error(l); return out;}
-  if( _has_error(r)) {out = _copy_error(r); return out;}
-
-
-  initNode(&out, NULL, NULL, scalar_null_node);
-
-
-  if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
-    return out;
-  }
-  if(result=_expand_node(r,&r,scope)){
-    _error(&out,result);
-    return out;
-  }
-  
-
-
-
-  switch(l->type){
-    case scalar_int_node:
-      switch(r->type){
-        case scalar_int_node:
-          out->type = scalar_int_node;
-          out->value.scalar_int = l->value.scalar_int-r->value.scalar_int;
-        break;
-        case scalar_double_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_int-r->value.scalar_double;
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-
-      }
-    break;
-    case scalar_double_node:
-      switch(r->type){
-        case scalar_int_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_double-r->value.scalar_int;
-        break;
-        case scalar_double_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_double-r->value.scalar_double;
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-
-      }
-    break;
-    default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
-    break;
-  }
-  return(out);
-}
-
-
-node* eval_mult_node(const node* l, const node* r, Trie *scope){
-  node *out;
-  int result;
-
-  if( _has_error(l)) {out = _copy_error(l); return out;}
-  if( _has_error(r)) {out = _copy_error(r); return out;}
-
-
-  initNode(&out, NULL, NULL, scalar_null_node);
-
-
-  if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
-    return out;
-  }
-  if(result=_expand_node(r,&r,scope)){
-    _error(&out,result);
-    return out;
-  }
-  
-
-
-  switch(l->type){
-    case scalar_int_node:
-      switch(r->type){
-        case scalar_int_node:
-          out->type = scalar_int_node;
-          out->value.scalar_int = l->value.scalar_int*r->value.scalar_int;
-        break;
-        case scalar_double_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_int*r->value.scalar_double;
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-
-      }
-    break;
-    case scalar_double_node:
-      switch(r->type){
-        case scalar_int_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_double*r->value.scalar_int;
-        break;
-        case scalar_double_node:
-          out->type = scalar_double_node;
-          out->value.scalar_double = l->value.scalar_double*r->value.scalar_double;
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-
-      }
-    break;
-    default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
-    break;
-  }
-  return(out);
-}
 
 node* eval_draw_node(const node* l, const node* r, Trie *scope){
   node *out;
@@ -762,86 +581,6 @@ node* eval_gteq_node(const node* l, const node* r, Trie *scope){
   return eval_cmp_node(l,r,scope,eval_gteq,col_int_lteq_scalar,col_int_gteq_scalar);
 }
 
-
-node* eval_div_node(const node* l, const node* r, Trie *scope){
-  node *out;
-  int result;
-  if( _has_error(l)) { out = _copy_error(l); return out; };
-  if( _has_error(r)) { out = _copy_error(r); return out; };
-
-  initNode(&out, NULL, NULL, scalar_null_node);
-
-  if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
-    return out;
-  }
-  if(result=_expand_node(r,&r,scope)){
-    _error(&out,result);
-    return out;
-  }
-  
-
-
-
-  switch(l->type){
-    case scalar_int_node:
-      switch(r->type){
-        case scalar_int_node:
-          if(r->value.scalar_int==0){
-            _error(&out,LPL_DIVBYZERO_ERROR);
-          }
-          else{
-            out->type = scalar_double_node;
-            out->value.scalar_double = ((double)l->value.scalar_int)/((double)r->value.scalar_int);
-          }
-        break;
-        case scalar_double_node:
-          if(r->value.scalar_double==0.0){
-            _error(&out,LPL_DIVBYZERO_ERROR);
-          }
-          else {
-            out->type = scalar_double_node;
-            out->value.scalar_double = l->value.scalar_int/r->value.scalar_double;
-          }
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-
-      }
-    break;
-    case scalar_double_node:
-      switch(r->type){
-        case scalar_int_node:
-          if(r->value.scalar_int==0){
-            _error(&out,LPL_DIVBYZERO_ERROR);
-          }
-          else{
-            out->type = scalar_double_node;
-            out->value.scalar_double = l->value.scalar_double/r->value.scalar_int;
-          }
-        break;
-        case scalar_double_node:
-          if(r->value.scalar_double==0.0){
-            _error(&out,LPL_DIVBYZERO_ERROR);
-          }
-          else {
-            out->type = scalar_double_node;
-            out->value.scalar_double = l->value.scalar_double/r->value.scalar_double;
-          }
-        break;
-        default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
-        break;
-
-      }
-    break;
-    default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
-    break;
-  }
-  return(out);
-}
 
 
 node* evalNode(node* n,Trie *scope){
