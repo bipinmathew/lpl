@@ -46,11 +46,14 @@ BEGIN{
 }
 
 /@includes/ {
+  inline_includes = ""
   for(op in ops){
     header = header gen_headers(ops[op])
+    inline_includes = inline_includes "#include \"ops/" ops[op] ".inl\"\n"
   }
   #$0=gensub(/@includes/,header,"g",$0)
   print header
+  print inline_includes
   $0=""
 }
 

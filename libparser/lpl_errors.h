@@ -7,6 +7,7 @@
  X(LPL_SYNTAX_ERROR, "Syntax error.") \
  X(LPL_DIVBYZERO_ERROR,"Divide by zero.") \
  X(LPL_INVALIDARGS_ERROR,"Invalid arguments.") \
+ X(LPL_NOTIMPLEMENTED_ERROR,"Not Implemented") \
  X(LPL_UNDEFINED_VAR_ERROR,"undefined variable ")
 
 
