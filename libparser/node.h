@@ -23,7 +23,7 @@ typedef enum {
     assign_node,
     neg_node,
     add_node,
-    minus_node,
+    sub_node,
     mult_node,
     div_node,
     /* Array functions */
@@ -73,7 +73,7 @@ node* intNode(const char *str);
 node* doubleNode(const char *str);
 node* identNode(const char *str);
 node* addNode(node* const l, node* const r);
-node* minusNode(node* const l, node* const r);
+node* subNode(node* const l, node* const r);
 node* divNode(node* const l, node* const r);
 node* multNode(node* const l, node* const r);
 node* drawNode(node* const l, node* const r);
@@ -95,6 +95,12 @@ node* assignNode(node* const l, node* const r);
 
 node* evalNode(node* root,Trie *scope);
 void printNode(node* n, Trie *scope);
+
+/* TODO Figure out how to hide this function appropriatly. 
+   Perhaps put it in a node-private.h file only visible from the libparser
+   library? */
+
+int _expand_node(const node* in, const node** out, Trie *scope);
 
 /* TODO Figure out a way to get rid of these functions.. */
 int _error(node **n, int errorcode);

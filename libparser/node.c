@@ -11,10 +11,10 @@
 static node* eval_assign_node(const node* l, node* r, Trie *scope);
 static node* eval_neg_node(const node* l, Trie *scope);
 
-static node* eval_add_node(const node* l, const node* r, Trie *scope);
-static node* eval_minus_node(const node* l, const node* r, Trie *scope);
-static node* eval_mult_node(const node* l, const node* r, Trie *scope);
-static node* eval_div_node(const node* l, const node* r, Trie *scope);
+node* eval_add_node(const node* l, const node* r, Trie *scope);
+node* eval_sub_node(const node* l, const node* r, Trie *scope);
+node* eval_mult_node(const node* l, const node* r, Trie *scope);
+node* eval_div_node(const node* l, const node* r, Trie *scope);
 
 
 static node* eval_draw_node(const node* l, const node* r, Trie *scope);
@@ -22,7 +22,6 @@ static node* eval_sumover_node(const node* l, Trie *scope);
 static node* eval_bang_node(const node* l, Trie *scope);
 static node* eval_eq_node(const node* l, const node* r, Trie *scope);
 
-static int _expand_node(const node* in, const node** out, Trie *scope);
 
 
 int initNode(node **p, node *l, node *r, types node_type){
@@ -86,9 +85,9 @@ node* addNode(node* const l, node* const r){
 }
 
 
-node* minusNode(node* const l, node* const r){
+node* subNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, minus_node);
+  initNode(&n, l, r, sub_node);
 
   return n;
 }
@@ -238,7 +237,7 @@ void printNode(node* n, Trie *scope){
     case add_node:
       printf("+");
     break;
-    case minus_node:
+    case sub_node:
       printf("-");
     break;
     case mult_node:
@@ -285,7 +284,7 @@ void printNode(node* n, Trie *scope){
 
 
 
-static int _expand_node(const node* in, const node** out, Trie *scope){
+int _expand_node(const node* in, const node** out, Trie *scope){
   TrieValue  sym_val;
   *out = in;
   if(in->type==ident_node){
@@ -610,9 +609,9 @@ node* evalNode(node* n,Trie *scope){
       out = eval_add_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope),scope);
       releaseNode(l); releaseNode(r);
     break;
-    case minus_node:
+    case sub_node:
       dbg("%s","Evaluating minus.\n");
-      out = eval_minus_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_sub_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
       releaseNode(l); releaseNode(r);
     break;
     case mult_node:

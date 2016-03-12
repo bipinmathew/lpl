@@ -24,7 +24,7 @@
 {
   dbg("%s\n","Got Syntax Error.");
   (*result)->type = scalar_error_node;
-  (*result)->value.i = LPL_SYNTAX_ERROR;
+  (*result)->value.e.error_code = LPL_SYNTAX_ERROR;
 }
 
 
@@ -83,7 +83,7 @@ leaf nodes. */
 
 expr(C) ::= SUB expr(A).         {C = negNode(A);}
 expr(C) ::= expr(A) ADD expr(B). {C = addNode(A,B);}
-expr(C) ::= expr(A) SUB expr(B). {C = minusNode(A,B);}
+expr(C) ::= expr(A) SUB expr(B). {C = subNode(A,B);}
 expr(C) ::= expr(A) DIV expr(B). {C = divNode(A,B);}
 expr(C) ::= expr(A) MULT expr(B). {C = multNode(A,B);}
 
