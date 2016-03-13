@@ -1,11 +1,11 @@
-%right ASSN.
+%right IDENT ASSN.
 %right BANG SUMOVER.
+
 %nonassoc DRAW.
 
 %left ADD SUB.
 %left MULT DIV.
 %nonassoc EQ LT GT LTEQ GTEQ.
-%nonassoc IDENT.
 
 
 %token_type {char*}

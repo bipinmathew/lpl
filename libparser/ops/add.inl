@@ -6,7 +6,8 @@
 
 col_error eval_vivi_add(node **output, const node *l, const node *r){
   unsigned int llength , rlength;
-  int value;
+  int lvalue, rvalue;
+  unsigned int i;
 
   col_int_length(l->value.vector_int,&llength);
   col_int_length(r->value.vector_int,&rlength);
@@ -18,8 +19,20 @@ col_error eval_vivi_add(node **output, const node *l, const node *r){
   if(rlength==1 || llength==1){
     if(rlength==llength){
       (*output)->type = vector_int_node;
-      col_int_init_scalar(&(*output)->value.vector_int,value);
+      col_int_get(l->value.vector_int,0,&lvalue); 
+      col_int_get(r->value.vector_int,0,&rvalue); 
+      col_int_init_scalar(&(*output)->value.vector_int,lvalue+rvalue);
       return LPL_NO_ERROR;
+    }
+    if(rlength>llength){
+      col_int_get(l->value.vector_int,0,&lvalue); 
+      col_int_init(output);
+      for(i=0;i<rlength;i++){
+        col_int_get(r->value.vector_int,i,&rvalue);
+        col_int_set((*output)->value.vector_int,i,lvalue+rvalue);
+      }
+    }
+    else{
     }
   }
   else if(rlength==llength){

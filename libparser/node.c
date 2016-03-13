@@ -350,6 +350,7 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
   node *out;
   int result;
   col_error e;
+  int lvalue, rvalue;
 
   if( _has_error(l)) {out = _copy_error(l); return out;}
   if( _has_error(r)) {out = _copy_error(r); return out;}
@@ -364,18 +365,23 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
     _error(&out,result);
     return out;
   }
+
+
+
   
 
   switch(l->type){
-    case scalar_int_node:
+    case vector_int_node:
       switch(r->type){
-        case scalar_int_node:
+        case vector_int_node:
           out->type = vector_int_node;
           if(NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
             _error(&out,LPL_CUSTOM_ERROR);
           }
           else{
-            if(NO_ERROR!=(e=col_int_rand(out->value.vector_int,NULL,0,r->value.scalar_int,l->value.scalar_int))){
+            col_int_get(l->value.vector_int,0,&lvalue); 
+            col_int_get(r->value.vector_int,0,&rvalue); 
+            if(NO_ERROR!=(e=col_int_rand(out->value.vector_int,NULL,0,rvalue,lvalue))){
               _error(&out,LPL_CUSTOM_ERROR);
             }
           }
