@@ -26,7 +26,7 @@ col_error eval_vivi_add(node **output, const node *l, const node *r){
     }
     if(rlength>llength){
       col_int_get(l->value.vector_int,0,&lvalue); 
-      col_int_init(output);
+      initNode(output,NULL,NULL,vector_int_node);
       for(i=0;i<rlength;i++){
         col_int_get(r->value.vector_int,i,&rvalue);
         col_int_set((*output)->value.vector_int,i,lvalue+rvalue);

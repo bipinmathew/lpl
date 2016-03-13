@@ -2,11 +2,13 @@ function gen_switch_statement(op){
   output=""
   output=ouput "switch(l->type){\n"
     for (ltype in types){
-      output=output "  case " types[ltype] ":\n"
+      output=output "  case " types[ltype] "_node:\n"
         output=output "    switch(r->type){\n"
         for (rtype in types){
-          output=output "      case " types[rtype] ":\n"
-            output=sprintf("%s        eval_%s%s_%s(\\&out,l,r);\n",output,short_types[ltype],short_types[rtype],op)
+          output=output "      case " types[rtype] "_node:\n"
+            output_type = (("vector_double"==types[rtype])||("vector_double"==types[ltype])) ? "vector_double" : "vector_int"
+            output=sprintf("%s        initNode(\\&out,NULL,NULL,%s_node);\n",output,output_type)
+            output=sprintf("%s        eval_%s%s_%s(out->value.%s,l->value.%s,r->value.%s);\n",output,short_types[ltype],short_types[rtype],op,output_type,types[ltype],types[rtype])
           output=output "      break;\n"
         }
         output=output "      default:\n"
@@ -26,9 +28,10 @@ function gen_switch_statement(op){
 
 function gen_headers(op){
   output = ""
-  for(ltype in types){
-    for(rtype in types){
-      output=output sprintf("static col_error eval_%s%s_%s(node **output, const node *l, const node *r);\n",short_types[ltype],short_types[rtype],op)
+  for(ltype in col_types){
+    for(rtype in col_types){
+      output_type = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])) ? "col_double" : "col_int"
+      output=output sprintf("static col_error eval_%s%s_%s(%s *output, const %s *l, const %s *r);\n",short_types[ltype],short_types[rtype],op,output_type,col_types[ltype],col_types[rtype])
     }
   }
   return output
@@ -37,7 +40,8 @@ function gen_headers(op){
 
 BEGIN{
   split("add sub mult div",ops," ")
-  split("vector_int_node vector_double_node",types," ")
+  split("vector_int vector_double",types," ")
+  split("col_int col_double",col_types," ")
   split("vi vd",short_types," ")
   
   FS=""
