@@ -6,6 +6,7 @@ AC_INIT([lplparser], [0.1], [bipinmathew@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([parser.h])
 AC_CONFIG_HEADERS([config.h])
+AM_MAINTAINER_MODE([enable])
 
 # Checks for programs.
 AC_PROG_CC
@@ -46,4 +47,5 @@ AC_CONFIG_FILES([Makefile
 libcol/Makefile
 ])
 
+AC_CONFIG_SUBDIRS([libcol])
 AC_OUTPUT
