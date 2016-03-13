@@ -30,4 +30,6 @@ src/Makefile
 libparser/Makefile
 ])
 
+AC_CONFIG_SUBDIRS([libparser])
+
 AC_OUTPUT

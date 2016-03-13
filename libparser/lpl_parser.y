@@ -1,9 +1,11 @@
+%right ASSN.
 %right BANG SUMOVER.
 %nonassoc DRAW.
 
 %left ADD SUB.
 %left MULT DIV.
-
+%nonassoc EQ LT GT LTEQ GTEQ.
+%nonassoc IDENT.
 
 
 %token_type {char*}
@@ -39,16 +41,15 @@
 %extra_argument {node **result}
 
 
-start ::= expr(B) . 
+start ::= expr(B) .
     {
       *result = B;
     }
 
-start ::= IDENT(A) . {*result = identNode(A); }
-
 /* System functions */
 
 expr(A) ::= EXIT.{free(A); exit(0);}
+
 
 
 expr(C) ::= IDENT(A) ASSN expr(B). {
