@@ -9,6 +9,7 @@ node* eval_@op_node(const node* l, const node* r, Trie *scope){
   TrieValue  sym_val;
   node *out;
   int result;
+  col_error e;
   if( _has_error(l)) {out = _copy_error(l); return out;}
   if( _has_error(r)) {out = _copy_error(r); return out;}
 

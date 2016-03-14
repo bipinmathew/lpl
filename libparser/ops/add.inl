@@ -5,7 +5,7 @@
 #include "../debug.h"
 
 col_error eval_vivi_add(col_int *output, const col_int *l, const col_int *r){
-  unsigned int llength , rlength;
+  unsigned int llength , rlength,allocate;
   int lvalue, rvalue;
   unsigned int i;
 
@@ -21,7 +21,7 @@ col_error eval_vivi_add(col_int *output, const col_int *l, const col_int *r){
 
       col_int_get(l,0,&lvalue); 
       col_int_get(r,0,&rvalue); 
-      col_int_init_scalar(&output,lvalue+rvalue);
+      col_int_set(output,0,lvalue+rvalue);
       return LPL_NO_ERROR;
     }
     if(rlength>llength){

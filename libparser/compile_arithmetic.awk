@@ -9,7 +9,7 @@ function gen_switch_statement(op){
             col_type    = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])) ? "col_double" : "col_int"
             output_type = (("vector_double"==types[rtype])||("vector_double"==types[ltype])) ? "vector_double" : "vector_int"
             output=sprintf("%s        initNode(\\&out,NULL,NULL,%s_node);\n",output,output_type)
-            output=sprintf("%s        %s_init(\\&out->value.%s);\n",output,col_type,output_type)
+            output=sprintf("%s        if(LPL_NO_ERROR!=(e=%s_init(\\&out->value.%s))){_error(\\&out,e); return (out);}\n",output,col_type,output_type)
             output=sprintf("%s        eval_%s%s_%s(out->value.%s,l->value.%s,r->value.%s);\n",output,short_types[ltype],short_types[rtype],op,output_type,types[ltype],types[rtype])
           output=output "      break;\n"
         }
