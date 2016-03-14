@@ -14,8 +14,6 @@ col_error eval_vivi_add(col_int *output, const col_int *l, const col_int *r){
 
   dbg("Called col_vivi_add lengths: %d %d\n",llength,rlength);
 
-
-
   if(rlength==1 || llength==1){
     if(rlength==llength){
 
@@ -25,12 +23,15 @@ col_error eval_vivi_add(col_int *output, const col_int *l, const col_int *r){
       return LPL_NO_ERROR;
     }
     if(rlength>llength){
+      allocate=rlength;
+      col_int__realloc(output,&allocate);
       col_int_get(l,0,&lvalue); 
 
       for(i=0;i<rlength;i++){
         col_int_get(r,i,&rvalue);
-        col_int_set(output,i,lvalue+rvalue);
+        col_int__set(output,i,lvalue+rvalue);
       }
+      col_int__setlength(output,rlength);
     }
     else{
     }
