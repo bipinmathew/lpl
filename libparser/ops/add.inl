@@ -4,7 +4,7 @@
 #include "../lpl_errors.h"
 #include "../debug.h"
 
-col_error eval_vivi_add(col_int *output, const col_int *l, const col_int *r){
+col_error eval_vivi_add(col_int * output, const col_int * restrict l, const col_int * restrict r){
   unsigned int llength , rlength,allocate;
   int lvalue, rvalue;
   unsigned int i;
@@ -28,8 +28,7 @@ col_error eval_vivi_add(col_int *output, const col_int *l, const col_int *r){
       col_int_get(l,0,&lvalue); 
 
       for(i=0;i<rlength;i++){
-        col_int_get(r,i,&rvalue);
-        col_int__set(output,i,lvalue+rvalue);
+        output->d[i]=lvalue+r->d[i];
       }
       col_int__setlength(output,rlength);
     }
