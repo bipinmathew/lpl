@@ -33,7 +33,7 @@ function gen_headers(op){
   for(ltype in col_types){
     for(rtype in col_types){
       output_type = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])) ? "col_double" : "col_int"
-      output=output sprintf("static lpl_error_code eval_%s%s_%s(%s *output, const %s * restrict l, const %s * restrict r);\n",short_types[ltype],short_types[rtype],op,output_type,col_types[ltype],col_types[rtype])
+      output=output sprintf("static lpl_error_code eval_%s%s_%s(%s *output, const %s *  l, const %s *  r);\n",short_types[ltype],short_types[rtype],op,output_type,col_types[ltype],col_types[rtype])
     }
   }
   return output
