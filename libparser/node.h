@@ -42,14 +42,14 @@ typedef enum {
 typedef struct _error_value {
   int error_code;
   const char *error_string;
-} error_value;
+} lpl_error;
 
 typedef union {
   int scalar_int;
   double scalar_double;
   char b;
   char *s;
-  error_value e;
+  lpl_error e;
 
   col_int *vector_int;
   col_double *vector_double;
