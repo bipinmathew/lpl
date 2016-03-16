@@ -4,9 +4,10 @@
 #include "../lpl_errors.h"
 #include "../debug.h"
 
-col_error eval_vivi_add(col_int * output, const col_int * l, const col_int * r){
+lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int * r){
   unsigned int llength , rlength,allocate;
   const col_int *shrt, *lng;
+  col_error e;
   int svalue, rvalue,output_len;
   unsigned int i;
 
@@ -17,21 +18,20 @@ col_error eval_vivi_add(col_int * output, const col_int * l, const col_int * r){
 
   if(rlength==1 || llength==1){
     if(rlength==llength){
-
       col_int_get(l,0,&svalue); 
       col_int_get(r,0,&rvalue); 
-      col_int_set(output,0,svalue+rvalue);
-      return LPL_NO_ERROR;
+      return col_int_set(output,0,svalue+rvalue);
     }
-
-
 
     allocate = output_len = (rlength>llength) ? rlength : llength;
 
     lng  = (rlength>llength) ? r : l;
     shrt = (rlength>llength) ? l : r;
 
-    col_int__realloc(output,&allocate);
+    if(LIBCOL_NO_ERROR != (e = col_int__realloc(output,&allocate))){
+      return e;
+    }
+
     col_int_get(shrt,0,&svalue); 
 
     for(i=0;i<output_len;i++){
@@ -45,13 +45,13 @@ col_error eval_vivi_add(col_int * output, const col_int * l, const col_int * r){
 
     allocate = rlength;
 
-    lng  = r;
-    shrt = l;
-
-    col_int__realloc(output,&allocate);
+    if(LIBCOL_NO_ERROR != (e = col_int__realloc(output,&allocate))){
+      lpl_error(&output,LPL_CUSTOM_ERROR,col_error_strings[e]);
+      return LPL_CUSTOM_ERROR;
+    }
 
     for(i=0;i<rlength;i++){
-      output->d[i]=shrt->d[i]+lng->d[i];
+      output->d[i]=l->d[i]+r->d[i];
     }
     col_int__setlength(output,rlength);
 
@@ -63,12 +63,12 @@ col_error eval_vivi_add(col_int * output, const col_int * l, const col_int * r){
   
   return LPL_NOTIMPLEMENTED_ERROR;
 }
-col_error eval_vivd_add(col_double *output, const col_int *l, const col_double *r){
+lpl_error_code eval_vivd_add(col_double *output, const col_int *l, const col_double *r){
   return LPL_NOTIMPLEMENTED_ERROR;
 }
-col_error eval_vdvi_add(col_double *output, const col_double *l, const col_int *r){
+lpl_error_code eval_vdvi_add(col_double *output, const col_double *l, const col_int *r){
   return LPL_NOTIMPLEMENTED_ERROR;
 }
-col_error eval_vdvd_add(col_double *output, const col_double *l, const col_double *r){
+lpl_error_code eval_vdvd_add(col_double *output, const col_double *l, const col_double *r){
   return LPL_NOTIMPLEMENTED_ERROR;
 }

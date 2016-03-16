@@ -16,11 +16,11 @@ node* eval_@op_node(const node* l, const node* r, Trie *scope){
   initNode(&out, NULL, NULL, scalar_null_node);
 
   if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
+    lpl_error(&out,result,NULL);
     return out;
   }
   if(result=_expand_node(r,&r,scope)){
-    _error(&out,result);
+    lpl_error(&out,result,NULL);
     return out;
   }
 

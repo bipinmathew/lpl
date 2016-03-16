@@ -9,19 +9,19 @@ function gen_switch_statement(op){
             col_type    = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])) ? "col_double" : "col_int"
             output_type = (("vector_double"==types[rtype])||("vector_double"==types[ltype])) ? "vector_double" : "vector_int"
             output=sprintf("%s        initNode(\\&out,NULL,NULL,%s_node);\n",output,output_type)
-            output=sprintf("%s        if(LPL_NO_ERROR!=(e=%s_init(\\&out->value.%s))){_error(\\&out,e); return (out);}\n",output,col_type,output_type)
+            output=sprintf("%s        if(LPL_NO_ERROR!=(e=%s_init(\\&out->value.%s))){lpl_error(\\&out,e,col_error_strings[e]); return (out);}\n",output,col_type,output_type)
             output=sprintf("%s        eval_%s%s_%s(out->value.%s,l->value.%s,r->value.%s);\n",output,short_types[ltype],short_types[rtype],op,output_type,types[ltype],types[rtype])
           output=output "      break;\n"
         }
         output=output "      default:\n"
-        output=output "        _error(\\&out,LPL_INVALIDARGS_ERROR);\n"
+        output=output "        lpl_error(\\&out,LPL_INVALIDARGS_ERROR,NULL);\n"
         output=output "      break;\n"
         output=output "    }\n"
       output=output "  break;\n"
     }
 
   output=output "  default:\n"
-  output=output "    _error(\\&out,LPL_INVALIDARGS_ERROR);\n"
+  output=output "    lpl_error(\\&out,LPL_INVALIDARGS_ERROR,NULL);\n"
   output=output "  break;\n"
   output=output "}\n"
 
@@ -33,7 +33,7 @@ function gen_headers(op){
   for(ltype in col_types){
     for(rtype in col_types){
       output_type = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])) ? "col_double" : "col_int"
-      output=output sprintf("static col_error eval_%s%s_%s(%s *output, const %s * restrict l, const %s * restrict r);\n",short_types[ltype],short_types[rtype],op,output_type,col_types[ltype],col_types[rtype])
+      output=output sprintf("static lpl_error_code eval_%s%s_%s(%s *output, const %s * restrict l, const %s * restrict r);\n",short_types[ltype],short_types[rtype],op,output_type,col_types[ltype],col_types[rtype])
     }
   }
   return output

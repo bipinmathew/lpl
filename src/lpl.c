@@ -28,7 +28,7 @@ int main() {
       if(strlen(commandLine)>0){
 #ifdef DEBUG
         fp = fopen("errors.log","w");
-        ParseTrace(fp,"err: ");
+        ParseTrace(fp,"");
 #endif
 
         clock_gettime(CLOCK_REALTIME, &tmstart);

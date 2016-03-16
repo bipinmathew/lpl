@@ -177,10 +177,11 @@ node* drawNode(node* const l, node* const r){
   return n;
 }
 
-int _error(node **n, int errorcode) {
+int lpl_error(node **n, lpl_error_code errorcode, const char *err) {
   (*n)->type = scalar_error_node;
-  (*n)->value.e.error_code = errorcode;
-  (*n)->value.e.error_string = "Hello world.";
+  if( LPL_CUSTOM_ERROR == ((*n)->value.e.error_code = errorcode)){
+    (*n)->value.e.error_string = err;
+  }
   return 0;
 }
 
@@ -274,7 +275,7 @@ void printNode(node* n, Trie *scope){
           printf("%s\n",n->value.e.error_string);
         }
         else{
-          printf("%s\n",lpl_error_strings[n->value.e.error_code]);
+          printf("%s\n",lpl_error_string[n->value.e.error_code]);
         }
     break;
     default:
@@ -324,7 +325,7 @@ node* eval_neg_node(const node* l, Trie *scope){
   initNode(&out, NULL, NULL, scalar_null_node);
 
   if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
+   lpl_error(&out,result,NULL);
     return out;
   }
 
@@ -339,7 +340,7 @@ node* eval_neg_node(const node* l, Trie *scope){
       out->value.scalar_double = -l->value.scalar_double;
   }
   else{
-      _error(&out,LPL_INVALIDARGS_ERROR);
+     lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
   }
 
   return(out);
@@ -358,11 +359,11 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
   initNode(&out, NULL, NULL, scalar_null_node);
 
   if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
+   lpl_error(&out,result,NULL);
     return out;
   }
   if(result=_expand_node(r,&r,scope)){
-    _error(&out,result);
+   lpl_error(&out,result,NULL);
     return out;
   }
 
@@ -375,25 +376,25 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
       switch(r->type){
         case vector_int_node:
           out->type = vector_int_node;
-          if(NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
-            _error(&out,LPL_CUSTOM_ERROR);
+          if(LIBCOL_NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
+           lpl_error(&out,LPL_CUSTOM_ERROR,col_error_strings[e]);
           }
           else{
             col_int_get(l->value.vector_int,0,&lvalue); 
             col_int_get(r->value.vector_int,0,&rvalue); 
-            if(NO_ERROR!=(e=col_int_rand(out->value.vector_int,NULL,0,rvalue,lvalue))){
-              _error(&out,LPL_CUSTOM_ERROR);
+            if(LIBCOL_NO_ERROR!=(e=col_int_rand(out->value.vector_int,NULL,0,rvalue,lvalue))){
+             lpl_error(&out,LPL_CUSTOM_ERROR,col_error_strings[e]);
             }
           }
         break;
         default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
+         lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
         break;
 
       }
     break;
     default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
+     lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
     break;
   }
   return(out);
@@ -409,7 +410,7 @@ node* eval_sumover_node(const node* l, Trie *scope){
   initNode(&out, NULL, NULL, scalar_null_node);
 
   if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
+   lpl_error(&out,result,NULL);
     return out;
   }
 
@@ -420,7 +421,7 @@ node* eval_sumover_node(const node* l, Trie *scope){
       col_int_sum(l->value.vector_int,&out->value.scalar_int);
     break;
     default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
+     lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
     break;
   }
   return(out);
@@ -436,7 +437,7 @@ node* eval_bang_node(const node* l, Trie *scope){
   initNode(&out, NULL, NULL, scalar_null_node);
 
   if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
+   lpl_error(&out,result,NULL);
     return out;
   }
 
@@ -444,17 +445,17 @@ node* eval_bang_node(const node* l, Trie *scope){
     case scalar_int_node:
       dbg("%s\n","bang on integer.");
       out->type=vector_int_node;
-      if(NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
-        _error(&out,LPL_CUSTOM_ERROR);
+      if(LIBCOL_NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
+       lpl_error(&out,LPL_CUSTOM_ERROR,col_error_strings[e]);
       }
       else{
-        if(NO_ERROR!=(e=col_int_range(out->value.vector_int,0,l->value.scalar_int, (l->value.scalar_int > 0) ? 1 : -1 ))){
-          _error(&out,LPL_CUSTOM_ERROR);
+        if(LIBCOL_NO_ERROR!=(e=col_int_range(out->value.vector_int,0,l->value.scalar_int, (l->value.scalar_int > 0) ? 1 : -1 ))){
+         lpl_error(&out,LPL_CUSTOM_ERROR,col_error_strings[e]);
         }
       }
     break;
     default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
+     lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
     break;
   }
   return(out);
@@ -496,11 +497,11 @@ eval_cmp_node(
   initNode(&out, NULL, NULL, scalar_null_node);
 
   if(result=_expand_node(l,&l,scope)){
-    _error(&out,result);
+   lpl_error(&out,result,NULL);
     return out;
   }
   if(result=_expand_node(r,&r,scope)){
-    _error(&out,result);
+   lpl_error(&out,result,NULL);
     return out;
   }
   
@@ -517,14 +518,14 @@ eval_cmp_node(
         break;
         case vector_int_node:
           out->type = vector_uint_node;
-          if(NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
-            _error(&out,LPL_CUSTOM_ERROR);
+          if(LIBCOL_NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
+           lpl_error(&out,LPL_CUSTOM_ERROR,col_error_strings[e]);
           }
           //col_int_disp(r->value.vector_int);
           svcmp(r->value.vector_int, out->value.vector_uint , l->value.scalar_int);
         break;
         default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
+         lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
         break;
 
       }
@@ -540,7 +541,7 @@ eval_cmp_node(
           out->value.b = scmp(l->value.scalar_double,r->value.scalar_double);
         break;
         default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
+         lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
         break;
       }
     break;
@@ -548,19 +549,19 @@ eval_cmp_node(
       switch(r->type){
         case scalar_int_node:
           out->type = vector_uint_node;
-          if(NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
-            _error(&out,LPL_CUSTOM_ERROR);
+          if(LIBCOL_NO_ERROR!=(e=col_uint_init(&out->value.vector_uint))){
+           lpl_error(&out,LPL_CUSTOM_ERROR,col_error_strings[e]);
           }
           //col_int_disp(l->value.vector_int);
           vscmp(l->value.vector_int, out->value.vector_uint , r->value.scalar_int);
         break;
         default:
-          _error(&out,LPL_INVALIDARGS_ERROR);
+         lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
         break;
       }
     break;
     default:
-      _error(&out,LPL_INVALIDARGS_ERROR);
+     lpl_error(&out,LPL_INVALIDARGS_ERROR,NULL);
     break;
   }
   return(out);

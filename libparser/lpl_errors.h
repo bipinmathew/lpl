@@ -17,12 +17,12 @@
    if necessary
    */
 #define X(a,b) a,
- typedef enum {LIBLPL_ERRORS LPL_CUSTOM_ERROR , LPL_NUM_ERRORS} lpl_error_codes;
+ typedef enum {LIBLPL_ERRORS LPL_CUSTOM_ERROR , LPL_NUM_ERRORS} lpl_error_code;
 #undef X
 
 
 #define X(a,b) b,
-static const char* lpl_error_strings[] = {LIBLPL_ERRORS "Unspecified custom error."};
+static const char* lpl_error_string[] = {LIBLPL_ERRORS "Unspecified custom error."};
 #undef X
 
 
