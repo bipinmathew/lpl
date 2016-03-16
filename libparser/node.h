@@ -101,11 +101,11 @@ void printNode(node* n, Trie *scope);
    Perhaps put it in a node-private.h file only visible from the libparser
    library? */
 
-int _expand_node(const node* in, const node** out, Trie *scope);
+int lpl_expand_node(const node* in, const node** out, Trie *scope);
 
 /* TODO Figure out a way to get rid of these functions.. */
-int lpl_error(node **n, lpl_error_code errorcode, const char *err);
-int _has_error(const node* n);
+int lpl_make_error_node(node *n, lpl_error_code errorcode, const char *err);
+int lpl_is_error_node(const node* n);
 node* _copy_error(const node *in);
 /* End crappy code.. */
 

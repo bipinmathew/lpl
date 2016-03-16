@@ -46,7 +46,7 @@ lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int 
     allocate = rlength;
 
     if(LIBCOL_NO_ERROR != (e = col_int__realloc(output,&allocate))){
-      lpl_error(&output,LPL_CUSTOM_ERROR,col_error_strings[e]);
+      lpl_make_error_node(output,LPL_CUSTOM_ERROR,col_error_strings[e]);
       return LPL_CUSTOM_ERROR;
     }
 

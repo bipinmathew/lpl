@@ -9,19 +9,19 @@ function gen_switch_statement(op){
             col_type    = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])) ? "col_double" : "col_int"
             output_type = (("vector_double"==types[rtype])||("vector_double"==types[ltype])) ? "vector_double" : "vector_int"
             output=sprintf("%s        initNode(\\&out,NULL,NULL,%s_node);\n",output,output_type)
-            output=sprintf("%s        if(LPL_NO_ERROR!=(e=%s_init(\\&out->value.%s))){lpl_error(\\&out,e,col_error_strings[e]); return (out);}\n",output,col_type,output_type)
+            output=sprintf("%s        if(LPL_NO_ERROR!=(e=%s_init(\\&out->value.%s))){lpl_make_error_node(out,e,col_error_strings[e]); return (out);}\n",output,col_type,output_type)
             output=sprintf("%s        eval_%s%s_%s(out->value.%s,l->value.%s,r->value.%s);\n",output,short_types[ltype],short_types[rtype],op,output_type,types[ltype],types[rtype])
           output=output "      break;\n"
         }
         output=output "      default:\n"
-        output=output "        lpl_error(\\&out,LPL_INVALIDARGS_ERROR,NULL);\n"
+        output=output "        lpl_make_error_node(out,LPL_INVALIDARGS_ERROR,NULL);\n"
         output=output "      break;\n"
         output=output "    }\n"
       output=output "  break;\n"
     }
 
   output=output "  default:\n"
-  output=output "    lpl_error(\\&out,LPL_INVALIDARGS_ERROR,NULL);\n"
+  output=output "    lpl_make_error_node(out,LPL_INVALIDARGS_ERROR,NULL);\n"
   output=output "  break;\n"
   output=output "}\n"
 
