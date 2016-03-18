@@ -46,7 +46,10 @@ AC_CHECK_FUNCS([memset])
 
 AC_CONFIG_FILES([Makefile
 libcol/Makefile
+c-algorithms/Makefile
 ])
 
-AC_CONFIG_SUBDIRS([libcol])
+AC_CONFIG_SUBDIRS([libcol
+c-algorithms])
+
 AC_OUTPUT

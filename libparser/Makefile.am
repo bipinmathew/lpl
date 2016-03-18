@@ -1,4 +1,5 @@
 SUBDIRS = libcol
+SUBDIRS += c-algorithms
 
 BUILT_SOURCES = lpl_parser.c lpl_scanner.c arithmetic.c
 AM_YFLAGS = -s -p
