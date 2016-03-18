@@ -185,6 +185,15 @@ int lpl_make_error_node(node *n, lpl_error_code errorcode, const char *err) {
   return 0;
 }
 
+int lpl_make_error(lpl_error **error,lpl_error_code errorcode, const char *err){
+  *error = (lpl_error*)malloc(sizeof(lpl_error));
+  if( LPL_CUSTOM_ERROR == ((*error)->error_code = errorcode)){
+    (*error)->error_string = err;
+  }
+  return 0;
+}
+
+
 int retainNode(node **p){
   (*p)->ref++;
   dbg("retainNode called on node of type: %d now: %d \n",(*p)->type,(*p)->ref);

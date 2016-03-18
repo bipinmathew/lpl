@@ -10,6 +10,7 @@ node* eval_@op_node(const node* l, const node* r, Trie *scope){
   node *out;
   int result;
   col_error e;
+  lpl_error eval_error;
   if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
   if( lpl_is_error_node(r)) {out = _copy_error(r); return out;}
 

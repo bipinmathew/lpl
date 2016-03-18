@@ -4,7 +4,7 @@
 #include "../lpl_errors.h"
 #include "../debug.h"
 
-lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int * r){
+lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int * r, lpl_error *eval_error){
   unsigned int llength , rlength,allocate;
   const col_int *shrt, *lng;
   col_error e;
@@ -46,7 +46,7 @@ lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int 
     allocate = rlength;
 
     if(LIBCOL_NO_ERROR != (e = col_int__realloc(output,&allocate))){
-      lpl_make_error_node(output,LPL_CUSTOM_ERROR,col_error_strings[e]);
+      lpl_make_error(eval_error,LPL_CUSTOM_ERROR,col_error_strings[e]);
       return LPL_CUSTOM_ERROR;
     }
 
@@ -63,12 +63,12 @@ lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int 
   
   return LPL_NOTIMPLEMENTED_ERROR;
 }
-lpl_error_code eval_vivd_add(col_double *output, const col_int *l, const col_double *r){
+lpl_error_code eval_vivd_add(col_double *output, const col_int *l, const col_double *r, lpl_error *error){
   return LPL_NOTIMPLEMENTED_ERROR;
 }
-lpl_error_code eval_vdvi_add(col_double *output, const col_double *l, const col_int *r){
+lpl_error_code eval_vdvi_add(col_double *output, const col_double *l, const col_int *r, lpl_error *error){
   return LPL_NOTIMPLEMENTED_ERROR;
 }
-lpl_error_code eval_vdvd_add(col_double *output, const col_double *l, const col_double *r){
+lpl_error_code eval_vdvd_add(col_double *output, const col_double *l, const col_double *r, lpl_error *error){
   return LPL_NOTIMPLEMENTED_ERROR;
 }

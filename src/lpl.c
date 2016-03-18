@@ -27,8 +27,10 @@ int main() {
       commandLine[strcspn(commandLine,"\r\n")]=0;
       if(strlen(commandLine)>0){
 #ifdef DEBUG
+#if DEBUG
         fp = fopen("errors.log","w");
         ParseTrace(fp,"");
+#endif
 #endif
 
         clock_gettime(CLOCK_REALTIME, &tmstart);
@@ -56,9 +58,10 @@ int main() {
         msec = diff*1000 / CLOCKS_PER_SEC;
 
         printf("walltime: %f, cputime: %d ms\n",wtime,msec);
-
 #ifdef DEBUG
+#if DEBUG
         fclose(fp);
+#endif
 #endif
       }
     }
