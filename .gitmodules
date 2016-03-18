@@ -1,3 +1,6 @@
 [submodule "libcol"]
 	path = libparser/libcol
 	url = ../libcol
+[submodule "libparser/c-algorithms"]
+	path = libparser/c-algorithms
+	url = https://github.com/fragglet/c-algorithms
