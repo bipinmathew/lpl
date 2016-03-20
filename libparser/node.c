@@ -4,31 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "trie.h"
 
 
 
-static node* eval_assign_node(const node* l, node* r, Trie *scope);
-static node* eval_neg_node(const node* l, Trie *scope);
-
-node* eval_add_node(const node* l, const node* r, Trie *scope);
-node* eval_sub_node(const node* l, const node* r, Trie *scope);
-node* eval_mult_node(const node* l, const node* r, Trie *scope);
-node* eval_div_node(const node* l, const node* r, Trie *scope);
-
-
-static node* eval_draw_node(const node* l, const node* r, Trie *scope);
-static node* eval_sumover_node(const node* l, Trie *scope);
-static node* eval_bang_node(const node* l, Trie *scope);
-static node* eval_eq_node(const node* l, const node* r, Trie *scope);
-
-
-
-static node* eval_eq_node(const node* l, const node* r, Trie *scope);
-static node* eval_lt_node(const node* l, const node* r, Trie *scope);
-static node* eval_gt_node(const node* l, const node* r, Trie *scope);
-static node* eval_lteq_node(const node* l, const node* r, Trie *scope);
-static node* eval_gteq_node(const node* l, const node* r, Trie *scope);
 
 static int eval_eq(double l, double r);
 static int eval_lt(double l, double r);
@@ -193,6 +173,8 @@ node* drawNode(node* const l, node* const r){
 }
 
 int lpl_make_error_node(node *n, lpl_error_code errorcode, const char *err) {
+  dbg("Inside lpl_make_error. Error code: %d",errorcode);
+  assert(errorcode >= 0);
   n->type = scalar_error_node;
   if( LPL_CUSTOM_ERROR == (n->value.e.error_code = errorcode)){
     n->value.e.error_string = err;
@@ -326,7 +308,7 @@ lpl_error_code lpl_expand_node(const node* in, const node** out, Trie *scope){
 
 
 
-static node* eval_assign_node(const node* l, node* r, Trie *scope){
+node* eval_assign_node(const node* l, node* r, Trie *scope){
   TrieValue  sym_val;
 
   if(TRIE_NULL!=(sym_val=trie_lookup(scope,l->value.s))){

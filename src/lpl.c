@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <libcalg-1.0/libcalg/trie.h>
+#include "trie.h"
 
 #include "parser.h"
 #include "debug.h"
 
-int main() {
+int main(void) {
     FILE *fp;
     char commandLine[1024];
     node *result,*eval;
     clock_t start, diff;
-    time_t wstart;
     double wtime;
     int msec;
 

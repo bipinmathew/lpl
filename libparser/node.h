@@ -70,6 +70,34 @@ int initNode(node **p, node *l, node *r, types node_type);
 int retainNode(node **p);
 int releaseNode(node *n);
 
+/* Include all actual computation types. */
+
+node* eval_assign_node(const node* l, node* r, Trie *scope);
+node* eval_neg_node(const node* l, Trie *scope);
+
+node* eval_add_node(const node* l, const node* r, Trie *scope);
+node* eval_sub_node(const node* l, const node* r, Trie *scope);
+node* eval_mult_node(const node* l, const node* r, Trie *scope);
+node* eval_div_node(const node* l, const node* r, Trie *scope);
+
+
+node* eval_draw_node(const node* l, const node* r, Trie *scope);
+node* eval_sumover_node(const node* l, Trie *scope);
+node* eval_bang_node(const node* l, Trie *scope);
+node* eval_eq_node(const node* l, const node* r, Trie *scope);
+
+
+
+node* eval_eq_node(const node* l, const node* r, Trie *scope);
+node* eval_lt_node(const node* l, const node* r, Trie *scope);
+node* eval_gt_node(const node* l, const node* r, Trie *scope);
+node* eval_lteq_node(const node* l, const node* r, Trie *scope);
+node* eval_gteq_node(const node* l, const node* r, Trie *scope);
+/* End actuall computation types. */
+
+
+
+
 node* intNode(const char *str);
 node* doubleNode(const char *str);
 node* identNode(const char *str);
