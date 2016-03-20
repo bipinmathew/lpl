@@ -6,7 +6,6 @@
 
 @start_block
 node* eval_@op_node(const node* l, const node* r, Trie *scope){
-  TrieValue  sym_val;
   node *out;
   int result;
   col_error e;
@@ -16,11 +15,11 @@ node* eval_@op_node(const node* l, const node* r, Trie *scope){
 
   initNode(&out, NULL, NULL, scalar_null_node);
 
-  if(result=lpl_expand_node(l,&l,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
     lpl_make_error_node(out,result,NULL);
     return out;
   }
-  if(result=lpl_expand_node(r,&r,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(r,&r,scope))){
     lpl_make_error_node(out,result,NULL);
     return out;
   }

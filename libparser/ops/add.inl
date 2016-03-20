@@ -5,10 +5,10 @@
 #include "../debug.h"
 
 lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int * r, lpl_error *eval_error){
-  unsigned int llength , rlength,allocate;
+  unsigned int llength , rlength,allocate,output_len;
   const col_int *shrt, *lng;
   col_error e;
-  int svalue, rvalue,output_len;
+  int svalue, rvalue;
   unsigned int i;
 
   col_int_length(l,&llength);
@@ -46,7 +46,7 @@ lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int 
     allocate = rlength;
 
     if(LIBCOL_NO_ERROR != (e = col_int__realloc(output,&allocate))){
-      lpl_make_error(eval_error,LPL_CUSTOM_ERROR,col_error_strings[e]);
+      lpl_make_error(&eval_error,LPL_CUSTOM_ERROR,col_error_strings[e]);
       return LPL_CUSTOM_ERROR;
     }
 

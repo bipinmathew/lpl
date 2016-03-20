@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libcalg-1.0/libcalg/trie.h>
+#include "trie.h"
 
 
 
@@ -21,6 +21,21 @@ static node* eval_draw_node(const node* l, const node* r, Trie *scope);
 static node* eval_sumover_node(const node* l, Trie *scope);
 static node* eval_bang_node(const node* l, Trie *scope);
 static node* eval_eq_node(const node* l, const node* r, Trie *scope);
+
+
+
+static node* eval_eq_node(const node* l, const node* r, Trie *scope);
+static node* eval_lt_node(const node* l, const node* r, Trie *scope);
+static node* eval_gt_node(const node* l, const node* r, Trie *scope);
+static node* eval_lteq_node(const node* l, const node* r, Trie *scope);
+static node* eval_gteq_node(const node* l, const node* r, Trie *scope);
+
+static int eval_eq(double l, double r);
+static int eval_lt(double l, double r);
+static int eval_gt(double l, double r);
+static int eval_lteq(double l, double r);
+static int eval_gteq(double l, double r);
+
 
 
 
@@ -221,6 +236,8 @@ int releaseNode(node *n){
       case ident_node:
         free(n->value.s);
         break;
+      default:
+        break;
     }
     free(n);
   }
@@ -294,7 +311,7 @@ void printNode(node* n, Trie *scope){
 
 
 
-int lpl_expand_node(const node* in, const node** out, Trie *scope){
+lpl_error_code lpl_expand_node(const node* in, const node** out, Trie *scope){
   TrieValue  sym_val;
   *out = in;
   if(in->type==ident_node){
@@ -304,7 +321,7 @@ int lpl_expand_node(const node* in, const node** out, Trie *scope){
       *out=(node *)sym_val;
     }
   }
-  return 0;
+  return LPL_NO_ERROR;
 }
 
 
@@ -333,7 +350,7 @@ node* eval_neg_node(const node* l, Trie *scope){
 
   initNode(&out, NULL, NULL, scalar_null_node);
 
-  if(result=lpl_expand_node(l,&l,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
@@ -367,11 +384,11 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
 
   initNode(&out, NULL, NULL, scalar_null_node);
 
-  if(result=lpl_expand_node(l,&l,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
-  if(result=lpl_expand_node(r,&r,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(r,&r,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
@@ -418,7 +435,7 @@ node* eval_sumover_node(const node* l, Trie *scope){
 
   initNode(&out, NULL, NULL, scalar_null_node);
 
-  if(result=lpl_expand_node(l,&l,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
@@ -445,7 +462,7 @@ node* eval_bang_node(const node* l, Trie *scope){
 
   initNode(&out, NULL, NULL, scalar_null_node);
 
-  if(result=lpl_expand_node(l,&l,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
@@ -470,19 +487,19 @@ node* eval_bang_node(const node* l, Trie *scope){
   return(out);
 }
 
-static int eval_eq(double l, double r){
+int eval_eq(double l, double r){
   return l==r;
 }
-static int eval_lt(double l, double r){
+int eval_lt(double l, double r){
   return l<r;
 }
-static int eval_gt(double l, double r){
+int eval_gt(double l, double r){
   return l>r;
 }
-static int eval_lteq(double l, double r){
+int eval_lteq(double l, double r){
   return l<=r;
 }
-static int eval_gteq(double l, double r){
+int eval_gteq(double l, double r){
   return l>=r;
 }
 
@@ -505,11 +522,11 @@ eval_cmp_node(
 
   initNode(&out, NULL, NULL, scalar_null_node);
 
-  if(result=lpl_expand_node(l,&l,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
-  if(result=lpl_expand_node(r,&r,scope)){
+  if(LPL_NO_ERROR != (result=lpl_expand_node(r,&r,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }

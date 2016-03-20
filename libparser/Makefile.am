@@ -10,5 +10,5 @@ arithmetic.c: arithmetic.tpl compile_arithmetic.awk
 
 noinst_LIBRARIES = liblpl.a
 liblpl_a_SOURCES =  lpl_scanner.l lpl_parser.y  parser.c node.c arithmetic.c
-liblpl_a_CPPFLAGS = -I./libcol
+liblpl_a_CPPFLAGS = -I./libcol -I $(top_srcdir)/c-algorithms/src
 liblpl_a_LIBADD = ./libcol/libcol.a

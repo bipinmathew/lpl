@@ -3,7 +3,7 @@
 
 #include "libcol/col.h"
 #include "lpl_errors.h"
-#include <libcalg-1.0/libcalg/trie.h>
+#include "trie.h"
 
 
 typedef enum {
@@ -101,10 +101,11 @@ void printNode(node* n, Trie *scope);
    Perhaps put it in a node-private.h file only visible from the libparser
    library? */
 
-int lpl_expand_node(const node* in, const node** out, Trie *scope);
+lpl_error_code lpl_expand_node(const node* in, const node** out, Trie *scope);
 
 /* TODO Figure out a way to get rid of these functions.. */
 int lpl_make_error_node(node *n, lpl_error_code errorcode, const char *err);
+int lpl_make_error(lpl_error **error,lpl_error_code errorcode, const char *err);
 int lpl_is_error_node(const node* n);
 node* _copy_error(const node *in);
 /* End crappy code.. */
