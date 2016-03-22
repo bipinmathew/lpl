@@ -6,10 +6,12 @@
 
 lpl_error_code eval_vivi_add(col_int * output, const col_int * l, const col_int * r, lpl_error *eval_error){
   unsigned int llength , rlength,allocate,output_len;
-  const col_int *shrt, *lng;
-  col_error e;
-  int svalue, rvalue;
+  const col_int *shrt;
+  const col_int *lng;
+  int svalue;
+  int rvalue;
   unsigned int i;
+  col_error e;
 
   col_int_length(l,&llength);
   col_int_length(r,&rlength);
