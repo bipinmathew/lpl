@@ -1,9 +1,15 @@
-lpl_error_code eval_vivi_[@op](col_[@outtype] * output, const col_[@ltype] * l, const col_[@rtype] * r, lpl_error *eval_error){
+#include <stdlib.h>
+#include <stdio.h>
+#include "../node.h"
+#include "../lpl_errors.h"
+#include "../debug.h"
+
+
+lpl_error_code eval_[@lshort][@rshort]_[@op](col_[@outtype] * output, const col_[@ltype] * l, const col_[@rtype] * r, lpl_error *eval_error){
   unsigned int llength , rlength,allocate,output_len;
   const void *shrt;
   const void *lng;
 
-  void *svalue;
   [@ltype] lsvalue;
   [@rtype] rsvalue;
 
@@ -19,28 +25,37 @@ lpl_error_code eval_vivi_[@op](col_[@outtype] * output, const col_[@ltype] * l, 
     if(rlength==llength){
       col_[@ltype]_get(l,0,&lvalue); 
       col_[@rtype]_get(r,0,&rvalue); 
-      return col_[@outputtype]_set(output,0,lvalue [@opsym] rvalue);
+      return col_[@outtype]_set(output,0,lvalue [@opsym] rvalue);
     }
 
     allocate = output_len = (rlength>llength) ? rlength : llength;
 
-    lng  = (rlength>llength) ? ((col_[@rtype]*)r) : ((col_[@ltype]*)l);
-    shrt = (rlength>llength) ? ((col_[@ltype]*)l) : ((col_[@rtype]*)r);
+    if (rlength>llength) { 
+      lng = r; 
+    } else {
+      lng = l;
+    }
 
-    if(LIBCOL_NO_ERROR != (e = col_[@outputtype]__realloc(output,&allocate))){
+    if (rlength>llength) {  
+      shrt = l;
+    } else {
+      shrt = r;
+    }
+
+    if(LIBCOL_NO_ERROR != (e = col_[@outtype]__realloc(output,&allocate))){
       return e;
     }
 
     if(rlength>llength){
-      col_[ltype]_get((col_[@ltype]*)shrt,0,&lsvalue);
+      col_[@ltype]_get((col_[@ltype]*)shrt,0,&lsvalue);
       for(i=0;i<output_len;i++){
-        output->d[i]=lsvalue [@opsym] lng->d[i];
+        output->d[i]=lsvalue [@opsym] ((col_[@rtype]*)lng)->d[i];
       }
     }
     else{
-      col_[rtype]_get((col_[@rtype]*)shrt,0,&rsvalue);
+      col_[@rtype]_get((col_[@rtype]*)shrt,0,&rsvalue);
       for(i=0;i<output_len;i++){
-        output->d[i]=rsvalue [@opsym] lng->d[i];
+        output->d[i]=((col_[@ltype]*)lng)->d[i] [@opsym] rsvalue;
       }
     }
 
@@ -52,7 +67,7 @@ lpl_error_code eval_vivi_[@op](col_[@outtype] * output, const col_[@ltype] * l, 
 
     allocate = rlength;
 
-    if(LIBCOL_NO_ERROR != (e = col_[@outputtype]__realloc(output,&allocate))){
+    if(LIBCOL_NO_ERROR != (e = col_[@outtype]__realloc(output,&allocate))){
       lpl_make_error(&eval_error,LPL_CUSTOM_ERROR,col_error_strings[e]);
       return LPL_CUSTOM_ERROR;
     }
@@ -60,7 +75,7 @@ lpl_error_code eval_vivi_[@op](col_[@outtype] * output, const col_[@ltype] * l, 
     for(i=0;i<rlength;i++){
       output->d[i]=l->d[i] [@opsym] r->d[i];
     }
-    col_[@outputtype]__setlength(output,rlength);
+    col_[@outtype]__setlength(output,rlength);
 
     return LPL_NO_ERROR;
   }

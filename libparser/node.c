@@ -275,6 +275,9 @@ void printNode(node* n, Trie *scope){
     case vector_int_node:
         col_int_disp(n->value.vector_int);
     break;
+    case vector_double_node:
+        col_double_disp(n->value.vector_double);
+    break;
     case vector_uint_node:
         col_uint_disp(n->value.vector_uint);
     break;

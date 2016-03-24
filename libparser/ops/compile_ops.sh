@@ -34,7 +34,7 @@ for (( I=0 ; $I < ${#OP[@]} ; I+=1)); do
         rshort="vd"
       fi
 
-      sed "s/\[@op\]/$op/g ; s/\[@opsym\]/$sym/g; s/\[@ltype\]/$ltype/g ; s/\[@rtype\]/$rtype/g ; s/\[@outtype\]/$outputtype/g ; s/\[@lshort\]/$lshort/g ; s/\[@rshort\]/$rshort/g" ops.tpl
+      sed "s/\[@op\]/$op/g ; s/\[@opsym\]/$sym/g; s/\[@ltype\]/$ltype/g ; s/\[@rtype\]/$rtype/g ; s/\[@outtype\]/$outputtype/g ; s/\[@lshort\]/$lshort/g ; s/\[@rshort\]/$rshort/g" ops.tpl >> ops.inl
     done
   done
 done

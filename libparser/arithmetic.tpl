@@ -4,6 +4,8 @@
 
 @includes
 
+#include "ops/ops.inl"
+
 @start_block
 node* eval_@op_node(const node* l, const node* r, Trie *scope){
   node *out;
