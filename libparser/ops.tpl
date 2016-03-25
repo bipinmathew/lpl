@@ -1,10 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include "../node.h"
-#include "../lpl_errors.h"
-#include "../debug.h"
-
-
 lpl_error_code eval_[@lshort][@rshort]_[@op](col_[@outtype] * output, const col_[@ltype] * l, const col_[@rtype] * r, lpl_error *eval_error){
   unsigned int llength , rlength,allocate,output_len;
   const void *shrt;
