@@ -9,7 +9,7 @@ arithmetic.c: arithmetic.inl dyadic.tpl compile_arithmetic.awk
 	$(AWK) -f compile_arithmetic.awk < dyadic.tpl > arithmetic.c  
 
 arithmetic.inl: compile_arithmetic.awk arithmetic.tpl
-	./compile_ops.sh arithmetic.tpl > arithmetic.inl 
+	./compile_arithmetic.sh arithmetic.tpl > arithmetic.inl 
 
 noinst_LIBRARIES = liblpl.a
 liblpl_a_SOURCES =  lpl_scanner.l lpl_parser.y  parser.c node.c arithmetic.c
