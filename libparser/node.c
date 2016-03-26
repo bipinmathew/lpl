@@ -572,6 +572,8 @@ eval_cmp_node(
   return(out);
 }
 
+/* 
+
 node* eval_eq_node(const node* l, const node* r, Trie *scope){
   return eval_cmp_node(l,r,scope,eval_eq,col_int_eq_scalar,col_int_eq_scalar);
 }
@@ -592,7 +594,7 @@ node* eval_gteq_node(const node* l, const node* r, Trie *scope){
   return eval_cmp_node(l,r,scope,eval_gteq,col_int_lteq_scalar,col_int_gteq_scalar);
 }
 
-
+*/
 
 node* evalNode(node* n,Trie *scope){
   node *out;

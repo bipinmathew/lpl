@@ -34,7 +34,7 @@ function gen_headers(op){
   output = ""
   for(ltype in col_types){
     for(rtype in col_types){
-      output_type = "vector_uint"
+      output_type = "col_uint"
       output=output sprintf("static lpl_error_code eval_%s%s_%s(%s *output, const %s *  l, const %s *  r, lpl_error *eval_error);\n",short_types[ltype],short_types[rtype],op,output_type,col_types[ltype],col_types[rtype])
     }
   }

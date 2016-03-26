@@ -84,9 +84,6 @@ node* eval_div_node(const node* l, const node* r, Trie *scope);
 node* eval_draw_node(const node* l, const node* r, Trie *scope);
 node* eval_sumover_node(const node* l, Trie *scope);
 node* eval_bang_node(const node* l, Trie *scope);
-node* eval_eq_node(const node* l, const node* r, Trie *scope);
-
-
 
 node* eval_eq_node(const node* l, const node* r, Trie *scope);
 node* eval_lt_node(const node* l, const node* r, Trie *scope);
