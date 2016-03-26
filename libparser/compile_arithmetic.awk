@@ -54,7 +54,7 @@ BEGIN{
 }
 
 /\[@optype_include\]/ {
-  $0 = "#include\"ops.inl\""
+  $0 = "#include\"arithmetic.inl\""
 }
 
 /\[@includes\]/ {

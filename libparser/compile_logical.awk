@@ -6,7 +6,7 @@ function gen_switch_statement(op){
         output=output "    switch(r->type){\n"
         for (rtype in types){
           output=output "      case " types[rtype] "_node:\n"
-            col_type    = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])||("div"==op)) ? "col_double" : "col_int"
+            col_type    = "col_uint"
             output_type = "vector_uint"
             output=sprintf("%s        initNode(\\&out,NULL,NULL,%s_node);\n",output,output_type)
             output=sprintf("%s        if(LIBCOL_NO_ERROR!=(e=%s_init(\\&out->value.%s))){lpl_make_error_node(out,e,col_error_strings[e]); return (out);}\n",output,col_type,output_type)
@@ -53,7 +53,12 @@ BEGIN{
   output = ""
 }
 
-/@includes/ {
+
+/\[@optype_include\]/ {
+  $0 = "#include \"logical.inl\""
+}
+
+/\[@includes\]/ {
   inline_includes = ""
   for(op in ops){
     header = header gen_headers(ops[op])
@@ -65,12 +70,12 @@ BEGIN{
   $0=""
 }
 
-/@start_block/ {
+/\[@start_block\]/ {
 
   getline
  
   block = "" 
-  while($0 != "@end_block"){
+  while($0 != "[@end_block]"){
     block = block $0 "\n"
     $0 = ""
     getline
@@ -81,8 +86,8 @@ BEGIN{
   output = ""
 
   for( i in ops) {
-    tmp = gensub(/@op/,ops[i],"g",block)
-    output = output gensub(/@switch_statement/,gen_switch_statement(ops[i]),"g",tmp)
+    tmp = gensub(/\[@op\]/,ops[i],"g",block)
+    output = output gensub(/\[@switch_statement\]/,gen_switch_statement(ops[i]),"g",tmp)
   }
   print output
 
