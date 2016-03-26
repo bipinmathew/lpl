@@ -263,12 +263,6 @@ void printNode(node* n, Trie *scope){
         printNode((node *)sym_val,scope);
       }
     break;
-    case scalar_int_node:
-        printf("%d",n->value.scalar_int);
-    break;
-    case scalar_double_node:
-        printf("%f",n->value.scalar_double);
-    break;
     case scalar_boolean_node:
         printf("%d",n->value.b);
     break;
@@ -667,16 +661,6 @@ node* evalNode(node* n,Trie *scope){
       dbg("%s","Evaluating eq.\n");
       out = eval_gteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
       releaseNode(l); releaseNode(r);
-    break;
-    case scalar_int_node:
-       dbg("%s","Evaluating int.\n");
-       out = n;
-       retainNode(&out);
-    break;
-    case scalar_double_node:
-       dbg("%s","Evaluating double.\n");
-       out = n;
-       retainNode(&out);
     break;
     case vector_int_node:
        dbg("%s","Evaluating vector_int_node.\n");

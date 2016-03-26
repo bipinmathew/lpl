@@ -2,12 +2,11 @@
 #include "node.h"
 #include "lpl_errors.h"
 
-@includes
+[@includes]
+[@optype_include]
 
-#include "ops.inl"
-
-@start_block
-node* eval_@op_node(const node* l, const node* r, Trie *scope){
+[@start_block]
+node* eval_[@op]_node(const node* l, const node* r, Trie *scope){
   node *out;
   int result;
   col_error e;
@@ -26,8 +25,8 @@ node* eval_@op_node(const node* l, const node* r, Trie *scope){
     return out;
   }
 
-  @switch_statement
+  [@switch_statement]
 
   return(out);
 }
-@end_block
+[@end_block]

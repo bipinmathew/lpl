@@ -5,8 +5,8 @@ BUILT_SOURCES = lpl_parser.c lpl_scanner.c arithmetic.c
 AM_YFLAGS = -s -p
 AM_LFLAGS =  --reentrant --header-file=lpl_scanner.h --outfile=lpl_scanner.c
 
-arithmetic.c: ops.inl arithmetic.tpl compile_arithmetic.awk
-	$(AWK) -f compile_arithmetic.awk < arithmetic.tpl > arithmetic.c  
+arithmetic.c: ops.inl dyadic.tpl compile_arithmetic.awk
+	$(AWK) -f compile_arithmetic.awk < dyadic.tpl > arithmetic.c  
 
 ops.inl: compile_arithmetic.awk ops.tpl
 	./compile_ops.sh ops.tpl > ops.inl 
