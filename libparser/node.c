@@ -324,28 +324,67 @@ node* eval_assign_node(const node* l, node* r, Trie *scope){
 
 node* eval_neg_node(const node* l, Trie *scope){
   node *out;
+  unsigned int llength,allocate,i;
   int result;
+  int int_value;
+  double double_value;
+  col_error e;
   if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
 
-  initNode(&out, NULL, NULL, scalar_null_node);
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
 
-  if(l->type==scalar_int_node){
-      dbg("%s\n","Negate on int.");
-      out->type=l->type;
-      out->value.scalar_int = -l->value.scalar_int;
+  if(l->type==vector_int_node){
+    dbg("%s\n","Negate on int.");
+
+    initNode(&out, NULL, NULL, vector_int_node);
+    if(LIBCOL_NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
+     lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
+    }
+    else{
+      col_int_length(l->value.vector_int,&llength);
+      allocate = llength;
+      if(LIBCOL_NO_ERROR != (e = col_int__realloc(out->value.vector_int,&allocate))){
+        lpl_make_error_node(out,e,NULL);
+      }
+
+      else{
+        for(i=0;i<llength;i++){
+          out->value.vector_int->d[i]=-l->value.vector_int->d[i];
+        }
+      }
+      col_int__setlength(out->value.vector_int,llength);
+    }
   }
-  else if(l->type==scalar_double_node){
-      dbg("%s\n","Negate on double.");
-      out->type=l->type;
-      out->value.scalar_double = -l->value.scalar_double;
+  else if(l->type==vector_double_node){
+
+
+    dbg("%s\n","Negate on double.");
+
+    initNode(&out, NULL, NULL, vector_double_node);
+    if(LIBCOL_NO_ERROR!=(e=col_double_init(&out->value.vector_double))){
+     lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
+    }
+    else{
+      col_double_length(l->value.vector_double,&llength);
+      allocate = llength;
+      if(LIBCOL_NO_ERROR != (e = col_double__realloc(out->value.vector_double,&allocate))){
+        lpl_make_error_node(out,e,NULL);
+      }
+
+      else{
+        for(i=0;i<llength;i++){
+          out->value.vector_double->d[i]=-l->value.vector_double->d[i];
+        }
+      }
+      col_double__setlength(out->value.vector_double,llength);
+    }
   }
   else{
-     lpl_make_error_node(out,LPL_INVALIDARGS_ERROR,NULL);
+   lpl_make_error_node(out,LPL_INVALIDARGS_ERROR,NULL);
   }
 
   return(out);
