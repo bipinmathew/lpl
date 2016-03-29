@@ -7,18 +7,6 @@
 #include <assert.h>
 #include "trie.h"
 
-
-
-
-static int eval_eq(double l, double r);
-static int eval_lt(double l, double r);
-static int eval_gt(double l, double r);
-static int eval_lteq(double l, double r);
-static int eval_gteq(double l, double r);
-
-
-
-
 int initNode(node **p, node *l, node *r, types node_type){
   if((*p = (node *) malloc(sizeof(node)))==NULL){
     return(1);
@@ -505,22 +493,6 @@ node* eval_bang_node(const node* l, Trie *scope){
   return(out);
 }
 
-int eval_eq(double l, double r){
-  return l==r;
-}
-int eval_lt(double l, double r){
-  return l<r;
-}
-int eval_gt(double l, double r){
-  return l>r;
-}
-int eval_lteq(double l, double r){
-  return l<=r;
-}
-int eval_gteq(double l, double r){
-  return l>=r;
-}
-
 
 static node* 
 eval_cmp_node(
@@ -611,29 +583,6 @@ eval_cmp_node(
   return(out);
 }
 
-/* 
-
-node* eval_eq_node(const node* l, const node* r, Trie *scope){
-  return eval_cmp_node(l,r,scope,eval_eq,col_int_eq_scalar,col_int_eq_scalar);
-}
-
-node* eval_lt_node(const node* l, const node* r, Trie *scope){
-  return eval_cmp_node(l,r,scope,eval_lt,col_int_gt_scalar,col_int_lt_scalar);
-}
-
-node* eval_gt_node(const node* l, const node* r, Trie *scope){
-  return eval_cmp_node(l,r,scope,eval_gt,col_int_lt_scalar,col_int_gt_scalar);
-}
-
-node* eval_lteq_node(const node* l, const node* r, Trie *scope){
-  return eval_cmp_node(l,r,scope,eval_lteq,col_int_gteq_scalar,col_int_lteq_scalar);
-}
-
-node* eval_gteq_node(const node* l, const node* r, Trie *scope){
-  return eval_cmp_node(l,r,scope,eval_gteq,col_int_lteq_scalar,col_int_gteq_scalar);
-}
-
-*/
 
 node* evalNode(node* n,Trie *scope){
   node *out;
