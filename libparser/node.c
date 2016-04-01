@@ -325,56 +325,55 @@ node* eval_neg_node(const node* l, Trie *scope){
     return out;
   }
 
-  if(l->type==vector_int_node){
-    dbg("%s\n","Negate on int.");
+  switch(l->type){
+    case vector_int_node:
+      dbg("%s\n","Negate on int.");
 
-    initNode(&out, NULL, NULL, vector_int_node);
-    if(LIBCOL_NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
-     lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
-    }
-    else{
-      col_int_length(l->value.vector_int,&llength);
-      allocate = llength;
-      if(LIBCOL_NO_ERROR != (e = col_int__realloc(out->value.vector_int,&allocate))){
-        lpl_make_error_node(out,e,NULL);
+      initNode(&out, NULL, NULL, vector_int_node);
+      if(LIBCOL_NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
+       lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
       }
-
       else{
-        for(i=0;i<llength;i++){
-          out->value.vector_int->d[i]=-l->value.vector_int->d[i];
+        col_int_length(l->value.vector_int,&llength);
+        allocate = llength;
+        if(LIBCOL_NO_ERROR != (e = col_int__realloc(out->value.vector_int,&allocate))){
+          lpl_make_error_node(out,e,NULL);
         }
+
+        else{
+          for(i=0;i<llength;i++){
+            out->value.vector_int->d[i]=-l->value.vector_int->d[i];
+          }
+        }
+        col_int__setlength(out->value.vector_int,llength);
       }
-      col_int__setlength(out->value.vector_int,llength);
-    }
-  }
-  else if(l->type==vector_double_node){
+    break;
+    case vector_double_node:
+      dbg("%s\n","Negate on double.");
 
-
-    dbg("%s\n","Negate on double.");
-
-    initNode(&out, NULL, NULL, vector_double_node);
-    if(LIBCOL_NO_ERROR!=(e=col_double_init(&out->value.vector_double))){
-     lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
-    }
-    else{
-      col_double_length(l->value.vector_double,&llength);
-      allocate = llength;
-      if(LIBCOL_NO_ERROR != (e = col_double__realloc(out->value.vector_double,&allocate))){
-        lpl_make_error_node(out,e,NULL);
+      initNode(&out, NULL, NULL, vector_double_node);
+      if(LIBCOL_NO_ERROR!=(e=col_double_init(&out->value.vector_double))){
+       lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
       }
-
       else{
-        for(i=0;i<llength;i++){
-          out->value.vector_double->d[i]=-l->value.vector_double->d[i];
+        col_double_length(l->value.vector_double,&llength);
+        allocate = llength;
+        if(LIBCOL_NO_ERROR != (e = col_double__realloc(out->value.vector_double,&allocate))){
+          lpl_make_error_node(out,e,NULL);
         }
-      }
-      col_double__setlength(out->value.vector_double,llength);
-    }
-  }
-  else{
-   lpl_make_error_node(out,LPL_INVALIDARGS_ERROR,NULL);
-  }
 
+        else{
+          for(i=0;i<llength;i++){
+            out->value.vector_double->d[i]=-l->value.vector_double->d[i];
+          }
+        }
+        col_double__setlength(out->value.vector_double,llength);
+      }
+    break;
+    default: 
+      lpl_make_error_node(out,LPL_INVALIDARGS_ERROR,NULL);
+    break;
+  }
   return(out);
 }
 
@@ -398,11 +397,7 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
    lpl_make_error_node(out,result,NULL);
     return out;
   }
-
-
-
   
-
   switch(l->type){
     case vector_int_node:
       switch(r->type){
@@ -436,10 +431,9 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
 node* eval_sumover_node(const node* l, Trie *scope){
   node *out;
   int result;
+  union {int i; double d;} value;
+  // int value;
   if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
-
-
-  initNode(&out, NULL, NULL, scalar_null_node);
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
@@ -449,8 +443,15 @@ node* eval_sumover_node(const node* l, Trie *scope){
   switch(l->type){
     case vector_int_node:
       dbg("%s\n","sumover on signed integer array.");
-      out->type=scalar_int_node;
-      col_int_sum(l->value.vector_int,&out->value.scalar_int);
+      initNode(&out, NULL, NULL, vector_int_node);
+      col_int_sum(l->value.vector_int,&value.i);
+      col_int_init_scalar(&out->value.vector_int,value.i);
+    break;
+    case vector_double_node:
+      dbg("%s\n","sumover on signed double array.");
+      initNode(&out, NULL, NULL, vector_double_node);
+      col_double_sum(l->value.vector_double,&value.d);
+      col_double_init_scalar(&out->value.vector_double,value.d);
     break;
     default:
      lpl_make_error_node(out,LPL_INVALIDARGS_ERROR,NULL);
