@@ -6,6 +6,7 @@
 #include <string.h>
 #include <assert.h>
 #include "trie.h"
+#include "queue.h"
 
 int initNode(node **p, node *l, node *r, types node_type){
   if((*p = (node *) malloc(sizeof(node)))==NULL){

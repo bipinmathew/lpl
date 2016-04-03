@@ -20,31 +20,39 @@
   #include "lpl_errors.h"
   #include "parser.h"
   #include "debug.h"
+  #include "queue.h"
 }
 
 %syntax_error
 {
   dbg("%s\n","Got Syntax Error.");
-  (*result)->type = scalar_error_node;
-  (*result)->value.e.error_code = LPL_SYNTAX_ERROR;
+  /* TODO Need to update error handling in the case of Queues of expressions. 
+  initNode(result,NULL,NULL,scalar_error_node);
+  lpl_make_error_node(*result,LPL_SYNTAX_ERROR,NULL);
+  */
 }
 
 
-%default_destructor {releaseNode($$);}
+/* %default_destructor {releaseNode($$);} */
 
 
 %type expr  {node*}
 
 %type start {node*}
+%type statement_list {Queue*}
 
 
-%extra_argument {node **result}
+%extra_argument {Queue *result}
 
 
-start ::= expr(B) .
+start ::= statement_list(B) .
     {
-      *result = B;
+      result = B;
     }
+
+
+statement_list(B) ::= expr(A). {queue_push_tail(result,A); B=result;}
+statement_list(C) ::= statement_list(A) NL expr(B). {result = A; queue_push_tail(result,B); C = result;}
 
 /* System functions */
 

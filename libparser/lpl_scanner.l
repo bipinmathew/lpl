@@ -40,6 +40,8 @@ _draw {return DRAW;}
 
 [_a-zA-Z][_a-zA-Z0-9]*  {return IDENT;}
 
+\n  {return NL;}
+
 
 "\\" {return EXIT;}
 
