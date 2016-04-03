@@ -9,7 +9,6 @@ void* ParseAlloc(void* (*allocProc)(size_t));
 void Parse(void* parser, int token, char* tokenInfo, Queue* result);
 void ParseFree(void* parser, void(*freeProc)(void*));
 void ParseTrace(FILE *stream, char *zPrefix);
-
-int parse(const char* commandLine, Queue** result );
+int parse(FILE *fp, Queue **result);
 
 #endif

@@ -8,13 +8,17 @@
 #include "debug.h"
 
 int main(int argc, char *argv[]) {
-    FILE *fp,*sp;
-    char commandLine[1024];
+#ifdef DEBUG
+#if DEBUG
+  FILE *fp;
+#endif
+#endif
     Queue *q;
     node *result, *eval;
     clock_t start, diff;
     double wtime;
     int msec;
+    FILE *sp;
 
 
     Trie *scope;
@@ -41,7 +45,7 @@ int main(int argc, char *argv[]) {
 #endif
     clock_gettime(CLOCK_REALTIME, &tmstart);
     start = clock();
-      parseFile(sp,&q);
+      parse(sp,&q);
       fclose(sp);
       while(!queue_is_empty(q)){
         dbg("%s","Processing queue..\n");
