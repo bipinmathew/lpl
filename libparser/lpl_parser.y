@@ -52,6 +52,7 @@ start ::= statement_list(B) .
 
 
 statement_list(B) ::= expr(A). {queue_push_tail(result,A); B=result;}
+statement_list(C) ::= statement_list(A) NL. {C=A;}
 statement_list(C) ::= statement_list(A) NL expr(B). {result = A; queue_push_tail(result,B); C = result;}
 
 /* System functions */

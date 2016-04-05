@@ -48,29 +48,29 @@ int main(int argc, char *argv[]) {
       parse(sp,&q);
       fclose(sp);
       while(!queue_is_empty(q)){
-        dbg("%s","Processing queue..\n");
-        result = queue_pop_head(q);
+        dbg("%s","Evaluating next expression...\n");
+        result = (node *)queue_pop_head(q);
         eval = evalNode(result,scope);
-        if(result->type==ident_node){
+        if(result->type!=assign_node){
           printNode(eval,scope);
+          printf("\n");
         }
-        else if(result->type!=assign_node){
-          printNode(eval,scope);
-        }
-        printf("\n");
 
-        releaseNode(result);
-        releaseNode(eval);
+        releaseNode(&result);
+        releaseNode(&eval);
       }
     diff = clock()-start;
 
   clock_gettime(CLOCK_REALTIME, &now);
+
 
   wtime = 1000*((double)((now.tv_sec+now.tv_nsec*1e-9) - (double)(tmstart.tv_sec+tmstart.tv_nsec*1e-9)));
 
 
   msec = diff*1000 / CLOCKS_PER_SEC;
 
+  queue_free(q);
+  trie_free(scope);
   printf("walltime: %f, cputime: %d ms\n",wtime,msec);
 #ifdef DEBUG
 #if DEBUG

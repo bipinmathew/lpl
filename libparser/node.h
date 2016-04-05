@@ -68,7 +68,7 @@ typedef struct _node {
 
 int initNode(node **p, node *l, node *r, types node_type);
 int retainNode(node **p);
-int releaseNode(node *n);
+int releaseNode(node **n);
 
 /* Include all actual computation types. */
 

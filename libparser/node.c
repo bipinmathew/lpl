@@ -186,31 +186,31 @@ int retainNode(node **p){
   return 0;
 }
 
-int releaseNode(node *n){
+int releaseNode(node **p){
 
-  if(n->l != NULL)
-    releaseNode(n->l);
-  if(n->r != NULL)
-    releaseNode(n->r);
+  if((*p)->l != NULL)
+    releaseNode(&(*p)->l);
+  if((*p)->r != NULL)
+    releaseNode(&(*p)->r);
 
-  n->ref--;
+  (*p)->ref--;
 
-  dbg("releaseNode called on node of type: %d now: %d \n",n->type,n->ref);
-  if(n->ref==0){
-    switch(n->type){
+  dbg("releaseNode called on node of type: %d now: %d \n",(*p)->type,(*p)->ref);
+  if((*p)->ref==0){
+    switch((*p)->type){
       case vector_int_node:
-        col_int_free(n->value.vector_int);
+        col_int_free((*p)->value.vector_int);
         break;
       case vector_uint_node:
-        col_uint_free(n->value.vector_uint);
+        col_uint_free((*p)->value.vector_uint);
         break;
       case ident_node:
-        free(n->value.s);
+        free((*p)->value.s);
         break;
       default:
         break;
     }
-    free(n);
+    free(*p);
   }
   return(0);
 }
@@ -296,9 +296,11 @@ lpl_error_code lpl_expand_node(const node* in, const node** out, Trie *scope){
 
 node* eval_assign_node(const node* l, node* r, Trie *scope){
   TrieValue  sym_val;
+  node *p;
 
   if(TRIE_NULL!=(sym_val=trie_lookup(scope,l->value.s))){
-    releaseNode((node*)sym_val);
+    p=(node*)sym_val;
+    releaseNode(&p);
   }
 
   trie_insert(scope,l->value.s,(TrieValue *)r);
@@ -601,58 +603,58 @@ node* evalNode(node* n,Trie *scope){
     case assign_node:
       dbg("%s","Evaluating assign.\n");
       out = eval_assign_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope),scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case neg_node:
       dbg("%s","Evaluating neg.\n");
       out = eval_neg_node(l=evalNode(n->l,scope), scope);
-      releaseNode(l); 
+      releaseNode(&l); 
     break;
     case add_node:
       dbg("%s","Evaluating add.\n");
       out = eval_add_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope),scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case sub_node:
       dbg("%s","Evaluating minus.\n");
       out = eval_sub_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case mult_node:
       dbg("%s","Evaluating mult.\n");
       out = eval_mult_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case div_node:
       dbg("%s","Evaluating div.\n");
       out = eval_div_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
 
     case eq_node:
       dbg("%s","Evaluating eq.\n");
       out = eval_eq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case lt_node:
       dbg("%s","Evaluating eq.\n");
       out = eval_lt_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case gt_node:
       dbg("%s","Evaluating eq.\n");
       out = eval_gt_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case lteq_node:
       dbg("%s","Evaluating eq.\n");
       out = eval_lteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case gteq_node:
       dbg("%s","Evaluating eq.\n");
       out = eval_gteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case vector_int_node:
        dbg("%s","Evaluating vector_int_node.\n");
@@ -667,17 +669,17 @@ node* evalNode(node* n,Trie *scope){
     case draw_node:
       dbg("%s","Evaluating draw.\n");
       out = eval_draw_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
-      releaseNode(l); releaseNode(r);
+      releaseNode(&l); releaseNode(&r);
     break;
     case sumover_node:
       dbg("%s","Evaluating sum over.\n");
       out = eval_sumover_node(l=evalNode(n->l,scope), scope);
-      releaseNode(l);
+      releaseNode(&l);
     break;
     case bang_node:
       dbg("%s","Evaluating bang.\n");
       out = eval_bang_node(l=evalNode(n->l,scope), scope);
-      releaseNode(l);
+      releaseNode(&l);
     break;
     case scalar_error_node:
        dbg("%s","Evaluating error.\n");
