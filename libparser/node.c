@@ -8,13 +8,14 @@
 #include "trie.h"
 #include "queue.h"
 
-int initNode(node **p, node *l, node *r, types node_type){
+int initDyadicNode(node **p, node *l, node *r, types node_type){
   if((*p = (node *) malloc(sizeof(node)))==NULL){
     return(1);
   }
   (*p)->ref = 0;
-  (*p)->l = l;
-  (*p)->r = r;
+  (*p)->num_children = 2;
+  (*p)->child[0] = l;
+  (*p)->child[1] = r;
   (*p)->type = node_type;
   retainNode(p);
   return(0);
@@ -23,7 +24,7 @@ int initNode(node **p, node *l, node *r, types node_type){
 
 node* intNode(const char *str){
   node *n;
-  initNode(&n, NULL, NULL, vector_int_node);
+  initDyadicNode(&n, NULL, NULL, vector_int_node);
 
   col_int_init_scalar(&n->value.vector_int,atoi(str));
 
@@ -33,7 +34,7 @@ node* intNode(const char *str){
 
 node* identNode(const char *str){
   node *n;
-  initNode(&n, NULL, NULL, ident_node);
+  initDyadicNode(&n, NULL, NULL, ident_node);
 
   n->value.s=strndup(str,strlen(str));
 
@@ -45,7 +46,7 @@ node* identNode(const char *str){
 
 node* doubleNode(const char *str){
   node *n;
-  initNode(&n, NULL, NULL, vector_double_node);
+  initDyadicNode(&n, NULL, NULL, vector_double_node);
 
   col_double_init_scalar(&n->value.vector_double,atof(str));
 
@@ -56,7 +57,7 @@ node* doubleNode(const char *str){
 
 node* assignNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, assign_node);
+  initDyadicNode(&n, l, r, assign_node);
 
   return n;
 }
@@ -64,28 +65,28 @@ node* assignNode(node* const l, node* const r){
 
 node* addNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, add_node);
+  initDyadicNode(&n, l, r, add_node);
   return n;
 }
 
 
 node* subNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, sub_node);
+  initDyadicNode(&n, l, r, sub_node);
 
   return n;
 }
 
 node* divNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, div_node);
+  initDyadicNode(&n, l, r, div_node);
 
   return n;
 }
 
 node* multNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, mult_node);
+  initDyadicNode(&n, l, r, mult_node);
 
   return n;
 }
@@ -94,21 +95,21 @@ node* multNode(node* const l, node* const r){
 
 node* eqNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, eq_node);
+  initDyadicNode(&n, l, r, eq_node);
 
   return n;
 }
 
 node* ltNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, lt_node);
+  initDyadicNode(&n, l, r, lt_node);
 
   return n;
 }
 
 node* gtNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, gt_node);
+  initDyadicNode(&n, l, r, gt_node);
 
   return n;
 }
@@ -116,14 +117,14 @@ node* gtNode(node* const l, node* const r){
 
 node* lteqNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, lteq_node);
+  initDyadicNode(&n, l, r, lteq_node);
 
   return n;
 }
 
 node* gteqNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, gteq_node);
+  initDyadicNode(&n, l, r, gteq_node);
 
   return n;
 }
@@ -132,7 +133,7 @@ node* gteqNode(node* const l, node* const r){
 
 node* negNode(node* const l){
   node *n;
-  initNode(&n, l, NULL, neg_node);
+  initDyadicNode(&n, l, NULL, neg_node);
 
   return n;
 }
@@ -140,7 +141,7 @@ node* negNode(node* const l){
 
 node* sumOverNode(node* const l){
   node *n;
-  initNode(&n, l, NULL, sumover_node);
+  initDyadicNode(&n, l, NULL, sumover_node);
 
   return n;
 }
@@ -149,14 +150,14 @@ node* sumOverNode(node* const l){
 
 node* bangNode(node* const l){
   node *n;
-  initNode(&n, l, NULL, bang_node);
+  initDyadicNode(&n, l, NULL, bang_node);
 
   return n;
 }
 
 node* drawNode(node* const l, node* const r){
   node *n;
-  initNode(&n, l, r, draw_node);
+  initDyadicNode(&n, l, r, draw_node);
 
   return n;
 }
@@ -188,10 +189,13 @@ int retainNode(node **p){
 
 int releaseNode(node **p){
 
-  if((*p)->l != NULL)
-    releaseNode(&(*p)->l);
-  if((*p)->r != NULL)
-    releaseNode(&(*p)->r);
+  unsigned int i;
+
+  for(i=0;i<(*p)->num_children;i++){
+    if((*p)->child[i] != NULL)
+      releaseNode(&(*p)->child[i]);
+  }
+
 
   (*p)->ref--;
 
@@ -222,7 +226,7 @@ int lpl_is_error_node(const node* n){
 
 node* _copy_error(const node *in){
   node *out;
-  initNode(&out, NULL, NULL, scalar_error_node);
+  initDyadicNode(&out, NULL, NULL, scalar_error_node);
 
   out->value.e.error_code = in->value.e.error_code;
   out->value.e.error_string = in->value.e.error_string;
@@ -317,8 +321,6 @@ node* eval_neg_node(const node* l, Trie *scope){
   node *out;
   unsigned int llength,allocate,i;
   int result;
-  int int_value;
-  double double_value;
   col_error e;
   if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
 
@@ -332,7 +334,7 @@ node* eval_neg_node(const node* l, Trie *scope){
     case vector_int_node:
       dbg("%s\n","Negate on int.");
 
-      initNode(&out, NULL, NULL, vector_int_node);
+      initDyadicNode(&out, NULL, NULL, vector_int_node);
       if(LIBCOL_NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
        lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
       }
@@ -354,7 +356,7 @@ node* eval_neg_node(const node* l, Trie *scope){
     case vector_double_node:
       dbg("%s\n","Negate on double.");
 
-      initNode(&out, NULL, NULL, vector_double_node);
+      initDyadicNode(&out, NULL, NULL, vector_double_node);
       if(LIBCOL_NO_ERROR!=(e=col_double_init(&out->value.vector_double))){
        lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
       }
@@ -390,7 +392,7 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
   if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
   if( lpl_is_error_node(r)) {out = _copy_error(r); return out;}
 
-  initNode(&out, NULL, NULL, scalar_null_node);
+  initDyadicNode(&out, NULL, NULL, scalar_null_node);
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
@@ -446,13 +448,13 @@ node* eval_sumover_node(const node* l, Trie *scope){
   switch(l->type){
     case vector_int_node:
       dbg("%s\n","sumover on signed integer array.");
-      initNode(&out, NULL, NULL, vector_int_node);
+      initDyadicNode(&out, NULL, NULL, vector_int_node);
       col_int_sum(l->value.vector_int,&value.i);
       col_int_init_scalar(&out->value.vector_int,value.i);
     break;
     case vector_double_node:
       dbg("%s\n","sumover on signed double array.");
-      initNode(&out, NULL, NULL, vector_double_node);
+      initDyadicNode(&out, NULL, NULL, vector_double_node);
       col_double_sum(l->value.vector_double,&value.d);
       col_double_init_scalar(&out->value.vector_double,value.d);
     break;
@@ -470,7 +472,7 @@ node* eval_bang_node(const node* l, Trie *scope){
   col_error e;
   if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
 
-  initNode(&out, NULL, NULL, scalar_null_node);
+  initDyadicNode(&out, NULL, NULL, scalar_null_node);
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
@@ -514,7 +516,7 @@ eval_cmp_node(
   if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
   if( lpl_is_error_node(r)) {out = _copy_error(r); return out;}
 
-  initNode(&out, NULL, NULL, scalar_null_node);
+  initDyadicNode(&out, NULL, NULL, scalar_null_node);
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
@@ -602,58 +604,58 @@ node* evalNode(node* n,Trie *scope){
     break;
     case assign_node:
       dbg("%s","Evaluating assign.\n");
-      out = eval_assign_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope),scope);
+      out = eval_assign_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope),scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case neg_node:
       dbg("%s","Evaluating neg.\n");
-      out = eval_neg_node(l=evalNode(n->l,scope), scope);
+      out = eval_neg_node(l=evalNode(n->child[0],scope), scope);
       releaseNode(&l); 
     break;
     case add_node:
       dbg("%s","Evaluating add.\n");
-      out = eval_add_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope),scope);
+      out = eval_add_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope),scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case sub_node:
       dbg("%s","Evaluating minus.\n");
-      out = eval_sub_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_sub_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case mult_node:
       dbg("%s","Evaluating mult.\n");
-      out = eval_mult_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_mult_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case div_node:
       dbg("%s","Evaluating div.\n");
-      out = eval_div_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_div_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
 
     case eq_node:
       dbg("%s","Evaluating eq.\n");
-      out = eval_eq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_eq_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case lt_node:
       dbg("%s","Evaluating eq.\n");
-      out = eval_lt_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_lt_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case gt_node:
       dbg("%s","Evaluating eq.\n");
-      out = eval_gt_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_gt_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case lteq_node:
       dbg("%s","Evaluating eq.\n");
-      out = eval_lteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_lteq_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case gteq_node:
       dbg("%s","Evaluating eq.\n");
-      out = eval_gteq_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_gteq_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case vector_int_node:
@@ -668,17 +670,17 @@ node* evalNode(node* n,Trie *scope){
     break;
     case draw_node:
       dbg("%s","Evaluating draw.\n");
-      out = eval_draw_node(l=evalNode(n->l,scope),r=evalNode(n->r,scope), scope);
+      out = eval_draw_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope), scope);
       releaseNode(&l); releaseNode(&r);
     break;
     case sumover_node:
       dbg("%s","Evaluating sum over.\n");
-      out = eval_sumover_node(l=evalNode(n->l,scope), scope);
+      out = eval_sumover_node(l=evalNode(n->child[0],scope), scope);
       releaseNode(&l);
     break;
     case bang_node:
       dbg("%s","Evaluating bang.\n");
-      out = eval_bang_node(l=evalNode(n->l,scope), scope);
+      out = eval_bang_node(l=evalNode(n->child[0],scope), scope);
       releaseNode(&l);
     break;
     case scalar_error_node:

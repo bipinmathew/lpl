@@ -5,6 +5,8 @@
 #include "lpl_errors.h"
 #include "trie.h"
 
+#define LPL_MAX_NUM_ARGS 20
+
 
 typedef enum {
     /* Scalar types */
@@ -61,12 +63,12 @@ typedef union {
 typedef struct _node {
   types type;
   uvalue value;
-  struct _node* l;
-  struct _node* r;
+  unsigned int num_children;
+  struct _node* child[LPL_MAX_NUM_ARGS];
   int ref;
 } node;
 
-int initNode(node **p, node *l, node *r, types node_type);
+int initDyadicNode(node **p, node *l, node *r, types node_type);
 int retainNode(node **p);
 int releaseNode(node **n);
 
