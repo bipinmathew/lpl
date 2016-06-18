@@ -162,6 +162,21 @@ node* drawNode(node* const l, node* const r){
   return n;
 }
 
+
+
+node* functionDefinitionNode(Queue* const l){
+  node *n;
+  n = (node *)malloc(sizeof(node));
+
+  n->ref = 0;
+  n->num_children = 1;
+  n->type = function_definition_node;
+  n->value.statement_list = l;
+  retainNode(&n);
+  return n;
+}
+
+
 int lpl_make_error_node(node *n, lpl_error_code errorcode, const char *err) {
   dbg("Inside lpl_make_error. Error code: %d",errorcode);
   assert(errorcode >= 0);
@@ -224,7 +239,7 @@ int lpl_is_error_node(const node* n){
 }
 
 
-node* _copy_error(const node *in){
+node* lpl_copy_error(const node *in){
   node *out;
   initDyadicNode(&out, NULL, NULL, scalar_error_node);
 
@@ -322,7 +337,7 @@ node* eval_neg_node(const node* l, Trie *scope){
   unsigned int llength,allocate,i;
   int result;
   col_error e;
-  if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
+  if( lpl_is_error_node(l)) {out = lpl_copy_error(l); return out;}
 
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
@@ -389,8 +404,8 @@ node* eval_draw_node(const node* l, const node* r, Trie *scope){
   col_error e;
   int lvalue, rvalue;
 
-  if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
-  if( lpl_is_error_node(r)) {out = _copy_error(r); return out;}
+  if( lpl_is_error_node(l)) {out = lpl_copy_error(l); return out;}
+  if( lpl_is_error_node(r)) {out = lpl_copy_error(r); return out;}
 
   initDyadicNode(&out, NULL, NULL, scalar_null_node);
 
@@ -438,7 +453,7 @@ node* eval_sumover_node(const node* l, Trie *scope){
   int result;
   union {int i; double d;} value;
   // int value;
-  if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
+  if( lpl_is_error_node(l)) {out = lpl_copy_error(l); return out;}
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
    lpl_make_error_node(out,result,NULL);
@@ -470,7 +485,7 @@ node* eval_bang_node(const node* l, Trie *scope){
   node *out;
   int result;
   col_error e;
-  if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
+  if( lpl_is_error_node(l)) {out = lpl_copy_error(l); return out;}
 
   initDyadicNode(&out, NULL, NULL, scalar_null_node);
 
@@ -513,8 +528,8 @@ eval_cmp_node(
   int result;
   col_error e;
 
-  if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
-  if( lpl_is_error_node(r)) {out = _copy_error(r); return out;}
+  if( lpl_is_error_node(l)) {out = lpl_copy_error(l); return out;}
+  if( lpl_is_error_node(r)) {out = lpl_copy_error(r); return out;}
 
   initDyadicNode(&out, NULL, NULL, scalar_null_node);
 
@@ -606,6 +621,10 @@ node* evalNode(node* n,Trie *scope){
       dbg("%s","Evaluating assign.\n");
       out = eval_assign_node(l=evalNode(n->child[0],scope),r=evalNode(n->child[1],scope),scope);
       releaseNode(&l); releaseNode(&r);
+    break;
+    case function_definition_node:
+      dbg("%s","Evaluating function definition.\n");
+      return(n);
     break;
     case neg_node:
       dbg("%s","Evaluating neg.\n");

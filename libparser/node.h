@@ -4,6 +4,7 @@
 #include "libcol/col.h"
 #include "lpl_errors.h"
 #include "trie.h"
+#include "queue.h"
 
 #define LPL_MAX_NUM_ARGS 20
 
@@ -29,6 +30,7 @@ typedef enum {
     sub_node,
     mult_node,
     div_node,
+    function_definition_node,
     /* Array functions */
     draw_node,
     sumover_node,
@@ -56,6 +58,7 @@ typedef union {
   col_int *vector_int;
   col_double *vector_double;
   col_uint *vector_uint;
+  Queue *statement_list;
 } uvalue;
 
 
@@ -106,6 +109,8 @@ node* divNode(node* const l, node* const r);
 node* multNode(node* const l, node* const r);
 node* drawNode(node* const l, node* const r);
 
+node* functionDefinitionNode(Queue* const l);
+
 node* eqNode(node* const l, node* const r);
 node* ltNode(node* const l, node* const r);
 node* gtNode(node* const l, node* const r);
@@ -134,7 +139,7 @@ lpl_error_code lpl_expand_node(const node* in, const node** out, Trie *scope);
 int lpl_make_error_node(node *n, lpl_error_code errorcode, const char *err);
 int lpl_make_error(lpl_error **error,lpl_error_code errorcode, const char *err);
 int lpl_is_error_node(const node* n);
-node* _copy_error(const node *in);
+node* lpl_copy_error(const node *in);
 /* End crappy code.. */
 
 #endif

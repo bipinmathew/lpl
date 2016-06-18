@@ -11,8 +11,8 @@ node* eval_[@op]_node(const node* l, const node* r, Trie *scope){
   int result;
   col_error e;
   lpl_error eval_error;
-  if( lpl_is_error_node(l)) {out = _copy_error(l); return out;}
-  if( lpl_is_error_node(r)) {out = _copy_error(r); return out;}
+  if( lpl_is_error_node(l)) {out = lpl_copy_error(l); return out;}
+  if( lpl_is_error_node(r)) {out = lpl_copy_error(r); return out;}
 
 
   if(LPL_NO_ERROR != (result=lpl_expand_node(l,&l,scope))){
