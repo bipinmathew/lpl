@@ -8,7 +8,7 @@ function gen_switch_statement(op){
           output=output "      case " types[rtype] "_node:\n"
             col_type    = (("col_double"==col_types[rtype])||("col_double"==col_types[ltype])||("div"==op)) ? "col_double" : "col_int"
             output_type = (("vector_double"==types[rtype])||("vector_double"==types[ltype])||("div"==op)) ? "vector_double" : "vector_int"
-            output=sprintf("%s        initNode(\\&out,NULL,NULL,%s_node);\n",output,output_type)
+            output=sprintf("%s        initDyadicNode(\\&out,NULL,NULL,%s_node);\n",output,output_type)
             output=sprintf("%s        if(LIBCOL_NO_ERROR!=(e=%s_init(\\&out->value.%s))){lpl_make_error_node(out,e,col_error_strings[e]); return (out);}\n",output,col_type,output_type)
             output=sprintf("%s        if(LPL_NO_ERROR!=eval_%s%s_%s(out->value.%s, l->value.%s, r->value.%s, \\&eval_error)){\n",output,short_types[ltype],short_types[rtype],op,output_type,types[ltype],types[rtype])
               output=output "          lpl_make_error_node(out,eval_error.error_code,eval_error.error_string);\n"
