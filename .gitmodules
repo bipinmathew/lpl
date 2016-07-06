@@ -1,6 +1,6 @@
 [submodule "libs/libcol"]
-	path = ./libs/libcol
+	path = libs/libcol
 	url = ../libcol
 [submodule "libs/c-algorithms"]
-	path = ./libs/c-algorithms
+	path = libs/c-algorithms
 	url = https://github.com/fragglet/c-algorithms
