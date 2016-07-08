@@ -1,0 +1,1192 @@
+State 0:
+          start ::= * statement_list
+          statement_list ::= * expr
+          statement_list ::= * statement_list NL
+          statement_list ::= * statement_list NL expr
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        20     
+                         start accept
+                      function shift-reduce 7      expr ::= function
+                statement_list shift        36     
+
+State 1:
+          statement_list ::= * expr
+          statement_list ::= * statement_list NL
+          statement_list ::= * statement_list NL expr
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          function ::= IDENT ASSN LBRACE * statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        20     
+                      function shift-reduce 7      expr ::= function
+                statement_list shift        35     
+
+State 2:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          expr ::= IDENT ASSN * expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          function ::= IDENT ASSN * LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        LBRACE shift        1      
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        23     
+                      function shift-reduce 7      expr ::= function
+
+State 3:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= SUB * expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        26     
+                      function shift-reduce 7      expr ::= function
+
+State 4:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= BANG * expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        21     
+                      function shift-reduce 7      expr ::= function
+
+State 5:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= SUMOVER * expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        22     
+                      function shift-reduce 7      expr ::= function
+
+State 6:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+          expr ::= expr GTEQ * expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift-reduce 24     expr ::= expr GTEQ expr
+                      function shift-reduce 7      expr ::= function
+
+State 7:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= expr LTEQ * expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift-reduce 23     expr ::= expr LTEQ expr
+                      function shift-reduce 7      expr ::= function
+
+State 8:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= expr GT * expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift-reduce 22     expr ::= expr GT expr
+                      function shift-reduce 7      expr ::= function
+
+State 9:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= expr LT * expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift-reduce 21     expr ::= expr LT expr
+                      function shift-reduce 7      expr ::= function
+
+State 10:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= expr EQ * expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift-reduce 20     expr ::= expr EQ expr
+                      function shift-reduce 7      expr ::= function
+
+State 11:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= expr MULT * expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        33     
+                      function shift-reduce 7      expr ::= function
+
+State 12:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= expr DIV * expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        34     
+                      function shift-reduce 7      expr ::= function
+
+State 13:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= expr SUB * expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        27     
+                      function shift-reduce 7      expr ::= function
+
+State 14:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= LPARENS * expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        18     
+                      function shift-reduce 7      expr ::= function
+
+State 15:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= expr ADD * expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        25     
+                      function shift-reduce 7      expr ::= function
+
+State 16:
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= expr DRAW * expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        19     
+                      function shift-reduce 7      expr ::= function
+
+State 17:
+      (2) statement_list ::= statement_list NL *
+          statement_list ::= statement_list NL * expr
+          expr ::= * EXIT
+          expr ::= * IDENT ASSN expr
+          function ::= * IDENT ASSN LBRACE statement_list RBRACE
+          expr ::= * function
+          expr ::= * NUMBER
+          expr ::= * FLOAT
+          expr ::= * IDENT
+          expr ::= * LPARENS expr RPARENS
+          expr ::= * expr DRAW expr
+          expr ::= * SUMOVER expr
+          expr ::= * BANG expr
+          expr ::= * SUB expr
+          expr ::= * expr ADD expr
+          expr ::= * expr SUB expr
+          expr ::= * expr DIV expr
+          expr ::= * expr MULT expr
+          expr ::= * expr EQ expr
+          expr ::= * expr LT expr
+          expr ::= * expr GT expr
+          expr ::= * expr LTEQ expr
+          expr ::= * expr GTEQ expr
+
+                         IDENT shift        37     
+                          BANG shift        4      
+                       SUMOVER shift        5      
+                           SUB shift        3      
+                          EXIT shift-reduce 4      expr ::= EXIT
+                        NUMBER shift-reduce 8      expr ::= NUMBER
+                         FLOAT shift-reduce 9      expr ::= FLOAT
+                       LPARENS shift        14     
+                          expr shift        24     
+                      function shift-reduce 7      expr ::= function
+                     {default} reduce       2      statement_list ::= statement_list NL
+
+State 18:
+          expr ::= LPARENS expr * RPARENS
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16     
+                           ADD shift        15     
+                           SUB shift        13     
+                          MULT shift        11     
+                           DIV shift        12     
+                            EQ shift        10     
+                            LT shift        9      
+                            GT shift        8      
+                          LTEQ shift        7      
+                          GTEQ shift        6      
+                       RPARENS shift-reduce 11     expr ::= LPARENS expr RPARENS
+
+State 19:
+          expr ::= expr * DRAW expr
+     (12) expr ::= expr DRAW expr *
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW error
+                           ADD shift        15     
+                           ADD reduce 12      -- dropped by precedence
+                           SUB shift        13     
+                           SUB reduce 12      -- dropped by precedence
+                          MULT shift        11     
+                          MULT reduce 12      -- dropped by precedence
+                           DIV shift        12     
+                           DIV reduce 12      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 12      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 12      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 12      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 12      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 12      -- dropped by precedence
+                     {default} reduce       12     expr ::= expr DRAW expr
+
+State 20:
+      (1) statement_list ::= expr *
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16     
+                           ADD shift        15     
+                           SUB shift        13     
+                          MULT shift        11     
+                           DIV shift        12     
+                            EQ shift        10     
+                            LT shift        9      
+                            GT shift        8      
+                          LTEQ shift        7      
+                          GTEQ shift        6      
+                     {default} reduce       1      statement_list ::= expr
+
+State 21:
+          expr ::= expr * DRAW expr
+     (14) expr ::= BANG expr *
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16     
+                          DRAW reduce 14      -- dropped by precedence
+                           ADD shift        15     
+                           ADD reduce 14      -- dropped by precedence
+                           SUB shift        13     
+                           SUB reduce 14      -- dropped by precedence
+                          MULT shift        11     
+                          MULT reduce 14      -- dropped by precedence
+                           DIV shift        12     
+                           DIV reduce 14      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 14      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 14      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 14      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 14      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 14      -- dropped by precedence
+                     {default} reduce       14     expr ::= BANG expr
+
+State 22:
+          expr ::= expr * DRAW expr
+     (13) expr ::= SUMOVER expr *
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16     
+                          DRAW reduce 13      -- dropped by precedence
+                           ADD shift        15     
+                           ADD reduce 13      -- dropped by precedence
+                           SUB shift        13     
+                           SUB reduce 13      -- dropped by precedence
+                          MULT shift        11     
+                          MULT reduce 13      -- dropped by precedence
+                           DIV shift        12     
+                           DIV reduce 13      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 13      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 13      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 13      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 13      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 13      -- dropped by precedence
+                     {default} reduce       13     expr ::= SUMOVER expr
+
+State 23:
+      (5) expr ::= IDENT ASSN expr *
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16     
+                          DRAW reduce 5       -- dropped by precedence
+                           ADD shift        15     
+                           ADD reduce 5       -- dropped by precedence
+                           SUB shift        13     
+                           SUB reduce 5       -- dropped by precedence
+                          MULT shift        11     
+                          MULT reduce 5       -- dropped by precedence
+                           DIV shift        12     
+                           DIV reduce 5       -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 5       -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 5       -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 5       -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 5       -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 5       -- dropped by precedence
+                     {default} reduce       5      expr ::= IDENT ASSN expr
+
+State 24:
+      (3) statement_list ::= statement_list NL expr *
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16     
+                           ADD shift        15     
+                           SUB shift        13     
+                          MULT shift        11     
+                           DIV shift        12     
+                            EQ shift        10     
+                            LT shift        9      
+                            GT shift        8      
+                          LTEQ shift        7      
+                          GTEQ shift        6      
+                     {default} reduce       3      statement_list ::= statement_list NL expr
+
+State 25:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+     (16) expr ::= expr ADD expr *
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11     
+                          MULT reduce 16      -- dropped by precedence
+                           DIV shift        12     
+                           DIV reduce 16      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 16      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 16      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 16      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 16      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 16      -- dropped by precedence
+                     {default} reduce       16     expr ::= expr ADD expr
+
+State 26:
+          expr ::= expr * DRAW expr
+     (15) expr ::= SUB expr *
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11     
+                          MULT reduce 15      -- dropped by precedence
+                           DIV shift        12     
+                           DIV reduce 15      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 15      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 15      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 15      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 15      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 15      -- dropped by precedence
+                     {default} reduce       15     expr ::= SUB expr
+
+State 27:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+     (17) expr ::= expr SUB expr *
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11     
+                          MULT reduce 17      -- dropped by precedence
+                           DIV shift        12     
+                           DIV reduce 17      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 17      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 17      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 17      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 17      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 17      -- dropped by precedence
+                     {default} reduce       17     expr ::= expr SUB expr
+
+State 28:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+     (24) expr ::= expr GTEQ expr *
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11      -- dropped by precedence
+                           DIV shift        12      -- dropped by precedence
+                            EQ error
+                            LT error
+                            GT error
+                          LTEQ error
+                          GTEQ error
+                     {default} reduce       24     expr ::= expr GTEQ expr
+
+State 29:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+     (23) expr ::= expr LTEQ expr *
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11      -- dropped by precedence
+                           DIV shift        12      -- dropped by precedence
+                            EQ error
+                            LT error
+                            GT error
+                          LTEQ error
+                          GTEQ error
+                     {default} reduce       23     expr ::= expr LTEQ expr
+
+State 30:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+     (22) expr ::= expr GT expr *
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11      -- dropped by precedence
+                           DIV shift        12      -- dropped by precedence
+                            EQ error
+                            LT error
+                            GT error
+                          LTEQ error
+                          GTEQ error
+                     {default} reduce       22     expr ::= expr GT expr
+
+State 31:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+     (21) expr ::= expr LT expr *
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11      -- dropped by precedence
+                           DIV shift        12      -- dropped by precedence
+                            EQ error
+                            LT error
+                            GT error
+                          LTEQ error
+                          GTEQ error
+                     {default} reduce       21     expr ::= expr LT expr
+
+State 32:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+     (20) expr ::= expr EQ expr *
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11      -- dropped by precedence
+                           DIV shift        12      -- dropped by precedence
+                            EQ error
+                            LT error
+                            GT error
+                          LTEQ error
+                          GTEQ error
+                     {default} reduce       20     expr ::= expr EQ expr
+
+State 33:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+          expr ::= expr * MULT expr
+     (19) expr ::= expr MULT expr *
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11      -- dropped by precedence
+                           DIV shift        12      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 19      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 19      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 19      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 19      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 19      -- dropped by precedence
+                     {default} reduce       19     expr ::= expr MULT expr
+
+State 34:
+          expr ::= expr * DRAW expr
+          expr ::= expr * ADD expr
+          expr ::= expr * SUB expr
+          expr ::= expr * DIV expr
+     (18) expr ::= expr DIV expr *
+          expr ::= expr * MULT expr
+          expr ::= expr * EQ expr
+          expr ::= expr * LT expr
+          expr ::= expr * GT expr
+          expr ::= expr * LTEQ expr
+          expr ::= expr * GTEQ expr
+
+                          DRAW shift        16      -- dropped by precedence
+                           ADD shift        15      -- dropped by precedence
+                           SUB shift        13      -- dropped by precedence
+                          MULT shift        11      -- dropped by precedence
+                           DIV shift        12      -- dropped by precedence
+                            EQ shift        10     
+                            EQ reduce 18      -- dropped by precedence
+                            LT shift        9      
+                            LT reduce 18      -- dropped by precedence
+                            GT shift        8      
+                            GT reduce 18      -- dropped by precedence
+                          LTEQ shift        7      
+                          LTEQ reduce 18      -- dropped by precedence
+                          GTEQ shift        6      
+                          GTEQ reduce 18      -- dropped by precedence
+                     {default} reduce       18     expr ::= expr DIV expr
+
+State 35:
+          statement_list ::= statement_list * NL
+          statement_list ::= statement_list * NL expr
+          function ::= IDENT ASSN LBRACE statement_list * RBRACE
+
+                            NL shift        17     
+                        RBRACE shift-reduce 6      function ::= IDENT ASSN LBRACE statement_list RBRACE
+
+State 36:
+      (0) start ::= statement_list *
+          statement_list ::= statement_list * NL
+          statement_list ::= statement_list * NL expr
+
+                             $ reduce       0      start ::= statement_list
+                            NL shift        17     
+
+State 37:
+          expr ::= IDENT * ASSN expr
+          function ::= IDENT * ASSN LBRACE statement_list RBRACE
+     (10) expr ::= IDENT *
+
+                          ASSN shift        2      
+                     {default} reduce       10     expr ::= IDENT
+
+----------------------------------------------------
+Symbols:
+    0: $:
+    1: IDENT
+    2: ASSN
+    3: BANG
+    4: SUMOVER
+    5: DRAW
+    6: ADD
+    7: SUB
+    8: MULT
+    9: DIV
+   10: EQ
+   11: LT
+   12: GT
+   13: LTEQ
+   14: GTEQ
+   15: NL
+   16: EXIT
+   17: LBRACE
+   18: RBRACE
+   19: NUMBER
+   20: FLOAT
+   21: LPARENS
+   22: RPARENS
+   23: error:
+   24: expr: IDENT BANG SUMOVER SUB EXIT NUMBER FLOAT LPARENS
+   25: start: IDENT BANG SUMOVER SUB EXIT NUMBER FLOAT LPARENS
+   26: function: IDENT
+   27: statement_list: IDENT BANG SUMOVER SUB EXIT NUMBER FLOAT LPARENS
