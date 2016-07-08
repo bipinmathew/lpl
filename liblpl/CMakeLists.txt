@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 project(liblpl)
+include(ExternalProject)
 
 SET(VERSION_MAJOR "0")
 SET(VERSION_MINOR "1")
@@ -7,7 +8,12 @@ SET(VERSION_PATCH "0")
 SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 
-add_subdirectory("../libcol")
+add_subdirectory("./libs/libcol")
+
+ExternalProject_Add(c-algorithms
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/c-algorithms
+    CONFIGURE_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/libs/c-algorithms/configure --prefix=<INSTALL_DIR>
+    BUILD_COMMAND ${MAKE})
 
 
 find_program(AWK NAMES gawk nawk awk)
