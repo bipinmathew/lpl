@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include "libcol/col.h"
+#include "col.h"
 #include "lpl_errors.h"
 #include "trie.h"
 #include "queue.h"

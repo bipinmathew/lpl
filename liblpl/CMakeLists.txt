@@ -22,6 +22,8 @@ find_program(LEX NAMES flex lex)
 
 message("Found AWK: ${AWK}")
 
+## Build logical and arithmetic source files.
+
 add_custom_command(
   OUTPUT arithmetic.c arithmetic.inl
 	COMMAND ${AWK} -f compile_arithmetic.awk < dyadic.tpl > arithmetic.c  
@@ -39,6 +41,8 @@ add_custom_command(
 )
 
 
+## Build lexer and parser source files.
+
 add_custom_command(
   OUTPUT lpl_scanner.h lpl_scanner.c 
 	COMMAND ${LEX} --reentrant --header-file=lpl_scanner.h --outfile=lpl_scanner.c lpl_scanner.l 
@@ -54,24 +58,45 @@ add_custom_command(
   COMMENT "Generating parser"
 )
 
+## Compile into a library.
 
-add_custom_target(parser_target ALL
-    DEPENDS lpl_parser.c lpl_parser.h) 
-
-add_custom_target(lexer_target ALL
-    DEPENDS lpl_scanner.h lpl_scanner.c) 
-
-add_custom_target(arithmetic_target ALL
-    DEPENDS arithmetic.c arithmetic.inl) 
+set(${PROJECT_NAME}_sources ${PROJECT_SOURCE_DIR}/src/libcol.c )
 
 
-add_custom_target(logical_target ALL
-    DEPENDS logical.c logical.inl) 
+include_directories(
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src
+  ${PROJECT_SOURCE_DIR}/libs/libcol/include
+  ${PROJECT_SOURCE_DIR}/c-algorithms-prefix/include/libcalg-1.0/libcalg
+)
 
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+add_library(${PROJECT_NAME} STATIC src/parser.c src/lpl_scanner.c src/lpl_parser.c src/node.c src/arithmetic.c src/logical.c )
 
-message("Binary Tree path: ${PROJECT_BINARY_DIR}")
+install ( TARGETS ${PROJECT_NAME}
+          RUNTIME DESTINATION bin
+          LIBRARY DESTINATION lib
+          ARCHIVE DESTINATION lib/static)
+
+
+
+# add_custom_target(parser_target ALL
+#     DEPENDS lpl_parser.c lpl_parser.h) 
+# 
+# add_custom_target(lexer_target ALL
+#     DEPENDS lpl_scanner.h lpl_scanner.c) 
+# 
+# add_custom_target(arithmetic_target ALL
+#     DEPENDS arithmetic.c arithmetic.inl) 
+# 
+# 
+# add_custom_target(logical_target ALL
+#     DEPENDS logical.c logical.inl) 
+# 
+# 
+# include_directories(${PROJECT_SOURCE_DIR}/include)
+# 
+# message("Binary Tree path: ${PROJECT_BINARY_DIR}")
 
 #set(${PROJECT_NAME}_headers ${PROJECT_SOURCE_DIR}/include/col.h)
 #set(${PROJECT_NAME}_sources ${PROJECT_SOURCE_DIR}/src/libcol.c )

@@ -8,9 +8,9 @@ TYPE=("int" "double")
 
 echo '#include <stdlib.h>
 #include <stdio.h>
-#include "../node.h"
-#include "../lpl_errors.h"
-#include "../debug.h"' 
+#include "node.h"
+#include "lpl_errors.h"
+#include "debug.h"' 
 
 
 
