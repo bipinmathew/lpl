@@ -91,33 +91,3 @@ install ( TARGETS ${PROJECT_NAME}
           LIBRARY DESTINATION lib
           ARCHIVE DESTINATION lib/static)
 
-
-
-# add_custom_target(parser_target ALL
-#     DEPENDS lpl_parser.c lpl_parser.h) 
-# 
-# add_custom_target(lexer_target ALL
-#     DEPENDS lpl_scanner.h lpl_scanner.c) 
-# 
-# add_custom_target(arithmetic_target ALL
-#     DEPENDS arithmetic.c arithmetic.inl) 
-# 
-# 
-# add_custom_target(logical_target ALL
-#     DEPENDS logical.c logical.inl) 
-# 
-# 
-# include_directories(${PROJECT_SOURCE_DIR}/include)
-# 
-# message("Binary Tree path: ${PROJECT_BINARY_DIR}")
-
-#set(${PROJECT_NAME}_headers ${PROJECT_SOURCE_DIR}/include/col.h)
-#set(${PROJECT_NAME}_sources ${PROJECT_SOURCE_DIR}/src/libcol.c )
-
-#add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_headers} ${${PROJECT_NAME}_sources} )
-#
-#install ( TARGETS ${PROJECT_NAME}
-#          RUNTIME DESTINATION bin
-#          LIBRARY DESTINATION lib
-#          ARCHIVE DESTINATION lib/static)
-
