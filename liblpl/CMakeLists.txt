@@ -25,15 +25,24 @@ message("Found AWK: ${AWK}")
 ## Build logical and arithmetic source files.
 
 add_custom_command(
-  OUTPUT arithmetic.c arithmetic.inl
+  OUTPUT  arithmetic.c
 	COMMAND ${AWK} -f compile_arithmetic.awk < dyadic.tpl > arithmetic.c  
 	COMMAND ./compile_arithmetic.sh arithmetic.tpl > arithmetic.inl 
   WORKING_DIRECTORY ./src
+  DEPENDS arithmetic.inl
   COMMENT "Generating arithmetic.c"
 )
 
 add_custom_command(
-  OUTPUT logical.c logical.inl
+  OUTPUT arithmetic.inl
+	COMMAND ./compile_arithmetic.sh arithmetic.tpl > arithmetic.inl 
+  WORKING_DIRECTORY ./src
+  COMMENT "Generating arithmetic.inl"
+)
+
+
+add_custom_command(
+  OUTPUT logical.inl logical.c
 	COMMAND ${AWK} -f compile_logical.awk < dyadic.tpl > logical.c  
 	COMMAND ./compile_logical.sh logical.tpl > logical.inl 
   WORKING_DIRECTORY ./src
@@ -70,8 +79,8 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/c-algorithms-prefix/include/libcalg-1.0/libcalg
 )
 
+add_library(${PROJECT_NAME} STATIC src/parser.c src/lpl_scanner.c src/lpl_parser.c src/node.c arithmetic.c logical.c )
 
-add_library(${PROJECT_NAME} STATIC src/parser.c src/lpl_scanner.c src/lpl_parser.c src/node.c src/arithmetic.c src/logical.c )
 
 install ( TARGETS ${PROJECT_NAME}
           RUNTIME DESTINATION bin
