@@ -82,7 +82,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_SOURCE_DIR}/src
   ${PROJECT_SOURCE_DIR}/libs/libcol/include
-  ${PROJECT_SOURCE_DIR}/c-algorithms-prefix/include/libcalg-1.0/libcalg
+  ${PROJECT_SOURCE_DIR}/libs/c-algorithms/src
 )
 
 
