@@ -1,2 +1,0 @@
-SUBDIRS = libparser
-SUBDIRS += src
