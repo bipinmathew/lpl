@@ -9,7 +9,8 @@ SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 
 add_library(${PROJECT_NAME} STATIC src/parser.c src/lpl_scanner.c src/lpl_parser.c src/node.c src/arithmetic.c src/logical.c )
-
+target_link_libraries(liblpl LINK_PUBLIC libcol)
+set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 
 add_subdirectory("./libs/libcol")
 
