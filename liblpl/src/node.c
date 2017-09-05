@@ -484,6 +484,7 @@ node* eval_sumover_node(const node* l, Trie *scope){
 node* eval_bang_node(const node* l, Trie *scope){
   node *out;
   int result;
+  int v;
   col_error e;
   if( lpl_is_error_node(l)) {out = lpl_copy_error(l); return out;}
 
@@ -495,14 +496,15 @@ node* eval_bang_node(const node* l, Trie *scope){
   }
 
   switch(l->type){
-    case scalar_int_node:
+    case vector_int_node:
       dbg("%s\n","bang on integer.");
       out->type=vector_int_node;
       if(LIBCOL_NO_ERROR!=(e=col_int_init(&out->value.vector_int))){
        lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
       }
       else{
-        if(LIBCOL_NO_ERROR!=(e=col_int_range(out->value.vector_int,0,l->value.scalar_int, (l->value.scalar_int > 0) ? 1 : -1 ))){
+        col_int_get(l->value.vector_int,0,&v);
+        if(LIBCOL_NO_ERROR!=(e=col_int_range(out->value.vector_int,0,v, (v > 0) ? 1 : -1 ))){
          lpl_make_error_node(out,LPL_CUSTOM_ERROR,col_error_strings[e]);
         }
       }
